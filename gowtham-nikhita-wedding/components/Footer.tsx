@@ -22,6 +22,7 @@ export default function Footer() {
             { label: 'Schedule', href: '/#schedule' },
             { label: 'Travel', href: '/#travel' },
             { label: 'Registry', href: '/#registry' },
+            { label: 'RSVP', href: '/rsvp' },
             { label: 'Photos', href: '/photos' },
             { label: 'The Bets', href: '/bets' },
             { label: 'Guestbook', href: '/guestbook' },

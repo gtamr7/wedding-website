@@ -28,9 +28,10 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 PHOTO_ADMIN_PIN=1234
 BETS_ADMIN_PIN=5678
+RSVP_ADMIN_PIN=9012
 ```
 
-> **Security note:** `PHOTO_ADMIN_PIN` and `BETS_ADMIN_PIN` are server-only env vars (no `NEXT_PUBLIC_` prefix).
+> **Security note:** `PHOTO_ADMIN_PIN`, `BETS_ADMIN_PIN`, and `RSVP_ADMIN_PIN` are server-only env vars (no `NEXT_PUBLIC_` prefix).
 > They never reach the client — only the API route at `/api/admin/verify` reads them.
 > Choose a 4-digit PIN you'll remember on the wedding day.
 
@@ -81,4 +82,6 @@ Visit http://localhost:3000 and check:
 | Photo Order (admin)  | `yourdomain.com/photos/admin` |
 | Bets (guests)        | `yourdomain.com/bets` |
 | Bets (admin)         | `yourdomain.com/bets/admin` |
+| RSVP (guests)        | `yourdomain.com/rsvp` |
+| RSVP (admin)         | `yourdomain.com/rsvp/admin` |
 | Guestbook            | `yourdomain.com/guestbook` |

@@ -52,3 +52,17 @@ export interface LeaderboardEntry {
   total: number;
   title: string;
 }
+
+export interface RsvpEntry {
+  id: string;
+  guest_name: string;
+  email: string;
+  party_size: number;
+  sangeet: boolean;
+  wedding: boolean;
+  reception: boolean;
+  dietary_restrictions: string | null;
+  needs_hotel: boolean;
+  notes: string | null;
+  created_at: string;
+}

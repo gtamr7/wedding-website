@@ -74,6 +74,23 @@ insert into bets (category, question, option_a, option_b, option_a_line, option_
 on conflict do nothing;
 
 -- ============================================================
+-- RSVPs
+-- ============================================================
+create table if not exists rsvps (
+  id uuid primary key default gen_random_uuid(),
+  guest_name text not null,
+  email text not null,
+  party_size integer not null default 1,
+  sangeet boolean not null default false,
+  wedding boolean not null default false,
+  reception boolean not null default false,
+  dietary_restrictions text,
+  needs_hotel boolean not null default false,
+  notes text,
+  created_at timestamptz not null default now()
+);
+
+-- ============================================================
 -- Guestbook
 -- ============================================================
 create table if not exists guestbook (
