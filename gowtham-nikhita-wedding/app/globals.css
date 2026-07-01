@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --color-olive-dark: #4A5C2F;
+  --color-olive-mid: #6B7D4A;
+  --color-olive-light: #E6EBD8;
+  --color-ivory: #FDFCF8;
+  --color-gold: #B8972A;
+  --color-gold-light: #D4B84A;
+  --color-charcoal: #1C1C1A;
+  --color-muted: #8A9080;
+
+  --font-display: var(--font-cormorant);
+  --font-sans: var(--font-inter);
+}
+
+:root {
+  --background: #FDFCF8;
+  --foreground: #1C1C1A;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #E6EBD8; }
+::-webkit-scrollbar-thumb { background: #6B7D4A; border-radius: 3px; }
+
+/* Gold gradient divider */
+.gold-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #B8972A 50%, transparent 100%);
+  margin: 0 auto;
+}
+
+/* Pulsing gold ring for NOW indicator */
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(184, 151, 42, 0.5); }
+  50%       { box-shadow: 0 0 0 10px rgba(184, 151, 42, 0); }
+}
+.animate-pulse-gold { animation: pulse-gold 2s ease-in-out infinite; }
+
+/* Gentle float */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+.animate-float { animation: float 7s ease-in-out infinite; }
+
+/* Flip digit */
+@keyframes flip-in {
+  0%   { transform: rotateX(-90deg); opacity: 0; }
+  100% { transform: rotateX(0deg);   opacity: 1; }
+}
+.flip-in { animation: flip-in 0.3s ease-out forwards; }
+
+/* Reduced-motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* Section-level spacing helper */
+.section-py { padding-top: 5rem; padding-bottom: 5rem; }
+@media (min-width: 1024px) { .section-py { padding-top: 7rem; padding-bottom: 7rem; } }
