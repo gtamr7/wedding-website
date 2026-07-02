@@ -49,8 +49,8 @@ export default function HomePage() {
               <FeatureLink
                 href="/photos"
                 emoji="📷"
-                title="Photo Order"
-                desc="Live group shot schedule — updated in real-time so you never miss your moment."
+                title="Photo Line-Up"
+                desc="See exactly when your group is up for photos — live updates so you're never caught off guard."
               />
               <FeatureLink
                 href="/bets"

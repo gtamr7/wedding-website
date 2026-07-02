@@ -34,7 +34,7 @@ export default async function PhotosPage() {
           {/* Header */}
           <div className="text-center mb-10">
             <p className="text-xs tracking-widest uppercase text-gold mb-3">After the Ceremony</p>
-            <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">Photo Order</h1>
+            <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">Photo Line-Up</h1>
             <div className="gold-divider w-24 mt-4 mx-auto" />
             <p className="text-charcoal/50 text-sm mt-4 leading-relaxed max-w-sm mx-auto">
               Updates in real-time as the photographer progresses through each group.

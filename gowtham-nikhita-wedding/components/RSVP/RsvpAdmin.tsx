@@ -2,14 +2,13 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { createSupabaseClient } from '@/lib/supabase'
 import type { RsvpEntry } from '@/lib/types'
 
 type AuthState = 'loading' | 'locked' | 'unlocked'
 type SortKey = 'guest_name' | 'created_at' | 'party_size'
 type SortDir = 'asc' | 'desc'
 
-function PinEntry({ onUnlock }: { onUnlock: () => void }) {
+function PinEntry({ onUnlock }: { onUnlock: (pin: string) => void }) {
   const [pin, setPin] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -25,8 +24,8 @@ function PinEntry({ onUnlock }: { onUnlock: () => void }) {
         body: JSON.stringify({ pin, type: 'rsvp' }),
       })
       if (res.ok) {
-        sessionStorage.setItem('rsvpAdminAuth', 'true')
-        onUnlock()
+        sessionStorage.setItem('rsvpAdminAuth', pin)
+        onUnlock(pin)
       } else {
         setError('Incorrect PIN.')
         setPin('')
@@ -46,7 +45,6 @@ function PinEntry({ onUnlock }: { onUnlock: () => void }) {
         <input
           type="password"
           inputMode="numeric"
-          maxLength={4}
           value={pin}
           onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
           placeholder="••••"
@@ -56,7 +54,7 @@ function PinEntry({ onUnlock }: { onUnlock: () => void }) {
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <button
           type="submit"
-          disabled={pin.length !== 4 || loading}
+          disabled={!pin || loading}
           className="w-full bg-olive-dark text-white py-3 rounded-xl font-medium disabled:opacity-40 hover:bg-olive-mid transition-colors"
         >
           {loading ? 'Verifying…' : 'Unlock'}
@@ -66,30 +64,63 @@ function PinEntry({ onUnlock }: { onUnlock: () => void }) {
   )
 }
 
-function StatCard({ label, value, emoji }: { label: string; value: number | string; emoji: string }) {
+function EventBar({ label, count, total, color }: { label: string; count: number; total: number; color: string }) {
+  const pct = total > 0 ? Math.round((count / total) * 100) : 0
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-white border-2 border-olive-light rounded-xl p-4 text-center"
-    >
-      <div className="text-2xl mb-1">{emoji}</div>
-      <div className="font-display text-3xl italic text-charcoal">{value}</div>
-      <div className="text-xs uppercase tracking-widest text-charcoal/40 mt-1">{label}</div>
-    </motion.div>
+    <div>
+      <div className="flex justify-between text-sm mb-1.5">
+        <span className="text-charcoal/70">{label}</span>
+        <span className="font-medium text-charcoal">{count} <span className="text-charcoal/40 font-normal">guests · {pct}%</span></span>
+      </div>
+      <div className="h-2 bg-olive-light rounded-full overflow-hidden">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className={`h-full rounded-full ${color}`}
+        />
+      </div>
+    </div>
+  )
+}
+
+function ExpandableNotes({ notes }: { notes: string }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div>
+      <button onClick={() => setOpen(v => !v)} className="text-xs text-gold hover:text-gold-light transition-colors">
+        {open ? 'hide note ▲' : 'see note ▼'}
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.p
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="text-xs text-charcoal/50 mt-1 italic leading-relaxed overflow-hidden"
+          >
+            {notes}
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }
 
 export default function RsvpAdmin() {
   const [auth, setAuth] = useState<AuthState>('loading')
+  const [adminPin, setAdminPin] = useState('')
   const [rsvps, setRsvps] = useState<RsvpEntry[]>([])
   const [search, setSearch] = useState('')
   const [sortKey, setSortKey] = useState<SortKey>('created_at')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
   const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState<'overview' | 'table'>('overview')
 
   useEffect(() => {
-    if (sessionStorage.getItem('rsvpAdminAuth') === 'true') {
+    const stored = sessionStorage.getItem('rsvpAdminAuth')
+    if (stored) {
+      setAdminPin(stored)
       setAuth('unlocked')
     } else {
       setAuth('locked')
@@ -97,22 +128,17 @@ export default function RsvpAdmin() {
   }, [])
 
   useEffect(() => {
-    if (auth !== 'unlocked') return
-    fetchRsvps()
-  }, [auth])
+    if (auth === 'unlocked' && adminPin) fetchRsvps()
+  }, [auth, adminPin])
 
   const fetchRsvps = async () => {
     setLoading(true)
     try {
-      const supabase = createSupabaseClient()
-      const { data, error } = await supabase
-        .from('rsvps')
-        .select('*')
-        .order('created_at', { ascending: false })
-      if (error) throw error
-      setRsvps(data || [])
-    } catch (err) {
-      console.error('Failed to fetch RSVPs:', err)
+      const res = await fetch('/api/admin/rsvps', { headers: { 'x-admin-pin': adminPin } })
+      if (!res.ok) throw new Error('Failed')
+      setRsvps(await res.json())
+    } catch {
+      console.error('Failed to fetch RSVPs')
     } finally {
       setLoading(false)
     }
@@ -121,21 +147,19 @@ export default function RsvpAdmin() {
   const deleteRsvp = async (id: string) => {
     if (!confirm('Delete this RSVP?')) return
     try {
-      const supabase = createSupabaseClient()
-      const { error } = await supabase.from('rsvps').delete().eq('id', id)
-      if (error) throw error
-      setRsvps((prev) => prev.filter((r) => r.id !== id))
-    } catch (err) {
-      console.error('Failed to delete RSVP:', err)
-    }
+      await fetch('/api/admin/rsvps', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', 'x-admin-pin': adminPin },
+        body: JSON.stringify({ id }),
+      })
+      setRsvps(prev => prev.filter(r => r.id !== id))
+    } catch { /* silent */ }
   }
 
   const exportCsv = () => {
-    const headers = ['Name', 'Email', 'Party Size', 'Sangeet', 'Wedding', 'Reception', 'Dietary Restrictions', 'Needs Hotel', 'Notes', 'Submitted']
-    const rows = rsvps.map((r) => [
-      r.guest_name,
-      r.email,
-      r.party_size,
+    const headers = ['Name', 'Email', 'Party Size', 'Sangeet', 'Wedding', 'Reception', 'Dietary', 'Hotel', 'Notes', 'Submitted']
+    const rows = rsvps.map(r => [
+      r.guest_name, r.email, r.party_size,
       r.sangeet ? 'Yes' : 'No',
       r.wedding ? 'Yes' : 'No',
       r.reception ? 'Yes' : 'No',
@@ -144,198 +168,220 @@ export default function RsvpAdmin() {
       r.notes || '',
       new Date(r.created_at).toLocaleDateString(),
     ])
-
     const csv = [headers, ...rows]
-      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .map(row => row.map(c => `"${String(c).replace(/"/g, '""')}"`).join(','))
       .join('\n')
-
-    const blob = new Blob([csv], { type: 'text/csv' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `rsvps-${new Date().toISOString().slice(0, 10)}.csv`
+    const a = Object.assign(document.createElement('a'), {
+      href: URL.createObjectURL(new Blob([csv], { type: 'text/csv' })),
+      download: `rsvps-${new Date().toISOString().slice(0, 10)}.csv`,
+    })
     a.click()
-    URL.revokeObjectURL(url)
   }
+
+  const stats = useMemo(() => {
+    const totalRsvps = rsvps.length
+    const totalGuests = rsvps.reduce((s, r) => s + r.party_size, 0)
+    const sangeet = rsvps.filter(r => r.sangeet).reduce((s, r) => s + r.party_size, 0)
+    const wedding = rsvps.filter(r => r.wedding).reduce((s, r) => s + r.party_size, 0)
+    const reception = rsvps.filter(r => r.reception).reduce((s, r) => s + r.party_size, 0)
+    const hotel = rsvps.filter(r => r.needs_hotel).length
+    const dietary = rsvps.filter(r => r.dietary_restrictions).map(r => ({ name: r.guest_name, note: r.dietary_restrictions! }))
+    return { totalRsvps, totalGuests, sangeet, wedding, reception, hotel, dietary }
+  }, [rsvps])
 
   const filtered = useMemo(() => {
     let list = rsvps
     if (search.trim()) {
       const q = search.toLowerCase()
-      list = list.filter(
-        (r) =>
-          r.guest_name.toLowerCase().includes(q) ||
-          r.email.toLowerCase().includes(q)
-      )
+      list = list.filter(r => r.guest_name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q))
     }
-    list = [...list].sort((a, b) => {
+    return [...list].sort((a, b) => {
       let cmp = 0
       if (sortKey === 'guest_name') cmp = a.guest_name.localeCompare(b.guest_name)
       else if (sortKey === 'party_size') cmp = a.party_size - b.party_size
       else cmp = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       return sortDir === 'asc' ? cmp : -cmp
     })
-    return list
   }, [rsvps, search, sortKey, sortDir])
 
-  const stats = useMemo(() => {
-    const total = rsvps.length
-    const totalGuests = rsvps.reduce((s, r) => s + r.party_size, 0)
-    const sangeetCount = rsvps.filter((r) => r.sangeet).reduce((s, r) => s + r.party_size, 0)
-    const weddingCount = rsvps.filter((r) => r.wedding).reduce((s, r) => s + r.party_size, 0)
-    const receptionCount = rsvps.filter((r) => r.reception).reduce((s, r) => s + r.party_size, 0)
-    const hotelCount = rsvps.filter((r) => r.needs_hotel).length
-    return { total, totalGuests, sangeetCount, weddingCount, receptionCount, hotelCount }
-  }, [rsvps])
-
   const toggleSort = (key: SortKey) => {
-    if (sortKey === key) {
-      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))
-    } else {
-      setSortKey(key)
-      setSortDir('asc')
-    }
+    if (sortKey === key) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
+    else { setSortKey(key); setSortDir('asc') }
   }
 
-  const sortIcon = (key: SortKey) => {
-    if (sortKey !== key) return '↕'
-    return sortDir === 'asc' ? '↑' : '↓'
-  }
+  const SortIcon = ({ k }: { k: SortKey }) =>
+    <span className="ml-1 text-charcoal/30">{sortKey !== k ? '↕' : sortDir === 'asc' ? '↑' : '↓'}</span>
 
   if (auth === 'loading') return null
-  if (auth === 'locked') return <PinEntry onUnlock={() => setAuth('unlocked')} />
+  if (auth === 'locked') return <PinEntry onUnlock={pin => { setAdminPin(pin); setAuth('unlocked') }} />
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="text-center mb-10">
-        <h1 className="font-display text-4xl sm:text-5xl italic text-charcoal">RSVP Dashboard</h1>
-        <div className="gold-divider w-24 mt-4 mx-auto" />
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
-        <StatCard emoji="📬" label="RSVPs" value={stats.total} />
-        <StatCard emoji="👥" label="Total Guests" value={stats.totalGuests} />
-        <StatCard emoji="🎶" label="Sangeet" value={stats.sangeetCount} />
-        <StatCard emoji="💍" label="Wedding" value={stats.weddingCount} />
-        <StatCard emoji="🥂" label="Reception" value={stats.receptionCount} />
-        <StatCard emoji="🏨" label="Need Hotel" value={stats.hotelCount} />
-      </div>
-
-      {/* Controls */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search by name or email…"
-          className="flex-1 border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
-        />
-        <button
-          onClick={exportCsv}
-          disabled={rsvps.length === 0}
-          className="bg-gold text-white px-6 py-3 rounded-xl font-medium tracking-wider uppercase text-sm hover:bg-gold-light transition-colors disabled:opacity-40 whitespace-nowrap"
-        >
-          Export CSV 📥
-        </button>
-      </div>
-
-      {/* Table */}
-      {loading ? (
-        <div className="text-center py-16 text-charcoal/40">Loading…</div>
-      ) : filtered.length === 0 ? (
-        <div className="text-center py-16 text-charcoal/40">
-          {rsvps.length === 0 ? 'No RSVPs yet.' : 'No results match your search.'}
+    <div className="max-w-5xl mx-auto">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+        <div>
+          <h1 className="font-display text-4xl sm:text-5xl italic text-charcoal">RSVP Dashboard</h1>
+          <p className="text-charcoal/40 text-sm mt-1">{stats.totalRsvps} responses · {stats.totalGuests} total guests</p>
         </div>
+        <div className="flex gap-3">
+          <button onClick={fetchRsvps} className="text-sm text-charcoal/50 hover:text-charcoal border border-olive-light rounded-xl px-4 py-2 transition-colors">
+            ↻ Refresh
+          </button>
+          <button onClick={exportCsv} disabled={!rsvps.length} className="bg-gold text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-40">
+            Export CSV
+          </button>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-1 bg-olive-light/40 rounded-xl p-1 mb-8 w-fit">
+        {(['overview', 'table'] as const).map(tab => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-5 py-2 rounded-lg text-sm font-medium capitalize transition-all ${activeTab === tab ? 'bg-white text-charcoal shadow-sm' : 'text-charcoal/50 hover:text-charcoal'}`}
+          >
+            {tab === 'overview' ? '📊 Overview' : '📋 Guest List'}
+          </button>
+        ))}
+      </div>
+
+      {loading ? (
+        <div className="text-center py-20 text-charcoal/30">Loading…</div>
+      ) : rsvps.length === 0 ? (
+        <div className="text-center py-20 text-charcoal/30">
+          <p className="font-display text-2xl italic mb-2">No RSVPs yet</p>
+          <p className="text-sm">Responses will appear here as guests submit.</p>
+        </div>
+      ) : activeTab === 'overview' ? (
+        <motion.div key="overview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+          {/* Big numbers */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              { label: 'RSVPs received', value: stats.totalRsvps, emoji: '📬' },
+              { label: 'Total guests', value: stats.totalGuests, emoji: '👥' },
+              { label: 'Need hotel', value: stats.hotel, emoji: '🏨' },
+              { label: 'Dietary notes', value: stats.dietary.length, emoji: '🍽️' },
+            ].map(s => (
+              <div key={s.label} className="bg-white border-2 border-olive-light rounded-xl p-5 text-center">
+                <div className="text-2xl mb-1">{s.emoji}</div>
+                <div className="font-display text-4xl italic text-charcoal">{s.value}</div>
+                <div className="text-xs uppercase tracking-widest text-charcoal/40 mt-1">{s.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Event attendance bars */}
+          <div className="bg-white border-2 border-olive-light rounded-xl p-6">
+            <h2 className="font-display text-xl italic text-charcoal mb-5">Event Attendance</h2>
+            <div className="space-y-4">
+              <EventBar label="🎶 Sangeet — Feb 16" count={stats.sangeet} total={stats.totalGuests} color="bg-olive-mid" />
+              <EventBar label="🪔 Muhurtham — Feb 17 Morning" count={stats.wedding} total={stats.totalGuests} color="bg-gold" />
+              <EventBar label="🥂 Reception — Feb 17 Evening" count={stats.reception} total={stats.totalGuests} color="bg-olive-dark" />
+            </div>
+          </div>
+
+          {/* Dietary restrictions */}
+          {stats.dietary.length > 0 && (
+            <div className="bg-white border-2 border-olive-light rounded-xl p-6">
+              <h2 className="font-display text-xl italic text-charcoal mb-4">Dietary Restrictions</h2>
+              <div className="space-y-2">
+                {stats.dietary.map((d, i) => (
+                  <div key={i} className="flex items-baseline gap-3 text-sm">
+                    <span className="font-medium text-charcoal w-40 shrink-0 truncate">{d.name}</span>
+                    <span className="text-charcoal/50">{d.note}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Recent RSVPs */}
+          <div className="bg-white border-2 border-olive-light rounded-xl p-6">
+            <h2 className="font-display text-xl italic text-charcoal mb-4">Recent RSVPs</h2>
+            <div className="space-y-3">
+              {rsvps.slice(0, 5).map(r => (
+                <div key={r.id} className="flex items-center justify-between text-sm">
+                  <div>
+                    <span className="font-medium text-charcoal">{r.guest_name}</span>
+                    <span className="text-charcoal/40 ml-2">party of {r.party_size}</span>
+                  </div>
+                  <span className="text-charcoal/30 text-xs">{new Date(r.created_at).toLocaleDateString()}</span>
+                </div>
+              ))}
+              {rsvps.length > 5 && (
+                <button onClick={() => setActiveTab('table')} className="text-xs text-gold hover:text-gold-light transition-colors">
+                  View all {rsvps.length} RSVPs →
+                </button>
+              )}
+            </div>
+          </div>
+        </motion.div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border-2 border-olive-light">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-olive-light/50 text-left">
-                <th
-                  className="px-4 py-3 font-medium text-xs uppercase tracking-widest text-charcoal/60 cursor-pointer hover:text-charcoal transition-colors"
-                  onClick={() => toggleSort('guest_name')}
-                >
-                  Name {sortIcon('guest_name')}
-                </th>
-                <th className="px-4 py-3 font-medium text-xs uppercase tracking-widest text-charcoal/60 hidden sm:table-cell">
-                  Email
-                </th>
-                <th
-                  className="px-4 py-3 font-medium text-xs uppercase tracking-widest text-charcoal/60 cursor-pointer hover:text-charcoal transition-colors text-center"
-                  onClick={() => toggleSort('party_size')}
-                >
-                  Party {sortIcon('party_size')}
-                </th>
-                <th className="px-4 py-3 font-medium text-xs uppercase tracking-widest text-charcoal/60 text-center">
-                  Events
-                </th>
-                <th className="px-4 py-3 font-medium text-xs uppercase tracking-widest text-charcoal/60 hidden md:table-cell">
-                  Dietary
-                </th>
-                <th className="px-4 py-3 font-medium text-xs uppercase tracking-widest text-charcoal/60 text-center">
-                  Hotel
-                </th>
-                <th
-                  className="px-4 py-3 font-medium text-xs uppercase tracking-widest text-charcoal/60 cursor-pointer hover:text-charcoal transition-colors hidden lg:table-cell"
-                  onClick={() => toggleSort('created_at')}
-                >
-                  Date {sortIcon('created_at')}
-                </th>
-                <th className="px-4 py-3"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <AnimatePresence>
-                {filtered.map((r) => (
-                  <motion.tr
-                    key={r.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="border-t border-olive-light/50 hover:bg-olive-light/20 transition-colors"
-                  >
-                    <td className="px-4 py-3 font-medium text-charcoal">
-                      {r.guest_name}
-                      {r.notes && (
-                        <span className="block text-xs text-charcoal/40 mt-0.5 truncate max-w-[200px]" title={r.notes}>
-                          💬 {r.notes}
-                        </span>
-                      )}
+        <motion.div key="table" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          {/* Search */}
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search by name or email…"
+            className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors mb-4"
+          />
+
+          <div className="overflow-x-auto rounded-xl border-2 border-olive-light">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-olive-light/50 text-left">
+                  <th className="px-4 py-3 text-xs uppercase tracking-widest text-charcoal/60 cursor-pointer" onClick={() => toggleSort('guest_name')}>
+                    Name <SortIcon k="guest_name" />
+                  </th>
+                  <th className="px-4 py-3 text-xs uppercase tracking-widest text-charcoal/60 hidden sm:table-cell">Email</th>
+                  <th className="px-4 py-3 text-xs uppercase tracking-widest text-charcoal/60 cursor-pointer text-center" onClick={() => toggleSort('party_size')}>
+                    Party <SortIcon k="party_size" />
+                  </th>
+                  <th className="px-4 py-3 text-xs uppercase tracking-widest text-charcoal/60">Events</th>
+                  <th className="px-4 py-3 text-xs uppercase tracking-widest text-charcoal/60 hidden md:table-cell">Dietary</th>
+                  <th className="px-4 py-3 text-xs uppercase tracking-widest text-charcoal/60 text-center">Hotel</th>
+                  <th className="px-4 py-3 text-xs uppercase tracking-widest text-charcoal/60 cursor-pointer hidden lg:table-cell" onClick={() => toggleSort('created_at')}>
+                    Submitted <SortIcon k="created_at" />
+                  </th>
+                  <th className="px-4 py-3" />
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="text-center py-10 text-charcoal/30">No results.</td>
+                  </tr>
+                ) : filtered.map(r => (
+                  <tr key={r.id} className="border-t border-olive-light/50 hover:bg-olive-light/20 transition-colors">
+                    <td className="px-4 py-3">
+                      <span className="font-medium text-charcoal">{r.guest_name}</span>
+                      {r.notes && <ExpandableNotes notes={r.notes} />}
                     </td>
-                    <td className="px-4 py-3 text-charcoal/60 hidden sm:table-cell">{r.email}</td>
-                    <td className="px-4 py-3 text-center">{r.party_size}</td>
-                    <td className="px-4 py-3 text-center">
-                      <div className="flex gap-1 justify-center flex-wrap">
-                        {r.sangeet && <span className="text-xs bg-gold/10 text-gold px-2 py-0.5 rounded-full">S</span>}
-                        {r.wedding && <span className="text-xs bg-olive-dark/10 text-olive-dark px-2 py-0.5 rounded-full">W</span>}
-                        {r.reception && <span className="text-xs bg-charcoal/10 text-charcoal px-2 py-0.5 rounded-full">R</span>}
+                    <td className="px-4 py-3 text-charcoal/50 hidden sm:table-cell">{r.email}</td>
+                    <td className="px-4 py-3 text-center text-charcoal">{r.party_size}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex flex-col gap-0.5">
+                        {r.sangeet && <span className="text-xs text-olive-mid">🎶 Sangeet</span>}
+                        {r.wedding && <span className="text-xs text-gold">🪔 Muhurtham</span>}
+                        {r.reception && <span className="text-xs text-charcoal/60">🥂 Reception</span>}
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-charcoal/50 text-xs hidden md:table-cell">
-                      {r.dietary_restrictions || '—'}
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      {r.needs_hotel ? '🏨' : '—'}
-                    </td>
-                    <td className="px-4 py-3 text-charcoal/40 text-xs hidden lg:table-cell">
+                    <td className="px-4 py-3 text-charcoal/50 text-xs hidden md:table-cell">{r.dietary_restrictions || '—'}</td>
+                    <td className="px-4 py-3 text-center">{r.needs_hotel ? '🏨 Yes' : '—'}</td>
+                    <td className="px-4 py-3 text-charcoal/30 text-xs hidden lg:table-cell">
                       {new Date(r.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
-                      <button
-                        onClick={() => deleteRsvp(r.id)}
-                        className="text-red-400 hover:text-red-600 transition-colors text-xs"
-                        title="Delete RSVP"
-                      >
-                        ✕
-                      </button>
+                      <button onClick={() => deleteRsvp(r.id)} className="text-red-300 hover:text-red-500 transition-colors text-xs" title="Delete">✕</button>
                     </td>
-                  </motion.tr>
+                  </tr>
                 ))}
-              </AnimatePresence>
-            </tbody>
-          </table>
-        </div>
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
       )}
     </div>
   )

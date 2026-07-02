@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
 
 const events = [
   {
@@ -17,6 +17,13 @@ const events = [
     color: 'from-olive-mid/10 to-olive-light/30',
     borderColor: 'border-olive-mid/30',
     badgeColor: 'bg-olive-light text-olive-dark',
+    calendar: {
+      title: 'Sangeet Night — Gowtham & Nikhita',
+      date: '20270216',
+      endDate: '20270217',
+      location: 'Venue TBD',
+      description: 'An evening of music, dance, and joyful celebration. Festive Indian attire. Check gowthamandnikhita.com for venue and time updates.',
+    },
   },
   {
     date: 'Feb 17',
@@ -32,6 +39,13 @@ const events = [
     borderColor: 'border-gold/40',
     badgeColor: 'bg-gold/10 text-gold',
     featured: true,
+    calendar: {
+      title: 'Muhurtham — Gowtham & Nikhita Wedding',
+      date: '20270217',
+      endDate: '20270218',
+      location: 'Powel Crosley Estate, 8490 Crosley Ln, Sarasota, FL 34241',
+      description: 'Tamil & Telugu Vedic wedding ceremony. Traditional Indian attire or formal Western. Check gowthamandnikhita.com for exact time.',
+    },
   },
   {
     date: 'Feb 17',
@@ -46,8 +60,101 @@ const events = [
     color: 'from-olive-dark/5 to-olive-mid/10',
     borderColor: 'border-olive-dark/20',
     badgeColor: 'bg-charcoal/5 text-charcoal',
+    calendar: {
+      title: 'Reception — Gowtham & Nikhita Wedding',
+      date: '20270217',
+      endDate: '20270218',
+      location: 'Powel Crosley Estate, 8490 Crosley Ln, Sarasota, FL 34241',
+      description: 'Wedding reception — dinner, dancing, and celebration. Black tie optional / cocktail attire. Check gowthamandnikhita.com for exact time.',
+    },
   },
 ]
+
+function makeIcs(cal: typeof events[0]['calendar']) {
+  const content = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Gowtham & Nikhita Wedding//EN',
+    'BEGIN:VEVENT',
+    `DTSTART;VALUE=DATE:${cal.date}`,
+    `DTEND;VALUE=DATE:${cal.endDate}`,
+    `SUMMARY:${cal.title}`,
+    `LOCATION:${cal.location}`,
+    `DESCRIPTION:${cal.description}`,
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n')
+  return `data:text/calendar;charset=utf-8,${encodeURIComponent(content)}`
+}
+
+function googleCalUrl(cal: typeof events[0]['calendar']) {
+  const p = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: cal.title,
+    dates: `${cal.date}/${cal.endDate}`,
+    details: cal.description,
+    location: cal.location,
+  })
+  return `https://calendar.google.com/calendar/render?${p.toString()}`
+}
+
+function AddToCalendar({ cal }: { cal: typeof events[0]['calendar'] }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="flex items-center gap-1.5 text-xs text-charcoal/50 hover:text-gold transition-colors border border-charcoal/15 hover:border-gold/40 rounded-full px-3 py-1.5"
+      >
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <rect x="1" y="3" width="14" height="12" rx="1.5" />
+          <path d="M1 7h14M5 1v4M11 1v4" strokeLinecap="round" />
+        </svg>
+        Add to Calendar
+      </button>
+      <AnimatePresence>
+        {open && (
+          <>
+            <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+            <motion.div
+              initial={{ opacity: 0, y: 4, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 4, scale: 0.97 }}
+              transition={{ duration: 0.15 }}
+              className="absolute left-0 bottom-full mb-2 z-20 bg-white rounded-xl shadow-xl border border-olive-light overflow-hidden w-44"
+            >
+              <a
+                href={googleCalUrl(cal)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2.5 px-4 py-3 text-sm text-charcoal hover:bg-olive-light/40 transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <rect width="24" height="24" rx="4" fill="#4285F4"/>
+                  <path d="M12 11v6M9 14h6" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+                Google Calendar
+              </a>
+              <a
+                href={makeIcs(cal)}
+                download={`${cal.title.replace(/[^a-z0-9]/gi, '-')}.ics`}
+                className="flex items-center gap-2.5 px-4 py-3 text-sm text-charcoal hover:bg-olive-light/40 transition-colors border-t border-olive-light/50"
+                onClick={() => setOpen(false)}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <rect width="24" height="24" rx="4" fill="#1C1C1A"/>
+                  <path d="M12 7v7M9 11l3 3 3-3M7 17h10" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Apple / Outlook
+              </a>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
 
 function EventCard({ event, index }: { event: typeof events[0]; index: number }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -95,9 +202,12 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
 
           <p className="mt-4 text-charcoal/70 leading-relaxed text-sm sm:text-base">{event.description}</p>
 
-          <div className="mt-4 pt-4 border-t border-charcoal/10">
-            <p className="text-xs text-charcoal/50 uppercase tracking-wider">Dress Code</p>
-            <p className="text-sm text-charcoal/70 mt-1">{event.dresscode}</p>
+          <div className="mt-4 pt-4 border-t border-charcoal/10 flex items-end justify-between gap-4 flex-wrap">
+            <div>
+              <p className="text-xs text-charcoal/50 uppercase tracking-wider">Dress Code</p>
+              <p className="text-sm text-charcoal/70 mt-1">{event.dresscode}</p>
+            </div>
+            <AddToCalendar cal={event.calendar} />
           </div>
         </div>
       </div>

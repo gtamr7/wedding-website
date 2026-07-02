@@ -11,7 +11,7 @@ const links = [
   { label: 'Travel', href: '/#travel' },
   { label: 'Registry', href: '/#registry' },
   { label: 'RSVP', href: '/rsvp' },
-  { label: 'Photos', href: '/photos' },
+  { label: 'Photo Line-Up', href: '/photos' },
   { label: 'The Bets', href: '/bets' },
   { label: 'Guestbook', href: '/guestbook' },
 ]
