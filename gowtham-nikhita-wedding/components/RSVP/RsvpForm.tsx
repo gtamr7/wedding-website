@@ -6,43 +6,53 @@ import { createSupabaseClient } from '@/lib/supabase'
 
 type Step = 'gate' | 'form' | 'success'
 type FormState = 'idle' | 'submitting' | 'error'
+type PartyMember = { firstName: string; lastName: string }
+
+const MAX_PARTY = 5  // including the lead guest
 
 export default function RsvpForm() {
   const [step, setStep] = useState<Step>('gate')
 
-  // Gate
-  const [nameInput, setNameInput] = useState('')
-  const [checking, setChecking] = useState(false)
+  // ── Gate ──
+  const [gateFirst, setGateFirst] = useState('')
+  const [gateLast,  setGateLast]  = useState('')
+  const [checking,  setChecking]  = useState(false)
   const [gateError, setGateError] = useState('')
 
-  // Form
-  const [guestName, setGuestName] = useState('')
-  const [email, setEmail] = useState('')
-  const [partySize, setPartySize] = useState(1)
-  const [sangeet, setSangeet] = useState(false)
-  const [wedding, setWedding] = useState(false)
+  // ── Form ──
+  const [firstName, setFirstName] = useState('')
+  const [lastName,  setLastName]  = useState('')
+  const [email,     setEmail]     = useState('')
+
+  // Additional party members
+  const [partyMembers, setPartyMembers] = useState<PartyMember[]>([])
+
+  const [sangeet,   setSangeet]   = useState(false)
+  const [wedding,   setWedding]   = useState(false)
   const [reception, setReception] = useState(false)
-  const [dietary, setDietary] = useState('')
+  const [dietary,   setDietary]   = useState('')
   const [needsHotel, setNeedsHotel] = useState<boolean | null>(null)
-  const [notes, setNotes] = useState('')
+  const [notes,     setNotes]     = useState('')
   const [formState, setFormState] = useState<FormState>('idle')
   const [eventError, setEventError] = useState(false)
 
+  // ── Gate submit ──
   const checkGuest = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!nameInput.trim()) return
+    if (!gateFirst.trim() || !gateLast.trim()) return
     setChecking(true)
     setGateError('')
     try {
       const res = await fetch('/api/rsvp/check-guest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: nameInput.trim() }),
+        body: JSON.stringify({ firstName: gateFirst.trim(), lastName: gateLast.trim() }),
       })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const { found, matchedName } = await res.json()
+      const { found, matchedFirst, matchedLast } = await res.json()
       if (found) {
-        setGuestName(matchedName || nameInput.trim())
+        setFirstName(matchedFirst || gateFirst.trim())
+        setLastName(matchedLast  || gateLast.trim())
         setStep('form')
       } else {
         setGateError('not-found')
@@ -54,6 +64,20 @@ export default function RsvpForm() {
     }
   }
 
+  // ── Party member helpers ──
+  const addMember = () => {
+    if (partyMembers.length < MAX_PARTY - 1) {
+      setPartyMembers(m => [...m, { firstName: '', lastName: '' }])
+    }
+  }
+  const removeMember = (i: number) =>
+    setPartyMembers(m => m.filter((_, idx) => idx !== i))
+  const updateMember = (i: number, field: keyof PartyMember, val: string) =>
+    setPartyMembers(m => m.map((p, idx) => idx === i ? { ...p, [field]: val } : p))
+
+  const totalGuests = 1 + partyMembers.length
+
+  // ── Form submit ──
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!sangeet && !wedding && !reception) { setEventError(true); return }
@@ -62,14 +86,25 @@ export default function RsvpForm() {
     setFormState('submitting')
     try {
       const supabase = createSupabaseClient()
+      const fullName = `${firstName.trim()} ${lastName.trim()}`.trim()
+      // Filter out empty party members
+      const cleanMembers = partyMembers
+        .filter(m => m.firstName.trim())
+        .map(m => ({ firstName: m.firstName.trim(), lastName: m.lastName.trim() }))
+
       const { error } = await supabase.from('rsvps').insert({
-        guest_name: guestName.trim(),
-        email: email.trim().toLowerCase(),
-        party_size: partySize,
-        sangeet, wedding, reception,
+        guest_name:      fullName,
+        first_name:      firstName.trim(),
+        last_name:       lastName.trim(),
+        email:           email.trim().toLowerCase(),
+        party_size:      1 + cleanMembers.length,
+        party_members:   cleanMembers,
+        sangeet,
+        wedding,
+        reception,
         dietary_restrictions: dietary.trim() || null,
-        needs_hotel: needsHotel,
-        notes: notes.trim() || null,
+        needs_hotel:     needsHotel,
+        notes:           notes.trim() || null,
       })
       if (error) throw error
       setStep('success')
@@ -82,7 +117,7 @@ export default function RsvpForm() {
   return (
     <AnimatePresence mode="wait">
 
-      {/* ── Gate: name check ── */}
+      {/* ── Gate ── */}
       {step === 'gate' && (
         <motion.div
           key="gate"
@@ -93,33 +128,46 @@ export default function RsvpForm() {
           className="max-w-md mx-auto"
         >
           <form onSubmit={checkGuest} className="space-y-5">
-            <div>
-              <label htmlFor="gate-name" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
-                Your Name
-              </label>
-              <input
-                id="gate-name"
-                type="text"
-                value={nameInput}
-                onChange={e => { setNameInput(e.target.value); setGateError('') }}
-                placeholder="First & last name"
-                autoComplete="name"
-                required
-                className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors text-lg"
-              />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label htmlFor="gate-first" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
+                  First Name
+                </label>
+                <input
+                  id="gate-first"
+                  type="text"
+                  value={gateFirst}
+                  onChange={e => { setGateFirst(e.target.value); setGateError('') }}
+                  placeholder="First"
+                  autoComplete="given-name"
+                  required
+                  className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors text-base"
+                />
+              </div>
+              <div>
+                <label htmlFor="gate-last" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
+                  Last Name
+                </label>
+                <input
+                  id="gate-last"
+                  type="text"
+                  value={gateLast}
+                  onChange={e => { setGateLast(e.target.value); setGateError('') }}
+                  placeholder="Last"
+                  autoComplete="family-name"
+                  required
+                  className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors text-base"
+                />
+              </div>
             </div>
 
             <AnimatePresence>
               {gateError === 'not-found' && (
-                <motion.div
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-4 text-sm leading-relaxed"
-                >
+                <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                  className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-4 text-sm leading-relaxed">
                   <p className="font-medium text-amber-800 mb-1">We don&apos;t see that name on our list.</p>
                   <p className="text-amber-700">
-                    If you believe this is an error, please reach out to Gowtham or Nikhita directly and we&apos;ll get you sorted. We can&apos;t wait to celebrate with you!
+                    Please double-check your spelling or reach out to Gowtham or Nikhita directly — we&apos;d hate to miss you!
                   </p>
                 </motion.div>
               )}
@@ -133,7 +181,7 @@ export default function RsvpForm() {
 
             <button
               type="submit"
-              disabled={!nameInput.trim() || checking}
+              disabled={!gateFirst.trim() || !gateLast.trim() || checking}
               className="w-full bg-olive-dark text-white py-4 rounded-xl font-medium tracking-wider uppercase text-sm hover:bg-olive-mid transition-colors disabled:opacity-40"
             >
               {checking ? 'Checking…' : 'Find My Invitation →'}
@@ -153,25 +201,33 @@ export default function RsvpForm() {
           onSubmit={handleSubmit}
           className="max-w-lg mx-auto space-y-6"
         >
-          {/* Welcome back */}
+          {/* Welcome */}
           <div className="text-center pb-2">
-            <p className="font-display text-2xl italic text-gold">Welcome, {guestName.split(' ')[0]}! 🎉</p>
+            <p className="font-display text-2xl italic text-gold">Welcome, {firstName}!</p>
             <p className="text-sm text-charcoal/40 mt-1">Please fill in your details below.</p>
           </div>
 
-          {/* Guest Name (pre-filled, editable) */}
+          {/* Your name (pre-filled, editable) */}
           <div>
-            <label htmlFor="rsvp-name" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
-              Your Name
-            </label>
-            <input
-              id="rsvp-name"
-              type="text"
-              value={guestName}
-              onChange={e => setGuestName(e.target.value)}
-              required
-              className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
-            />
+            <p className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">Your Name</p>
+            <div className="grid grid-cols-2 gap-3">
+              <input
+                type="text"
+                value={firstName}
+                onChange={e => setFirstName(e.target.value)}
+                placeholder="First"
+                required
+                className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
+              />
+              <input
+                type="text"
+                value={lastName}
+                onChange={e => setLastName(e.target.value)}
+                placeholder="Last"
+                required
+                className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
+              />
+            </div>
           </div>
 
           {/* Email */}
@@ -190,21 +246,67 @@ export default function RsvpForm() {
             />
           </div>
 
-          {/* Party Size */}
+          {/* Party members */}
           <div>
-            <label htmlFor="rsvp-party" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
-              Number of Guests (including you)
-            </label>
-            <select
-              id="rsvp-party"
-              value={partySize}
-              onChange={e => setPartySize(Number(e.target.value))}
-              className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors appearance-none cursor-pointer"
-            >
-              {[1, 2, 3, 4, 5].map(n => (
-                <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs uppercase tracking-widest text-charcoal/50">
+                Who else is coming with you?
+              </p>
+              <span className="text-xs text-charcoal/30">
+                {totalGuests} / {MAX_PARTY} guests
+              </span>
+            </div>
+
+            <div className="space-y-3">
+              {partyMembers.map((member, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="flex gap-2 items-center"
+                >
+                  <input
+                    type="text"
+                    value={member.firstName}
+                    onChange={e => updateMember(i, 'firstName', e.target.value)}
+                    placeholder="First"
+                    className="flex-1 border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors text-sm"
+                  />
+                  <input
+                    type="text"
+                    value={member.lastName}
+                    onChange={e => updateMember(i, 'lastName', e.target.value)}
+                    placeholder="Last"
+                    className="flex-1 border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeMember(i)}
+                    className="flex-none w-10 h-10 flex items-center justify-center rounded-xl border-2 border-olive-light text-charcoal/40 hover:border-red-300 hover:text-red-400 transition-colors text-lg leading-none"
+                    aria-label="Remove"
+                  >
+                    ×
+                  </button>
+                </motion.div>
               ))}
-            </select>
+            </div>
+
+            {totalGuests < MAX_PARTY && (
+              <button
+                type="button"
+                onClick={addMember}
+                className="mt-3 w-full py-3 rounded-xl border-2 border-dashed border-olive-light text-sm text-charcoal/40 hover:border-olive-mid hover:text-charcoal/60 transition-colors"
+              >
+                + Add party member
+              </button>
+            )}
+
+            {totalGuests >= MAX_PARTY && (
+              <p className="mt-2 text-xs text-center text-charcoal/30">
+                Maximum party size of {MAX_PARTY} reached.
+              </p>
+            )}
           </div>
 
           {/* Events */}
@@ -214,23 +316,23 @@ export default function RsvpForm() {
             </p>
             <div className="space-y-3">
               {([
-                { key: 'sangeet', label: 'Sangeet', desc: 'Feb 16 · Music, dancing & celebration', checked: sangeet, set: setSangeet },
-                { key: 'wedding', label: 'Wedding Ceremony', desc: 'Feb 17 · Tamil & Telugu Vedic ceremony', checked: wedding, set: setWedding },
-                { key: 'reception', label: 'Reception', desc: 'Feb 17 · Dinner, toasts & party', checked: reception, set: setReception },
-              ] as const).map(event => (
+                { key: 'sangeet',   label: 'Sangeet',           desc: 'Feb 16 · Music, dancing & celebration', checked: sangeet,   set: setSangeet },
+                { key: 'wedding',   label: 'Wedding Ceremony',  desc: 'Feb 17 · Tamil & Telugu Vedic ceremony', checked: wedding,   set: setWedding },
+                { key: 'reception', label: 'Reception',         desc: 'Feb 17 · Dinner, toasts & party',        checked: reception, set: setReception },
+              ] as const).map(ev => (
                 <label
-                  key={event.key}
-                  className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${event.checked ? 'border-gold bg-gold/5' : 'border-olive-light bg-white hover:border-olive-mid'}`}
+                  key={ev.key}
+                  className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${ev.checked ? 'border-gold bg-gold/5' : 'border-olive-light bg-white hover:border-olive-mid'}`}
                 >
                   <input
                     type="checkbox"
-                    checked={event.checked}
-                    onChange={e => { event.set(e.target.checked); setEventError(false) }}
+                    checked={ev.checked}
+                    onChange={e => { ev.set(e.target.checked); setEventError(false) }}
                     className="mt-1 w-4 h-4 accent-gold"
                   />
                   <div>
-                    <span className="font-medium text-charcoal">{event.label}</span>
-                    <span className="block text-xs text-charcoal/40 mt-0.5">{event.desc}</span>
+                    <span className="font-medium text-charcoal">{ev.label}</span>
+                    <span className="block text-xs text-charcoal/40 mt-0.5">{ev.desc}</span>
                   </div>
                 </label>
               ))}
@@ -241,7 +343,7 @@ export default function RsvpForm() {
           {/* Dietary */}
           <div>
             <label htmlFor="rsvp-dietary" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
-              Dietary Restrictions <span className="normal-case text-charcoal/30">(optional)</span>
+              Dietary Restrictions <span className="normal-case text-charcoal/30">(optional — list for all guests)</span>
             </label>
             <input
               id="rsvp-dietary"
@@ -249,7 +351,7 @@ export default function RsvpForm() {
               value={dietary}
               onChange={e => setDietary(e.target.value)}
               placeholder="e.g. Vegetarian, gluten-free, nut allergy…"
-              maxLength={200}
+              maxLength={300}
               className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
             />
           </div>
@@ -261,7 +363,7 @@ export default function RsvpForm() {
             </p>
             <div className="flex gap-4">
               {([
-                { value: true, label: 'Yes, I need a room' },
+                { value: true,  label: 'Yes, I need a room' },
                 { value: false, label: "No, I'm all set" },
               ] as const).map(opt => (
                 <label
@@ -305,10 +407,10 @@ export default function RsvpForm() {
             </button>
             <button
               type="submit"
-              disabled={!guestName.trim() || !email.trim() || needsHotel === null || formState === 'submitting'}
+              disabled={!firstName.trim() || !lastName.trim() || !email.trim() || needsHotel === null || formState === 'submitting'}
               className="flex-1 bg-olive-dark text-white py-4 rounded-xl font-medium tracking-wider uppercase text-sm hover:bg-olive-mid transition-colors disabled:opacity-40"
             >
-              {formState === 'submitting' ? 'Sending…' : 'Send RSVP 💌'}
+              {formState === 'submitting' ? 'Sending…' : `Send RSVP for ${totalGuests} ${totalGuests === 1 ? 'Guest' : 'Guests'} 💌`}
             </button>
           </div>
         </motion.form>
@@ -344,7 +446,12 @@ export default function RsvpForm() {
           </motion.div>
           <h2 className="font-display text-4xl italic text-charcoal mb-3">We Can&apos;t Wait!</h2>
           <p className="text-charcoal/50 text-sm max-w-md mx-auto">
-            Your RSVP has been received. We&apos;re so excited to celebrate with you in Sarasota!
+            Your RSVP for{' '}
+            <span className="text-charcoal/70 font-medium">{firstName} {lastName}</span>
+            {partyMembers.filter(m => m.firstName).length > 0 && (
+              <> + {partyMembers.filter(m => m.firstName).length} more</>
+            )}{' '}
+            has been received. We&apos;re so excited to celebrate with you in Sarasota!
           </p>
         </motion.div>
       )}

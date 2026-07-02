@@ -157,17 +157,22 @@ export default function RsvpAdmin() {
   }
 
   const exportCsv = () => {
-    const headers = ['Name', 'Email', 'Party Size', 'Sangeet', 'Wedding', 'Reception', 'Dietary', 'Hotel', 'Notes', 'Submitted']
-    const rows = rsvps.map(r => [
-      r.guest_name, r.email, r.party_size,
-      r.sangeet ? 'Yes' : 'No',
-      r.wedding ? 'Yes' : 'No',
-      r.reception ? 'Yes' : 'No',
-      r.dietary_restrictions || '',
-      r.needs_hotel ? 'Yes' : 'No',
-      r.notes || '',
-      new Date(r.created_at).toLocaleDateString(),
-    ])
+    const headers = ['Lead Guest', 'Party Members', 'Email', 'Party Size', 'Sangeet', 'Wedding', 'Reception', 'Dietary', 'Hotel', 'Notes', 'Submitted']
+    const rows = rsvps.map(r => {
+      const members = Array.isArray(r.party_members)
+        ? r.party_members.filter(m => m.firstName).map(m => `${m.firstName} ${m.lastName}`.trim()).join('; ')
+        : ''
+      return [
+        r.guest_name, members, r.email, r.party_size,
+        r.sangeet ? 'Yes' : 'No',
+        r.wedding ? 'Yes' : 'No',
+        r.reception ? 'Yes' : 'No',
+        r.dietary_restrictions || '',
+        r.needs_hotel ? 'Yes' : 'No',
+        r.notes || '',
+        new Date(r.created_at).toLocaleDateString(),
+      ]
+    })
     const csv = [headers, ...rows]
       .map(row => row.map(c => `"${String(c).replace(/"/g, '""')}"`).join(','))
       .join('\n')
@@ -357,6 +362,15 @@ export default function RsvpAdmin() {
                   <tr key={r.id} className="border-t border-olive-light/50 hover:bg-olive-light/20 transition-colors">
                     <td className="px-4 py-3">
                       <span className="font-medium text-charcoal">{r.guest_name}</span>
+                      {Array.isArray(r.party_members) && r.party_members.length > 0 && (
+                        <div className="mt-0.5 space-y-0.5">
+                          {r.party_members.filter(m => m.firstName).map((m, i) => (
+                            <div key={i} className="text-xs text-charcoal/40">
+                              + {m.firstName} {m.lastName}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                       {r.notes && <ExpandableNotes notes={r.notes} />}
                     </td>
                     <td className="px-4 py-3 text-charcoal/50 hidden sm:table-cell">{r.email}</td>

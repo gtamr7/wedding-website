@@ -53,11 +53,19 @@ export interface LeaderboardEntry {
   title: string;
 }
 
+export interface RsvpPartyMember {
+  firstName: string;
+  lastName: string;
+}
+
 export interface RsvpEntry {
   id: string;
   guest_name: string;
+  first_name: string | null;
+  last_name: string | null;
   email: string;
   party_size: number;
+  party_members: RsvpPartyMember[];
   sangeet: boolean;
   wedding: boolean;
   reception: boolean;
