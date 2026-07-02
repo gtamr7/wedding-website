@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     return (
       rowNorm === normalized ||
       enteredWords.every(w => rowNorm.includes(w)) ||
-      rowWords.every(w => normalized.includes(w))
+      rowWords.every((w: string) => normalized.includes(w))
     )
   })
 
