@@ -57,12 +57,15 @@ function Unit({ label, value }: { label: string; value: number }) {
 }
 
 export default function Countdown() {
-  const [t, setT] = useState(getTimeLeft)
+  const [t, setT] = useState<ReturnType<typeof getTimeLeft> | null>(null)
 
   useEffect(() => {
+    setT(getTimeLeft())
     const id = setInterval(() => setT(getTimeLeft()), 1000)
     return () => clearInterval(id)
   }, [])
+
+  if (t === null) return <div className="h-12" />
 
   if (t.days === 0 && t.hours === 0 && t.minutes === 0 && t.seconds === 0) {
     return (
