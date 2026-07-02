@@ -1,34 +1,45 @@
 import { createClient } from '@supabase/supabase-js'
 
 export async function POST(request: Request) {
-  const { name } = await request.json() as { name: string }
-  const normalized = name.trim().toLowerCase()
-  if (!normalized) return Response.json({ found: false })
+  try {
+    const body = await request.json() as { name?: string }
+    const name = (body.name ?? '').trim()
+    if (!name) return Response.json({ found: false })
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-  const { data } = await supabase
-    .from('guest_list')
-    .select('name')
+    // If env vars aren't configured, let everyone through
+    if (!url || !key) {
+      return Response.json({ found: true, matchedName: name })
+    }
 
-  // If no guest list has been set up yet, let everyone through
-  if (!data || data.length === 0) return Response.json({ found: true, matchedName: name.trim() })
+    const supabase = createClient(url, key)
+    const { data, error } = await supabase.from('guest_list').select('name')
 
-  // Fuzzy match: entered name words all appear in a guest list name (or vice versa)
-  const enteredWords = normalized.split(/\s+/)
-  const match = data.find(row => {
-    const rowNorm = row.name.toLowerCase()
-    const rowWords = rowNorm.split(/\s+/)
-    return (
-      rowNorm === normalized ||
-      enteredWords.every(w => rowNorm.includes(w)) ||
-      rowWords.every((w: string) => normalized.includes(w))
-    )
-  })
+    // Table doesn't exist, is empty, or any other error → open gate
+    if (error || !data || data.length === 0) {
+      return Response.json({ found: true, matchedName: name })
+    }
 
-  if (match) return Response.json({ found: true, matchedName: match.name })
-  return Response.json({ found: false })
+    const normalized = name.toLowerCase()
+    const enteredWords = normalized.split(/\s+/).filter(Boolean)
+
+    const match = data.find(row => {
+      const rowNorm = (row.name as string).toLowerCase()
+      const rowWords = rowNorm.split(/\s+/).filter(Boolean)
+      return (
+        rowNorm === normalized ||
+        enteredWords.every((w: string) => rowNorm.includes(w)) ||
+        rowWords.every((w: string) => normalized.includes(w))
+      )
+    })
+
+    if (match) return Response.json({ found: true, matchedName: match.name as string })
+    return Response.json({ found: false })
+  } catch (err) {
+    console.error('[check-guest]', err)
+    // Fail open — don't block guests due to server errors
+    return Response.json({ found: true, matchedName: '' })
+  }
 }

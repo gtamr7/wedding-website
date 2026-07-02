@@ -39,12 +39,12 @@ export default function RsvpForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: nameInput.trim() }),
       })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const { found, matchedName } = await res.json()
       if (found) {
         setGuestName(matchedName || nameInput.trim())
         setStep('form')
       } else {
-        setGateError('')
         setGateError('not-found')
       }
     } catch {
