@@ -28,22 +28,22 @@ const events = [
   {
     date: 'Feb 18',
     day: 'Thursday',
-    name: 'Muhurtham',
+    name: 'Ceremony (Kalyaanam)',
     emoji: '🪔',
     time: '9:00 AM – 12:00 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
-      'The sacred Tamil & Telugu Vedic ceremony (Muhurtham) conducted according to ancient tradition. A profoundly moving ceremony rich with ritual, meaning, and family.',
+      'The sacred Tamil & Telugu Vedic Kalyaanam conducted according to ancient tradition. A profoundly moving ceremony rich with ritual, meaning, and family.',
     dresscode: 'Traditional Indian attire or formal Western',
     color: 'from-black/20 to-black/10',
     borderColor: 'border-gold/15',
     badgeColor: 'bg-olive-mid/50 text-ivory',
     calendar: {
-      title: 'Muhurtham — Gowtham & Nikhita Wedding',
+      title: 'Ceremony (Kalyaanam) — Gowtham & Nikhita Wedding',
       date: '20270218T090000',
       endDate: '20270218T120000',
       location: 'Powel Crosley Estate, 8490 Crosley Ln, Sarasota, FL 34241',
-      description: 'Tamil & Telugu Vedic wedding ceremony. Traditional Indian attire or formal Western.',
+      description: 'Tamil & Telugu Vedic Kalyaanam. Traditional Indian attire or formal Western.',
     },
   },
   {
@@ -54,7 +54,7 @@ const events = [
     time: '6:00 PM – 11:45 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
-      'Dinner, dancing, speeches, and celebration under the Sarasota sky. The waterfront setting of Powel Crosley Estate provides a breathtaking backdrop for an evening to remember.',
+      'Dinner, dancing, speeches, and celebration under the night sky. The waterfront setting of Powel Crosley Estate provides a breathtaking backdrop for an evening to remember.',
     dresscode: 'Black tie optional / Cocktail attire',
     color: 'from-black/20 to-black/10',
     borderColor: 'border-gold/15',

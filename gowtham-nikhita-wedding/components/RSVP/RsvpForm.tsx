@@ -33,7 +33,7 @@ const EVENTS = [
   },
   {
     key: 'wedding'   as const,
-    label: 'Muhurtham (Ceremony)',
+    label: 'Ceremony (Kalyaanam)',
     desc:  'Feb 18 · Tamil & Telugu Vedic ceremony',
     emoji: '🪔',
     calStart: '20270218T090000',
