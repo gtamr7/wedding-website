@@ -43,32 +43,27 @@ export default function OurStory() {
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           {/* Stacked floating photo cards */}
           <FadeIn delay={0.1}>
-            <div className="relative mx-auto max-w-sm" style={{ height: '440px' }}>
-              {/* Back card — peeking behind */}
+            <div className="relative mx-auto max-w-sm" style={{ height: '460px' }}>
+              {/* Back card — bridge kiss */}
               <div
-                className="absolute top-0 right-4 w-52 rotate-3 rounded-xl overflow-hidden border border-gold/15 shadow-xl"
-                style={{ height: '310px' }}
+                className="absolute top-0 right-4 w-52 rounded-xl overflow-hidden border border-gold/15 shadow-xl"
+                style={{ height: '310px', transform: 'rotate(3deg)' }}
               >
-                <Image
-                  src="/gallery/IMG_0334.jpg"
-                  alt=""
-                  fill
-                  className="object-cover"
-                  sizes="208px"
-                />
+                <Image src="/gallery/IMG_0334.jpg" alt="" fill className="object-cover" sizes="208px" />
               </div>
-              {/* Front card */}
+              {/* Front card — the proposal */}
               <div
-                className="absolute bottom-0 left-0 w-56 -rotate-3 rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40"
-                style={{ height: '330px' }}
+                className="absolute bottom-0 left-0 w-56 rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40"
+                style={{ height: '330px', transform: 'rotate(-3deg)' }}
               >
-                <Image
-                  src="/gallery/IMG_0314.jpg"
-                  alt=""
-                  fill
-                  className="object-cover"
-                  sizes="224px"
-                />
+                <Image src="/gallery/IMG_0314.jpg" alt="" fill className="object-cover" sizes="224px" />
+              </div>
+              {/* Accent card — ring closeup */}
+              <div
+                className="absolute w-28 rounded-lg overflow-hidden border border-gold/30 shadow-xl z-10"
+                style={{ top: '148px', left: '12px', height: '160px', transform: 'rotate(6deg)' }}
+              >
+                <Image src="/gallery/IMG_0363.jpg" alt="" fill className="object-cover" sizes="112px" />
               </div>
             </div>
           </FadeIn>
