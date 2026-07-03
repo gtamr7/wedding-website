@@ -270,7 +270,7 @@ export default function RsvpForm() {
                   className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-4 text-sm leading-relaxed">
                   <p className="font-medium text-amber-800 mb-1">We don&apos;t see that name on our list.</p>
                   <p className="text-amber-700">
-                    Please double-check your spelling or reach out to Gowtham or Nikhita directly — we&apos;d hate to miss you!
+                    Please double-check your spelling, or contact the bride or groom directly to get added.
                   </p>
                 </motion.div>
               )}
