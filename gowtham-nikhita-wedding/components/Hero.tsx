@@ -9,11 +9,10 @@ export default function Hero() {
   const containerRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] })
 
-  // The SVG background div extends 35% above/below the section so there's room to move.
-  // Translating it DOWN by 22% of its own height (170% of section height) = ~37% of section height.
-  // Net: the background moves up at ~63% of scroll speed → clearly visible parallax.
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '22%'])
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-12%'])
+  // Background extends 40% above/below the section (180% total height).
+  // Moving it 30% of its own height = 54% of section height → dramatic visible parallax.
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-18%'])
 
   return (
     <section
@@ -27,20 +26,25 @@ export default function Hero() {
         style={{
           y: bgY,
           position: 'absolute',
-          top: '-35%',
+          top: '-40%',
           left: 0,
           right: 0,
-          height: '170%',
+          height: '180%',
         }}
         aria-hidden="true"
       >
         <TempleSilhouette className="w-full h-full" />
       </motion.div>
 
-      {/* Subtle center-darkening overlay so names/text pop */}
+      {/* Dark vignette so text pops against the temple */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 70% 55% at 50% 45%, rgba(4,2,8,0.45) 0%, transparent 100%)' }}
+        style={{ background: 'linear-gradient(to bottom, rgba(2,1,6,0.55) 0%, rgba(2,1,6,0.2) 40%, rgba(2,1,6,0.35) 100%)' }}
+      />
+      {/* Center bloom to lift the names off the background */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 60% 45% at 50% 42%, rgba(2,1,8,0.6) 0%, transparent 100%)' }}
       />
 
       {/* Text content — drifts up faster than the background */}
