@@ -3,6 +3,23 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
+const funds = [
+  {
+    icon: '🏝️',
+    title: 'Honeymoon Fund',
+    description: 'Help us start our adventure together',
+    venmo: '@gowtham-ramesh',
+    zelle: '(678) 499-7520',
+  },
+  {
+    icon: '🏠',
+    title: 'Down Payment Fund',
+    description: 'Contribute to our first home together',
+    venmo: '@NikkiPuvvada',
+    zelle: '(404) 422-5146',
+  },
+]
+
 export default function Registry() {
   const headerRef = useRef<HTMLDivElement>(null)
   const inView = useInView(headerRef, { once: true, margin: '-80px' })
@@ -20,45 +37,37 @@ export default function Registry() {
           <h2 className="font-display text-5xl sm:text-6xl italic text-charcoal">Registry</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
           <p className="mt-8 text-charcoal/60 leading-relaxed">
-            Your presence is the greatest gift. If you&apos;d like to give, we&apos;re registered at
-            the below.
+            Your presence is the greatest gift of all. If you&apos;d like to give, we&apos;d love
+            contributions toward our honeymoon or our first home together.
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-10"
-        >
-          <motion.a
-            href="https://www.zola.com/wedding/gowthamandnikhita"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ y: -3, boxShadow: '0 12px 32px rgba(184,151,42,0.15)' }}
-            whileTap={{ scale: 0.98 }}
-            className="flex flex-col sm:flex-row items-center justify-between gap-6 bg-white border border-olive-light rounded-xl p-6 sm:p-8 group transition-all duration-200"
-          >
-            {/* Zola branding */}
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full bg-charcoal/5 flex items-center justify-center text-2xl select-none">
-                💍
-              </div>
-              <div className="text-left">
-                <p className="font-display text-2xl italic text-charcoal">Zola Registry</p>
-                <p className="text-sm text-charcoal/50 mt-0.5">gowthamandnikhita</p>
-              </div>
-            </div>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          {funds.map((fund, i) => (
+            <motion.div
+              key={fund.title}
+              initial={{ opacity: 0, y: 24 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
+              className="bg-white border border-olive-light rounded-xl p-6 text-left"
+            >
+              <div className="text-3xl mb-3">{fund.icon}</div>
+              <p className="font-display text-xl italic text-charcoal">{fund.title}</p>
+              <p className="text-sm text-charcoal/50 mt-1 mb-5">{fund.description}</p>
 
-            {/* CTA */}
-            <div className="flex items-center gap-2 text-gold text-sm font-medium tracking-wider uppercase group-hover:gap-3 transition-all duration-200">
-              View Registry
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-          </motion.a>
-        </motion.div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 bg-[#008CFF]/8 rounded-lg px-4 py-3">
+                  <span className="text-[#008CFF] font-bold text-sm tracking-wide">Venmo</span>
+                  <span className="text-charcoal/70 text-sm ml-auto font-mono">{fund.venmo}</span>
+                </div>
+                <div className="flex items-center gap-3 bg-[#6B2D8B]/8 rounded-lg px-4 py-3">
+                  <span className="text-[#6B2D8B] font-bold text-sm tracking-wide">Zelle</span>
+                  <span className="text-charcoal/70 text-sm ml-auto font-mono">{fund.zelle}</span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
         <motion.p
           initial={{ opacity: 0 }}

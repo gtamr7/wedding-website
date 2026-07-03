@@ -4,11 +4,10 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
 const milestones = [
-  { year: '2019', label: 'They Met', desc: 'A chance encounter that changed everything.' },
-  { year: '2020', label: 'First Date', desc: 'Coffee turned into hours of conversation.' },
-  { year: '2023', label: 'The Proposal', desc: 'He asked. She said yes. Obviously.' },
-  { year: '2024', label: 'Engagement', desc: 'Celebrated with both families across two states.' },
-  { year: '2027', label: 'The Wedding', desc: 'February 17 — Powel Crosley Estate, Sarasota.' },
+  { year: '2019', label: 'They Met', desc: 'College, mutual friends, back seat of a car. Best friends from day one.' },
+  { year: '2024', label: 'First Date', desc: 'Five years of friendship later — it was always leading here.' },
+  { year: '2024', label: 'The Proposal', desc: 'A national garden in Japan. A picnic. A yes. Then they called their families.' },
+  { year: '2027', label: 'The Wedding', desc: 'February 17 — Powel Crosley Estate, Sarasota, Florida.' },
 ]
 
 function Node({ m, index, isLast }: { m: typeof milestones[0]; index: number; isLast: boolean }) {
@@ -25,7 +24,7 @@ function Node({ m, index, isLast }: { m: typeof milestones[0]; index: number; is
           animate={inView ? { scale: 1, opacity: 1 } : {}}
           transition={{ duration: 0.4, delay: index * 0.15 }}
           className={`w-4 h-4 rounded-full border-2 shrink-0 mt-1 ${
-            m.year === '2027'
+            m.label === 'The Wedding'
               ? 'bg-gold border-gold shadow-[0_0_0_4px_rgba(184,151,42,0.2)]'
               : 'bg-ivory border-olive-mid'
           }`}
@@ -61,7 +60,7 @@ export default function Timeline() {
   return (
     <div className="mt-12 max-w-sm">
       {milestones.map((m, i) => (
-        <Node key={m.year} m={m} index={i} isLast={i === milestones.length - 1} />
+        <Node key={i} m={m} index={i} isLast={i === milestones.length - 1} />
       ))}
     </div>
   )

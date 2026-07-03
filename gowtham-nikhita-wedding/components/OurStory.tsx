@@ -63,28 +63,31 @@ export default function OurStory() {
             <FadeIn delay={0.15}>
               <h3 className="font-display text-3xl italic text-charcoal">How it began</h3>
               <p className="text-charcoal/70 leading-relaxed mt-3">
-                Gowtham and Nikhita&apos;s story is one of those rare ones that starts quietly and
-                grows into something that feels inevitable in hindsight. A shared world, a mutual
-                network, and a moment of courage — that&apos;s all it took.
+                Gowtham and Nikhita met in college through mutual friends — the kind of introduction
+                that doesn&apos;t feel like much at the time. Nikki drove, Gowtham rode shotgun like
+                she was his personal Uber driver. They laughed, they talked, and somewhere in that
+                back seat a friendship was born that would quietly change everything.
               </p>
             </FadeIn>
 
             <FadeIn delay={0.25}>
-              <h3 className="font-display text-3xl italic text-charcoal">The proposal</h3>
+              <h3 className="font-display text-3xl italic text-charcoal">Five years of friendship</h3>
               <p className="text-charcoal/70 leading-relaxed mt-3">
-                When the moment came, Gowtham made it personal, not performative. He proposed with
-                all the sincerity and love that has defined their relationship from the start. Nikhita
-                (Nikki) said yes — and then they called their families.
+                For five years they were the best of friends — the kind who know each other&apos;s
+                families, finish each other&apos;s sentences, and show up without being asked. Life
+                pulled them in different directions, but like a pendulum, Nikki came back. And this
+                time, something was different. They&apos;ve been together ever since — nearly three
+                years and counting.
               </p>
             </FadeIn>
 
             <FadeIn delay={0.35}>
-              <h3 className="font-display text-3xl italic text-charcoal">What to expect</h3>
+              <h3 className="font-display text-3xl italic text-charcoal">The proposal</h3>
               <p className="text-charcoal/70 leading-relaxed mt-3">
-                Over three days in beautiful Sarasota, you&apos;ll witness a celebration that honors
-                two families, two cultures, and one love. From the Sangeet night filled with music
-                and dance, to the sacred Tamil &amp; Telugu Muhurtham ceremony, to an unforgettable
-                waterfront reception — every moment has been crafted with you in mind.
+                Japan, 2024. A national garden on a warm summer day. Gowtham got down on one knee
+                among the trees and asked the question he&apos;d been holding for years. She said
+                yes. They spread a picnic blanket, sat in the sun, and soaked it all in — then
+                called their families. Magical doesn&apos;t quite cover it.
               </p>
             </FadeIn>
 

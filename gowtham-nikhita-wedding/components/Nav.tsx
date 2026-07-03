@@ -58,7 +58,7 @@ export default function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm tracking-widest uppercase text-charcoal/80 hover:text-gold transition-colors duration-200"
+              className={`text-sm tracking-widest uppercase transition-colors duration-200 hover:text-gold ${scrolled || !isHome ? 'text-charcoal/80' : 'text-ivory/80'}`}
             >
               {l.label}
             </Link>
@@ -72,9 +72,9 @@ export default function Nav() {
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
         >
-          <span className={`block w-6 h-0.5 bg-charcoal transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-          <span className={`block w-6 h-0.5 bg-charcoal transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
-          <span className={`block w-6 h-0.5 bg-charcoal transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+          <span className={`block w-6 h-0.5 transition-all duration-300 ${scrolled || !isHome ? 'bg-charcoal' : 'bg-ivory'} ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+          <span className={`block w-6 h-0.5 transition-all duration-300 ${scrolled || !isHome ? 'bg-charcoal' : 'bg-ivory'} ${menuOpen ? 'opacity-0' : ''}`} />
+          <span className={`block w-6 h-0.5 transition-all duration-300 ${scrolled || !isHome ? 'bg-charcoal' : 'bg-ivory'} ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
         </button>
       </div>
 
