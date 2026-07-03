@@ -34,7 +34,7 @@ const EVENTS = [
   {
     key: 'wedding'   as const,
     label: 'Ceremony (Kalyaanam)',
-    desc:  'Feb 18 · Tamil & Telugu Vedic ceremony',
+    desc:  'Feb 18 · Hindu Vedic ceremony',
     emoji: '🪔',
     calStart: '20270218T090000',
     calEnd:   '20270218T130000',
