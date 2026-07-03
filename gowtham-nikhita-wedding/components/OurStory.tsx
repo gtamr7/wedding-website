@@ -103,9 +103,8 @@ export default function OurStory() {
               <p className="text-ivory/65 leading-relaxed mt-3">
                 Gowtham and Nikhita met in college through mutual friends — the kind of introduction
                 that doesn&apos;t feel like much at the time. Nikki drove while Gowtham rode in the
-                back seat like she was his personal Uber. They laughed, they talked, and by the time
-                the ride was over a friendship had started that neither of them knew would change
-                everything.
+                back seat. They laughed, they talked, and by the time the ride was over a friendship
+                had started that neither of them knew would change everything.
               </p>
             </FadeIn>
 
