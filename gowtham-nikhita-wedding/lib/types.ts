@@ -36,6 +36,7 @@ export interface GuestbookEntry {
   id: string;
   name: string;
   message: string;
+  photo_url?: string | null;
   visible: boolean;
   created_at: string;
 }
