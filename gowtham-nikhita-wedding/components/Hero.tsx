@@ -43,7 +43,7 @@ export default function Hero() {
             style={{ height: '200px', transform: 'rotate(-6deg)' }}
           >
             <Image
-              src="/gallery/IMG_9641.jpg"
+              src="/gallery/IMG_0400.jpg"
               alt=""
               fill
               className="object-cover"
@@ -64,7 +64,7 @@ export default function Hero() {
             transition={{ duration: 1.2, delay: 0.2 }}
             className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-light/60"
           >
-            Together with their families
+            together.forever.
           </motion.p>
 
           <motion.h1
@@ -102,15 +102,6 @@ export default function Hero() {
             </p>
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.6 }}
-            className="font-display text-base sm:text-xl italic text-olive-mid/90"
-          >
-            A Tamil &amp; Telugu celebration of love
-          </motion.p>
-
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -131,7 +122,7 @@ export default function Hero() {
             style={{ height: '200px', transform: 'rotate(6deg)' }}
           >
             <Image
-              src="/gallery/IMG_indian_attire.jpg"
+              src="/gallery/IMG_0563.jpg"
               alt=""
               fill
               className="object-cover"

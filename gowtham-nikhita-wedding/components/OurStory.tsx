@@ -50,7 +50,7 @@ export default function OurStory() {
                 style={{ height: '310px' }}
               >
                 <Image
-                  src="/gallery/IMG_couple_restaurant.jpg"
+                  src="/gallery/IMG_0334.jpg"
                   alt=""
                   fill
                   className="object-cover"
@@ -63,7 +63,7 @@ export default function OurStory() {
                 style={{ height: '330px' }}
               >
                 <Image
-                  src="/gallery/IMG_9641.jpg"
+                  src="/gallery/IMG_0314.jpg"
                   alt=""
                   fill
                   className="object-cover"
