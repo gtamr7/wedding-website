@@ -131,7 +131,7 @@ export default function OurStory() {
             ))}
 
             <FadeIn delay={0.5}>
-              <h3 className="font-display text-3xl italic text-ivory mb-0">Our journey</h3>
+              <h3 className="font-display text-3xl italic text-ivory mb-0">The Journey</h3>
               <Timeline />
             </FadeIn>
           </div>
