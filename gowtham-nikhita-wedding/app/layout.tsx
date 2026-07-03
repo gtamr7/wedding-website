@@ -17,7 +17,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://wedding-website-gtamr7.vercel.app'),
+  metadataBase: new URL('https://gowthamandnikhita.com'),
   title: 'Gowtham & Nikhita · February 17–18, 2027',
   description:
     'Join us for our wedding celebration at Powel Crosley Estate, Sarasota, FL — A Tamil/Telugu Hindu celebration of love.',
