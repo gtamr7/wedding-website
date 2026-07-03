@@ -22,6 +22,24 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
   )
 }
 
+const chapters = [
+  {
+    num: '01',
+    heading: 'How it began',
+    body: `Gowtham and Nikhita met in college through mutual friends. One of those introductions that doesn't feel like much at the time. Nikki was driving. Gowtham was in the back seat. They laughed, they talked, and by the time they arrived, a friendship had started that neither of them knew would change everything.`,
+  },
+  {
+    num: '02',
+    heading: 'Five years of friendship',
+    body: `For five years they were the best of friends. The kind who know each other's families, finish each other's sentences, and show up without being asked. Life pulled them apart for a stretch, but Nikki came back. Something was different this time. They have been together ever since, nearly three years and counting.`,
+  },
+  {
+    num: '03',
+    heading: 'The proposal',
+    body: `Japan, 2025. A national garden, a warm summer afternoon, and a ring Gowtham had been carrying for the right moment. He got down on one knee beneath the trees and asked the question he had been holding for years. She said yes. They found a patch of grass, spread a picnic blanket, and sat there in the sun together. Then they called their families.`,
+  },
+]
+
 export default function OurStory() {
   const headerRef = useRef<HTMLDivElement>(null)
   const headerInView = useInView(headerRef, { once: true, margin: '-80px' })
@@ -30,6 +48,8 @@ export default function OurStory() {
   return (
     <section id="story" className="section-py px-6">
       <div className="max-w-6xl mx-auto">
+
+        {/* Header */}
         <motion.div
           ref={headerRef}
           initial={{ opacity: 0, y: 20 }}
@@ -42,11 +62,13 @@ export default function OurStory() {
           <div className="gold-divider w-24 mt-5 mx-auto" />
         </motion.div>
 
+        {/* Two-column: photos + narrative */}
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-          {/* Stacked floating photo cards */}
+
+          {/* Stacked photo cards */}
           <FadeIn delay={0.1}>
             <div className="relative mx-auto max-w-sm" style={{ height: '400px' }}>
-              {/* Back card — bridge kiss */}
+              {/* Back card */}
               <div
                 className="absolute top-0 right-4 w-52 rounded-xl overflow-hidden border border-gold/15 shadow-xl cursor-pointer group"
                 style={{ height: '300px', transform: 'rotate(4deg)' }}
@@ -70,7 +92,7 @@ export default function OurStory() {
                 </div>
               </div>
 
-              {/* Front card — the proposal */}
+              {/* Front card */}
               <div
                 className="absolute bottom-0 left-0 w-56 rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 cursor-pointer group"
                 style={{ height: '320px', transform: 'rotate(-4deg)' }}
@@ -96,48 +118,38 @@ export default function OurStory() {
             </div>
           </FadeIn>
 
-          {/* Narrative */}
-          <div className="space-y-8">
-            <FadeIn delay={0.15}>
-              <h3 className="font-display text-3xl italic text-ivory">How it began</h3>
-              <p className="text-ivory/65 leading-relaxed mt-3">
-                Gowtham and Nikhita met in college through mutual friends — the kind of introduction
-                that doesn&apos;t feel like much at the time. Nikki drove while Gowtham rode in the
-                back seat. They laughed, they talked, and by the time the ride was over a friendship
-                had started that neither of them knew would change everything.
-              </p>
-            </FadeIn>
+          {/* Narrative chapters */}
+          <div className="space-y-10">
+            {chapters.map((ch, i) => (
+              <FadeIn key={ch.num} delay={0.15 + i * 0.1}>
+                <div className="flex items-baseline gap-3 mb-2">
+                  <span className="text-[10px] tracking-widest uppercase text-gold/50 font-medium">{ch.num}</span>
+                  <h3 className="font-display text-3xl italic text-ivory">{ch.heading}</h3>
+                </div>
+                <p className="text-ivory/65 leading-relaxed">{ch.body}</p>
+              </FadeIn>
+            ))}
 
-            <FadeIn delay={0.25}>
-              <h3 className="font-display text-3xl italic text-ivory">Five years of friendship</h3>
-              <p className="text-ivory/65 leading-relaxed mt-3">
-                For five years they were the best of friends — the kind who know each other&apos;s
-                families, finish each other&apos;s sentences, and show up without being asked. Life
-                pulled them in different directions, but like a pendulum, Nikki came back. And this
-                time, something was different. They&apos;ve been together ever since — nearly three
-                years and counting.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.35}>
-              <h3 className="font-display text-3xl italic text-ivory">The proposal</h3>
-              <p className="text-ivory/65 leading-relaxed mt-3">
-                Japan, 2025. A national garden on a warm summer day. Gowtham got down on one knee
-                among the trees and asked the question he&apos;d been holding for years. She said
-                yes. They spread a picnic blanket, sat in the sun, and soaked it all in — then
-                called their families. Magical doesn&apos;t quite cover it.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.4}>
-              <h3 className="font-display text-3xl italic text-ivory">Our journey</h3>
+            <FadeIn delay={0.5}>
+              <h3 className="font-display text-3xl italic text-ivory mb-0">Our journey</h3>
               <Timeline />
             </FadeIn>
           </div>
         </div>
 
-        {/* Photo carousel — all 17 photos, scrollable */}
-        <FadeIn delay={0.1} className="mt-16">
+        {/* Pull quote */}
+        <FadeIn delay={0.1} className="mt-20 mb-6">
+          <div className="text-center max-w-xl mx-auto px-6">
+            <div className="gold-divider w-12 mx-auto mb-8 opacity-40" />
+            <p className="font-display text-2xl sm:text-3xl italic text-ivory/80 leading-relaxed">
+              Six years from a back seat to a garden in Japan to forever.
+            </p>
+            <div className="gold-divider w-12 mx-auto mt-8 opacity-40" />
+          </div>
+        </FadeIn>
+
+        {/* Photo carousel */}
+        <FadeIn delay={0.1} className="mt-12">
           <p className="text-xs tracking-widest uppercase text-gold mb-5">Our Photos</p>
           <PhotoCarousel />
         </FadeIn>
