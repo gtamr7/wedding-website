@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import type { RsvpEntry } from '@/lib/types'
+import type { RsvpEntry, GuestbookEntry } from '@/lib/types'
 
 type AuthState = 'loading' | 'locked' | 'unlocked'
 type SortKey = 'guest_name' | 'created_at' | 'party_size'
@@ -115,7 +115,9 @@ export default function RsvpAdmin() {
   const [sortKey, setSortKey] = useState<SortKey>('created_at')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'overview' | 'table'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'table' | 'guestbook'>('overview')
+  const [guestbook, setGuestbook] = useState<GuestbookEntry[]>([])
+  const [gbLoading, setGbLoading] = useState(false)
 
   useEffect(() => {
     const stored = sessionStorage.getItem('rsvpAdminAuth')
@@ -131,6 +133,10 @@ export default function RsvpAdmin() {
     if (auth === 'unlocked' && adminPin) fetchRsvps()
   }, [auth, adminPin])
 
+  useEffect(() => {
+    if (auth === 'unlocked' && adminPin && activeTab === 'guestbook') fetchGuestbook()
+  }, [auth, adminPin, activeTab])
+
   const fetchRsvps = async () => {
     setLoading(true)
     try {
@@ -141,6 +147,29 @@ export default function RsvpAdmin() {
       console.error('Failed to fetch RSVPs')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchGuestbook = async () => {
+    setGbLoading(true)
+    try {
+      const res = await fetch('/api/admin/guestbook', { headers: { 'x-admin-pin': adminPin } })
+      if (res.ok) setGuestbook(await res.json())
+    } finally {
+      setGbLoading(false)
+    }
+  }
+
+  const deleteGuestbookEntry = async (id: string) => {
+    setGuestbook(prev => prev.filter(e => e.id !== id))
+    try {
+      await fetch('/api/admin/guestbook', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', 'x-admin-pin': adminPin },
+        body: JSON.stringify({ id }),
+      })
+    } catch {
+      fetchGuestbook()
     }
   }
 
@@ -240,13 +269,13 @@ export default function RsvpAdmin() {
 
       {/* Tabs */}
       <div className="flex gap-1 bg-olive-light/40 rounded-xl p-1 mb-8 w-fit">
-        {(['overview', 'table'] as const).map(tab => (
+        {(['overview', 'table', 'guestbook'] as const).map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`px-5 py-2 rounded-lg text-sm font-medium capitalize transition-all ${activeTab === tab ? 'bg-white text-charcoal shadow-sm' : 'text-charcoal/50 hover:text-charcoal'}`}
           >
-            {tab === 'overview' ? '📊 Overview' : '📋 Guest List'}
+            {tab === 'overview' ? '📊 Overview' : tab === 'table' ? '📋 Guest List' : '💌 Guestbook'}
           </button>
         ))}
       </div>
@@ -322,6 +351,45 @@ export default function RsvpAdmin() {
             </div>
           </div>
         </motion.div>
+      ) : activeTab === 'guestbook' ? (
+        <motion.div key="guestbook" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-sm text-charcoal/50">{guestbook.length} entries</p>
+            <button onClick={fetchGuestbook} className="text-sm text-charcoal/50 hover:text-charcoal border border-olive-light rounded-xl px-4 py-2 transition-colors">
+              ↻ Refresh
+            </button>
+          </div>
+          {gbLoading ? (
+            <div className="text-center py-20 text-charcoal/30">Loading…</div>
+          ) : guestbook.length === 0 ? (
+            <div className="text-center py-20 text-charcoal/30 font-display text-2xl italic">No entries yet</div>
+          ) : (
+            <div className="space-y-3">
+              {guestbook.map(entry => (
+                <div key={entry.id} className="flex items-start gap-4 bg-white border-2 border-olive-light rounded-xl px-5 py-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-3">
+                      <p className="font-medium text-charcoal">{entry.name}</p>
+                      <p className="text-xs text-charcoal/30">{new Date(entry.created_at).toLocaleDateString()}</p>
+                      {!entry.visible && <span className="text-xs text-red-400 border border-red-200 rounded-full px-2">hidden</span>}
+                    </div>
+                    <p className="text-sm text-charcoal/60 mt-1 leading-relaxed">{entry.message}</p>
+                    {entry.photo_url && (
+                      <a href={entry.photo_url} target="_blank" rel="noopener noreferrer" className="text-xs text-gold hover:text-gold-light mt-1 inline-block">📷 View photo</a>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => deleteGuestbookEntry(entry.id)}
+                    className="shrink-0 w-9 h-9 flex items-center justify-center rounded-lg text-red-300 hover:text-white hover:bg-red-400 transition-all border border-red-200 hover:border-red-400"
+                    title="Delete"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </motion.div>
       ) : (
         <motion.div key="table" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           {/* Search */}
@@ -378,7 +446,7 @@ export default function RsvpAdmin() {
                     <td className="px-4 py-3">
                       <div className="flex flex-col gap-0.5">
                         {r.sangeet && <span className="text-xs text-olive-mid">🎶 Sangeet</span>}
-                        {r.wedding && <span className="text-xs text-gold">🪔 Muhurtham</span>}
+                        {r.wedding && <span className="text-xs text-gold">🪔 Ceremony</span>}
                         {r.reception && <span className="text-xs text-charcoal/60">🥂 Reception</span>}
                       </div>
                     </td>
