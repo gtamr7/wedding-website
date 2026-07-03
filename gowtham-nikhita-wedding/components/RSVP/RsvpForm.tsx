@@ -56,7 +56,7 @@ function calendarUrl(title: string, start: string, end: string) {
       action: 'TEMPLATE',
       text: title,
       dates: `${start}/${end}`,
-      location: 'Powel Crosley Estate, 8374 N Tamiami Trail, Sarasota, FL 34243',
+      location: 'Powel Crosley Estate, 8374 N Tamiami Trl, Sarasota, FL 34243',
       details: 'Celebrating the wedding of Gowtham & Nikhita!',
     }).toString()
   )

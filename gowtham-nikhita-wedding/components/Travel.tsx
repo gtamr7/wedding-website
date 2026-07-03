@@ -128,7 +128,7 @@ export default function Travel() {
                   <p className="font-medium text-ivory text-sm">February in Sarasota</p>
                   <p className="text-ivory/60 text-sm mt-1">
                     Expect ~75°F, low humidity, and sunny skies. Sarasota in February is paradise —
-                    light layers for the evening ceremony.
+                    light layers for the evening reception.
                   </p>
                 </div>
               </div>

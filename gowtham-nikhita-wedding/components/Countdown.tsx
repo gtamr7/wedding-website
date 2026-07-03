@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const WEDDING = new Date('2027-02-17T10:00:00-05:00') // Eastern time, Sarasota FL
+const WEDDING = new Date('2027-02-17T18:00:00-05:00') // Sangeet start, Eastern time
 
 function pad(n: number) {
   return String(n).padStart(2, '0')
