@@ -39,8 +39,7 @@ export default function Hero() {
           aria-hidden="true"
         >
           <div
-            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[110px] sm:h-[200px]"
-            style={{ transform: 'rotate(-6deg)' }}
+            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[110px] sm:h-[200px] [transform:none] sm:[transform:rotate(-6deg)]"
           >
             <Image
               src="/gallery/IMG_0400.jpg"
@@ -119,8 +118,7 @@ export default function Hero() {
           aria-hidden="true"
         >
           <div
-            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[110px] sm:h-[200px]"
-            style={{ transform: 'rotate(6deg)' }}
+            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[110px] sm:h-[200px] [transform:none] sm:[transform:rotate(6deg)]"
           >
             <Image
               src="/gallery/IMG_0563.jpg"
