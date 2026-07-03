@@ -142,7 +142,7 @@ export default function OurStory() {
           <div className="text-center max-w-xl mx-auto px-6">
             <div className="gold-divider w-12 mx-auto mb-8 opacity-40" />
             <p className="font-display text-2xl sm:text-3xl italic text-ivory/80 leading-relaxed">
-              Six years from a back seat to a garden in Japan to forever.
+              They didn&apos;t fall in love. They grew into it slowly, the way the best things do.
             </p>
             <div className="gold-divider w-12 mx-auto mt-8 opacity-40" />
           </div>
