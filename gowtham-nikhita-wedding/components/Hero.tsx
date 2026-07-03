@@ -18,7 +18,8 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      className="relative flex flex-col items-center justify-center overflow-hidden"
+      style={{ minHeight: '140vh' }}
       style={{ backgroundColor: '#020510' }}
       aria-label="Hero"
     >

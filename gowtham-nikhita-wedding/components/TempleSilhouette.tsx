@@ -1,307 +1,297 @@
-// Three-layer parallax scene: Arashiyama garden meets Sarasota waterfront
-// Sky → Mid (bamboo grove + hills) → Fore (water + close bamboo + branches)
-// Hero.tsx drives each layer at a different scroll speed for real depth.
+// Parallax scene: moonlit Japanese garden meets Florida waterfront
+// Three layers — sky, treeline, water+branches — move at different scroll speeds in Hero.tsx
 
-// ── Layer 1: Sky ─────────────────────────────────────────────────────────────
+// ── Layer 1: Sky + Moon ───────────────────────────────────────────────────────
 export function SceneSky({ className }: { className?: string }) {
-  const stars = [
-    [4,3],[12,7],[21,2],[31,9],[40,4],[51,8],[62,3],[72,11],[83,5],[93,9],
-    [7,16],[17,12],[26,18],[36,14],[47,19],[58,13],[68,17],[79,11],[89,15],[98,18],
-    [3,24],[14,28],[24,22],[34,27],[44,21],[55,26],[65,23],[76,29],[86,24],[96,27],
-    [9,34],[19,38],[29,32],[39,37],[49,31],[60,36],[70,33],[81,39],[91,34],
-    [6,44],[16,48],[27,42],[37,47],[47,41],[57,46],[68,43],[78,49],[88,44],[97,48],
-    [11,55],[22,51],[32,57],[42,53],[52,58],[63,52],[73,56],[84,50],[94,54],
-  ]
-
   return (
     <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" className={className} aria-hidden="true">
       <defs>
         <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"   stopColor="#020510" />
-          <stop offset="25%"  stopColor="#04091A" />
-          <stop offset="55%"  stopColor="#060C14" />
-          <stop offset="80%"  stopColor="#080A0C" />
-          <stop offset="100%" stopColor="#0A0C0A" />
+          <stop offset="0%"   stopColor="#01030E" />
+          <stop offset="35%"  stopColor="#020614" />
+          <stop offset="70%"  stopColor="#040A18" />
+          <stop offset="100%" stopColor="#060C14" />
         </linearGradient>
-        {/* Moon glow */}
-        <radialGradient id="moonGlow" cx="72%" cy="18%" r="18%">
-          <stop offset="0%"   stopColor="#F0E8D0" stopOpacity="0.18" />
-          <stop offset="40%"  stopColor="#D4C8A0" stopOpacity="0.08" />
-          <stop offset="100%" stopColor="#C0B080" stopOpacity="0" />
+        <radialGradient id="moonHalo" cx="68%" cy="22%" r="22%">
+          <stop offset="0%"   stopColor="#C8D8F0" stopOpacity="0.22" />
+          <stop offset="50%"  stopColor="#A0B8D8" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="#8090B0" stopOpacity="0" />
         </radialGradient>
-        {/* Moon itself */}
-        <radialGradient id="moon" cx="40%" cy="35%" r="60%">
-          <stop offset="0%"   stopColor="#F8F0E0" />
-          <stop offset="60%"  stopColor="#EDE0C4" />
-          <stop offset="100%" stopColor="#D8C8A0" />
+        <radialGradient id="moonFace" cx="38%" cy="32%" r="58%">
+          <stop offset="0%"   stopColor="#F4EEE0" />
+          <stop offset="55%"  stopColor="#EAE0C8" />
+          <stop offset="100%" stopColor="#D8CEB0" />
+        </radialGradient>
+        <radialGradient id="horizonWarm" cx="50%" cy="100%" r="60%">
+          <stop offset="0%"   stopColor="#3A6878" stopOpacity="0.2" />
+          <stop offset="55%"  stopColor="#1E3A48" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="#0A1820" stopOpacity="0" />
         </radialGradient>
       </defs>
 
       <rect x="0" y="0" width="1440" height="900" fill="url(#sky)" />
 
-      {/* Stars */}
-      {stars.map(([px, py], i) => {
-        const x = (px / 100) * 1440
-        const y = (py / 65) * 520
-        const r = i % 8 === 0 ? 1.5 : i % 4 === 0 ? 1.0 : 0.6
-        const op = 0.2 + (i % 5) * 0.14
-        return <circle key={i} cx={x} cy={y} r={r} fill="#E8E0D0" fillOpacity={op} />
-      })}
+      {/* Stars — hand-placed for natural feel */}
+      {[
+        [72,28,1.2,0.9],[168,55,0.7,0.6],[285,18,1.0,0.8],[412,42,0.8,0.7],[530,11,1.3,0.9],
+        [647,38,0.6,0.5],[753,24,1.1,0.8],[831,61,0.7,0.6],[944,15,0.9,0.8],[1066,47,1.0,0.7],
+        [1181,29,0.6,0.5],[1298,51,1.2,0.9],[1378,19,0.8,0.7],[38,88,0.7,0.5],
+        [143,104,1.0,0.7],[259,79,0.6,0.5],[374,118,0.8,0.6],[488,92,1.1,0.8],
+        [603,108,0.7,0.5],[718,85,0.9,0.7],[837,113,1.0,0.8],[952,97,0.6,0.5],
+        [1067,120,0.8,0.6],[1184,89,1.1,0.8],[1312,107,0.7,0.5],[1406,94,0.9,0.7],
+        [55,148,0.8,0.6],[196,162,1.0,0.7],[327,139,0.6,0.5],[461,155,0.9,0.7],
+        [592,142,0.7,0.5],[724,168,1.1,0.8],[858,151,0.8,0.6],[989,164,0.6,0.5],
+        [1123,146,1.0,0.7],[1256,159,0.7,0.5],[1389,143,0.9,0.7],
+      ].map(([x, y, r, op], i) => (
+        <circle key={i} cx={x} cy={y} r={r} fill="#E8E4D8" fillOpacity={op} />
+      ))}
 
-      {/* Moon glow bloom */}
-      <rect x="0" y="0" width="1440" height="900" fill="url(#moonGlow)" />
+      {/* Moon halo */}
+      <rect x="0" y="0" width="1440" height="900" fill="url(#moonHalo)" />
 
       {/* Moon */}
-      <circle cx={1036} cy={162} r={52} fill="url(#moon)" opacity="0.92" />
-      {/* Subtle craters */}
-      <circle cx={1018} cy={148} r={8}  fill="#D4C498" fillOpacity="0.3" />
-      <circle cx={1048} cy={175} r={5}  fill="#D4C498" fillOpacity="0.25" />
-      <circle cx={1030} cy={168} r={3}  fill="#D4C498" fillOpacity="0.2" />
+      <circle cx={979} cy={198} r={58} fill="url(#moonFace)" />
+      {/* Subtle surface detail */}
+      <circle cx={962} cy={183} r={10} fill="#DDD4B8" fillOpacity="0.25" />
+      <circle cx={994} cy={208} r={6}  fill="#DDD4B8" fillOpacity="0.2" />
+      <circle cx={975} cy={221} r={4}  fill="#DDD4B8" fillOpacity="0.18" />
+
+      {/* Warm horizon ambient from water */}
+      <rect x="0" y="0" width="1440" height="900" fill="url(#horizonWarm)" />
     </svg>
   )
 }
 
-// ── Layer 2: Mid — bamboo grove + rolling hills ───────────────────────────────
+// ── Layer 2: Treeline — silhouette hills + bamboo/willow shapes ───────────────
 export function SceneMid({ className }: { className?: string }) {
-  // Bamboo stalk data: [x, height, width, opacity]
-  const stalks: [number, number, number, number][] = []
-  const rng = (seed: number) => { let x = Math.sin(seed) * 10000; return x - Math.floor(x) }
-  for (let i = 0; i < 120; i++) {
-    const x = rng(i * 3.1) * 1440
-    const h = 280 + rng(i * 7.3) * 320
-    const w = 5 + rng(i * 2.7) * 9
-    const op = 0.55 + rng(i * 5.1) * 0.45
-    stalks.push([x, h, w, op])
-  }
-  stalks.sort((a, b) => a[3] - b[3]) // paint darker (taller) last
-
   return (
     <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" className={className} aria-hidden="true">
       <defs>
-        <linearGradient id="hillGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"   stopColor="#0C1A0C" />
-          <stop offset="100%" stopColor="#060C06" />
+        <linearGradient id="hill1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="#0C1E10" />
+          <stop offset="100%" stopColor="#04080A" />
         </linearGradient>
-        <linearGradient id="stalkGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"   stopColor="#1A2E14" />
-          <stop offset="50%"  stopColor="#0E1E0A" />
-          <stop offset="100%" stopColor="#060C06" />
+        <linearGradient id="hill2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="#081408" />
+          <stop offset="100%" stopColor="#030608" />
         </linearGradient>
-        <linearGradient id="horizonFade" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"   stopColor="#0A1A0A" stopOpacity="0" />
-          <stop offset="100%" stopColor="#0A1A0A" stopOpacity="1" />
+        <linearGradient id="midFade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="#060C0E" stopOpacity="0" />
+          <stop offset="100%" stopColor="#040810" stopOpacity="1" />
         </linearGradient>
-        {/* Warm ambient light from waterfront */}
-        <radialGradient id="waterAmbient" cx="50%" cy="100%" r="70%">
-          <stop offset="0%"   stopColor="#4A7A6A" stopOpacity="0.12" />
-          <stop offset="100%" stopColor="#2A4A3A" stopOpacity="0" />
-        </radialGradient>
       </defs>
 
-      {/* Rolling hill silhouette */}
+      {/* Far background hill */}
       <path
-        d="M0,720 C180,680 340,700 520,680 C650,665 720,660 800,655 C900,650 1000,665 1100,670 C1220,678 1340,690 1440,685 L1440,900 L0,900 Z"
-        fill="url(#hillGrad)"
-      />
-      {/* Second hill layer for depth */}
-      <path
-        d="M0,760 C200,730 380,750 560,735 C700,722 800,718 900,720 C1040,724 1180,738 1440,730 L1440,900 L0,900 Z"
-        fill="#060C06"
-        opacity="0.8"
+        d="M0,780 C200,740 380,755 560,738 C720,722 840,718 960,722 C1100,728 1260,742 1440,735 L1440,900 L0,900 Z"
+        fill="#060E0A"
+        opacity="0.6"
       />
 
-      {/* Bamboo stalks */}
-      {stalks.map(([x, h, w, op], i) => {
-        const baseY = 720 + rng(i * 4.2) * 60
+      {/* Main treeline hill */}
+      <path
+        d="M0,810 C160,768 300,782 480,765 C620,751 730,745 840,748 C980,753 1120,768 1280,762 C1360,759 1400,764 1440,760 L1440,900 L0,900 Z"
+        fill="url(#hill1)"
+      />
+
+      {/* Tree canopy bumps along the hill — organic rounded silhouettes */}
+      <path
+        d="M0,810 C40,795 60,780 80,785 C100,790 110,775 130,768 C155,760 170,750 195,745
+           C220,740 240,730 265,728 C290,726 310,718 335,715
+           C365,712 385,705 410,708 C430,712 445,700 468,698
+           C492,696 512,688 538,690 C558,692 574,682 598,680
+           C622,678 644,670 668,672 C688,674 704,664 726,662
+           C752,660 774,652 798,655 C818,658 836,648 858,650
+           C880,652 900,644 924,648 C944,652 962,642 984,645
+           C1008,648 1028,640 1052,644 C1072,648 1090,638 1112,641
+           C1138,645 1158,638 1182,642 C1202,646 1220,636 1242,640
+           C1268,645 1290,638 1314,642 C1334,646 1358,638 1380,642 C1400,646 1420,640 1440,638
+           L1440,900 L0,900 Z"
+        fill="url(#hill1)"
+      />
+
+      {/* Bamboo-like vertical elements — simple and stylized */}
+      {[
+        // [cx, height, width] — placed in clusters
+        // Left cluster
+        [85,310,6],[92,275,5],[78,290,5],[100,255,4],[70,240,4],
+        [110,295,6],[120,260,5],[128,280,5],[65,268,4],
+        // Left-center cluster
+        [280,340,7],[290,300,6],[270,315,6],[302,280,5],[260,295,5],
+        [312,320,6],[325,285,5],[338,305,6],[255,278,4],
+        // Center-left
+        [490,360,8],[502,320,7],[478,335,6],[514,295,5],[468,308,5],
+        [526,345,7],[540,308,6],[554,328,6],[462,292,4],
+        // Center
+        [680,380,8],[692,338,7],[668,352,7],[706,312,6],[656,325,5],
+        [718,362,7],[732,325,6],[748,348,7],[644,308,4],
+        // Center-right
+        [870,355,7],[882,315,6],[858,330,6],[896,290,5],[846,303,5],
+        [908,340,7],[922,302,6],[936,322,6],[840,286,4],
+        // Right-center
+        [1060,340,7],[1072,300,6],[1048,315,6],[1086,278,5],[1036,290,5],
+        [1098,325,6],[1112,288,5],[1126,308,6],[1028,274,4],
+        // Right cluster
+        [1250,320,6],[1262,282,5],[1238,296,5],[1276,260,4],[1226,272,4],
+        [1288,305,6],[1302,268,5],[1316,288,5],[1220,255,4],
+        // Far right
+        [1390,285,5],[1402,250,4],[1376,262,4],[1414,232,4],[1368,245,4],
+      ].map(([cx, h, w], i) => {
+        const baseY = 760
         const topY = baseY - h
-        const nodeCount = Math.floor(h / 38)
-        const color = op > 0.8 ? '#1A2E14' : op > 0.65 ? '#142410' : '#0C1A0C'
+        const nodeSpacing = 42
+        const nodeCount = Math.floor(h / nodeSpacing)
+        const shade = i % 3 === 0 ? '#0E1E0E' : i % 3 === 1 ? '#0A1A0A' : '#081408'
         return (
-          <g key={i} opacity={op}>
+          <g key={i} opacity={0.7 + (i % 5) * 0.06}>
             {/* Stalk */}
-            <rect x={x - w / 2} y={topY} width={w} height={h} fill={color} rx={w * 0.3} />
-            {/* Nodes (bamboo joints) */}
-            {Array.from({ length: nodeCount }, (_, n) => {
-              const ny = baseY - (n + 1) * (h / (nodeCount + 1))
-              return (
-                <rect
-                  key={n}
-                  x={x - w / 2 - 1.5}
-                  y={ny - 2}
-                  width={w + 3}
-                  height={4}
-                  fill={color}
-                  rx={1}
-                  opacity="0.9"
-                />
-              )
-            })}
-            {/* Leaf clusters at top */}
-            {[[-18, -8], [14, -14], [-8, -22], [20, -4], [-22, -18]].map(([lx, ly], li) => (
-              <ellipse
-                key={li}
-                cx={x + lx * (w / 10)}
-                cy={topY + ly * (w / 10) - 5}
-                rx={w * 1.4}
-                ry={w * 0.6}
-                fill={color}
-                opacity="0.7"
-                transform={`rotate(${lx * 3},${x + lx * (w / 10)},${topY + ly * (w / 10) - 5})`}
+            <rect x={cx - w/2} y={topY} width={w} height={h} fill={shade} rx={w * 0.3} />
+            {/* Nodes */}
+            {Array.from({ length: nodeCount }, (_, n) => (
+              <rect key={n}
+                x={cx - w/2 - 1.5} y={baseY - (n+1)*nodeSpacing - 2}
+                width={w+3} height={3.5}
+                fill={shade} rx={1} opacity="0.85"
               />
             ))}
+            {/* Simple leaf spray at top — 3 diagonal ellipses */}
+            <ellipse cx={cx - w*1.8} cy={topY + 8}  rx={w*2.2} ry={w*0.7} fill={shade} opacity="0.8"
+              transform={`rotate(-30,${cx - w*1.8},${topY + 8})`} />
+            <ellipse cx={cx + w*1.6} cy={topY + 4}  rx={w*2.0} ry={w*0.65} fill={shade} opacity="0.75"
+              transform={`rotate(28,${cx + w*1.6},${topY + 4})`} />
+            <ellipse cx={cx}         cy={topY - 6}   rx={w*1.8} ry={w*0.6} fill={shade} opacity="0.7"
+              transform={`rotate(-8,${cx},${topY - 6})`} />
           </g>
         )
       })}
 
-      {/* Ambient glow from water below */}
-      <rect x="0" y="0" width="1440" height="900" fill="url(#waterAmbient)" />
-
-      {/* Fade bottom so mid layer blends into foreground */}
-      <rect x="0" y="640" width="1440" height="260" fill="url(#horizonFade)" />
+      {/* Fade base into water layer */}
+      <rect x="0" y="650" width="1440" height="250" fill="url(#midFade)" />
     </svg>
   )
 }
 
-// ── Layer 3: Foreground — water, moon reflection, close bamboo, branches ──────
+// ── Layer 3: Water + foreground branches ─────────────────────────────────────
 export function SceneFore({ className }: { className?: string }) {
-  const rng = (seed: number) => { let x = Math.sin(seed) * 10000; return x - Math.floor(x) }
-
-  // Close foreground bamboo — very dark, partially off-frame left and right
-  const closeStalks: [number, number, number][] = []
-  for (let i = 0; i < 28; i++) {
-    const side = i < 14 ? rng(i * 2.1) * 260 : 1180 + rng(i * 3.3) * 260
-    const h = 500 + rng(i * 5.7) * 300
-    const w = 12 + rng(i * 1.9) * 18
-    closeStalks.push([side, h, w])
-  }
-
   return (
     <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" className={className} aria-hidden="true">
       <defs>
         <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"   stopColor="#060E18" />
-          <stop offset="30%"  stopColor="#040C14" />
+          <stop offset="0%"   stopColor="#060E1A" />
+          <stop offset="40%"  stopColor="#040C16" />
           <stop offset="100%" stopColor="#020810" />
         </linearGradient>
-        {/* Moon reflection column on water */}
-        <radialGradient id="moonReflect" cx="50%" cy="15%" r="55%">
-          <stop offset="0%"   stopColor="#D4C890" stopOpacity="0.35" />
-          <stop offset="40%"  stopColor="#A09060" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#806840" stopOpacity="0" />
+        <radialGradient id="moonReflect" cx="68%" cy="5%" r="80%">
+          <stop offset="0%"   stopColor="#C0D0E8" stopOpacity="0.28" />
+          <stop offset="35%"  stopColor="#8098B8" stopOpacity="0.12" />
+          <stop offset="100%" stopColor="#405878" stopOpacity="0" />
         </radialGradient>
-        {/* Water shimmer lines clip */}
-        <linearGradient id="rippleFade" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%"   stopColor="white" stopOpacity="0" />
-          <stop offset="20%"  stopColor="white" stopOpacity="1" />
-          <stop offset="80%"  stopColor="white" stopOpacity="1" />
-          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        <linearGradient id="waterTopFade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="#040C16" stopOpacity="0" />
+          <stop offset="100%" stopColor="#040C16" stopOpacity="1" />
         </linearGradient>
-        <linearGradient id="branchLeft" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%"   stopColor="#0A160A" />
-          <stop offset="100%" stopColor="#06100A" />
-        </linearGradient>
-        <linearGradient id="waterFadeTop" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"   stopColor="#060E18" stopOpacity="0" />
-          <stop offset="100%" stopColor="#060E18" stopOpacity="1" />
+        {/* Shimmer band in reflection column */}
+        <linearGradient id="shimmerCol" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stopColor="#B0C4E0" stopOpacity="0" />
+          <stop offset="40%"  stopColor="#B0C4E0" stopOpacity="1" />
+          <stop offset="60%"  stopColor="#B0C4E0" stopOpacity="1" />
+          <stop offset="100%" stopColor="#B0C4E0" stopOpacity="0" />
         </linearGradient>
       </defs>
 
       {/* Water surface */}
-      <rect x="0" y="600" width="1440" height="300" fill="url(#water)" />
-      {/* Fade in from above */}
-      <rect x="0" y="560" width="1440" height="80" fill="url(#waterFadeTop)" />
+      <rect x="0" y="620" width="1440" height="280" fill="url(#water)" />
+      <rect x="0" y="580" width="1440" height="70"  fill="url(#waterTopFade)" />
 
-      {/* Moon reflection on water */}
-      <rect x="0" y="600" width="1440" height="300" fill="url(#moonReflect)" />
+      {/* Moon reflection column */}
+      <rect x="0" y="620" width="1440" height="280" fill="url(#moonReflect)" />
 
-      {/* Water shimmer / ripple lines */}
-      {Array.from({ length: 28 }, (_, i) => {
-        const y = 630 + i * 10 + rng(i * 3.7) * 6
-        const len = 60 + rng(i * 2.3) * 180
-        const cx = 680 + (rng(i * 4.1) - 0.5) * 200
-        const op = 0.04 + rng(i * 1.7) * 0.1
-        return (
-          <line key={i}
-            x1={cx - len / 2} y1={y}
-            x2={cx + len / 2} y2={y}
-            stroke="#C8B880" strokeWidth={0.8 + rng(i) * 1.2} opacity={op}
-          />
-        )
-      })}
+      {/* Ripple lines */}
+      {[
+        [979-90, 979+90, 634, 0.20], [979-70, 979+70, 645, 0.16],
+        [979-110,979+110,655, 0.12], [979-55, 979+55, 665, 0.18],
+        [979-130,979+130,674, 0.09], [979-80, 979+80, 683, 0.14],
+        [979-150,979+150,692, 0.07], [979-95, 979+95, 700, 0.11],
+        [979-170,979+170,709, 0.06], [979-115,979+115,717, 0.09],
+        [979-190,979+190,725, 0.05], [979-140,979+140,733, 0.08],
+        [979-210,979+210,741, 0.04], [979-165,979+165,749, 0.07],
+        [979-240,979+240,758, 0.04], [979-200,979+200,766, 0.06],
+        [979-280,979+280,775, 0.03], [979-230,979+230,783, 0.05],
+        [979-320,979+320,792, 0.03], [979-270,979+270,800, 0.04],
+      ].map(([x1, x2, y, op], i) => (
+        <line key={i} x1={x1} y1={y} x2={x2} y2={y}
+          stroke="#C0D4F0" strokeWidth={0.8} opacity={op} />
+      ))}
 
-      {/* Stronger shimmer at reflection center */}
-      {Array.from({ length: 14 }, (_, i) => {
-        const y = 615 + i * 18
-        const len = 30 + i * 8
-        return (
-          <line key={`s${i}`}
-            x1={720 - len / 2} y1={y}
-            x2={720 + len / 2} y2={y}
-            stroke="#E0D090" strokeWidth={1} opacity={0.12 - i * 0.006}
-          />
-        )
-      })}
-
-      {/* Close foreground bamboo (dark, framing the scene) */}
-      {closeStalks.map(([x, h, w], i) => {
-        const baseY = 900
-        const topY = baseY - h
-        const nodeCount = Math.floor(h / 45)
-        return (
-          <g key={i} opacity={0.85 + rng(i) * 0.15}>
-            <rect x={x - w / 2} y={topY} width={w} height={h} fill="#060E06" rx={w * 0.25} />
-            {Array.from({ length: nodeCount }, (_, n) => {
-              const ny = baseY - (n + 1) * (h / (nodeCount + 1))
-              return (
-                <rect key={n}
-                  x={x - w / 2 - 2} y={ny - 2.5}
-                  width={w + 4} height={5}
-                  fill="#040C04" rx={1.5}
-                />
-              )
-            })}
-          </g>
-        )
-      })}
-
-      {/* Cherry blossom / wisteria branches drooping from top-left */}
-      <g opacity="0.9">
-        <path d="M0,0 Q120,80 200,160 Q260,220 240,310 Q220,360 180,400" fill="none" stroke="#0A1A0A" strokeWidth="8" strokeLinecap="round" />
-        <path d="M0,0 Q80,60 140,130 Q190,190 160,270" fill="none" stroke="#0A1A0A" strokeWidth="5" strokeLinecap="round" />
-        <path d="M200,160 Q280,200 320,260 Q340,300 300,340" fill="none" stroke="#0A1A0A" strokeWidth="4" strokeLinecap="round" />
-        <path d="M140,130 Q200,150 240,200 Q260,240 230,280" fill="none" stroke="#0A1A0A" strokeWidth="3" strokeLinecap="round" />
+      {/* ── Left hanging cherry blossom branch ── */}
+      <g>
+        {/* Main branch */}
+        <path d="M-20,0 Q80,120 150,240 Q200,320 170,420 Q150,480 120,540"
+          fill="none" stroke="#0C180C" strokeWidth="9" strokeLinecap="round" />
+        {/* Sub-branch 1 */}
+        <path d="M80,120 Q160,155 210,210 Q240,255 215,310"
+          fill="none" stroke="#0C180C" strokeWidth="5.5" strokeLinecap="round" />
+        {/* Sub-branch 2 */}
+        <path d="M150,240 Q230,265 270,330 Q295,375 265,420"
+          fill="none" stroke="#0C180C" strokeWidth="4" strokeLinecap="round" />
+        {/* Sub-branch 3 */}
+        <path d="M80,120 Q30,160 15,230 Q5,280 25,340"
+          fill="none" stroke="#0C180C" strokeWidth="4" strokeLinecap="round" />
         {/* Blossom clusters */}
         {[
-          [200,160],[240,310],[160,270],[300,340],[230,280],
-          [170,200],[260,240],[140,310],[280,180],[190,350],
-          [220,260],[150,240],[310,300],[250,380],[170,320],
+          [80,120],[150,240],[170,420],[210,210],[215,310],[270,330],[265,420],[25,340],
+          [50,175],[120,190],[185,285],[240,375],[30,290],[155,380],[195,460],[90,310],
         ].map(([bx, by], i) => (
           <g key={i}>
-            <circle cx={bx} cy={by} r={4 + rng(i * 2.3) * 5} fill="#E8C0C8" fillOpacity={0.55 + rng(i) * 0.3} />
-            <circle cx={bx + 6} cy={by - 4} r={3 + rng(i * 1.7) * 3} fill="#F0D0D8" fillOpacity={0.4 + rng(i * 3) * 0.3} />
-            <circle cx={bx - 5} cy={by + 5} r={2 + rng(i * 4.1) * 4} fill="#E0B0C0" fillOpacity={0.35 + rng(i * 2) * 0.3} />
+            <circle cx={bx}    cy={by}    r={5+i%3*2} fill="#E8B8C8" fillOpacity={0.55+i%3*0.12} />
+            <circle cx={bx+7}  cy={by-5}  r={3+i%2*2} fill="#F4CCD8" fillOpacity={0.45+i%4*0.1} />
+            <circle cx={bx-6}  cy={by+6}  r={4+i%3*1} fill="#DCA8BC" fillOpacity={0.4+i%3*0.1} />
+            <circle cx={bx+4}  cy={by+8}  r={3+i%2*1} fill="#F0C4D0" fillOpacity={0.35+i%5*0.08} />
           </g>
         ))}
       </g>
 
-      {/* Mirror branch top-right */}
-      <g opacity="0.85" transform="scale(-1,1) translate(-1440,0)">
-        <path d="M0,0 Q100,70 180,150 Q240,210 220,300 Q200,350 160,390" fill="none" stroke="#0A1A0A" strokeWidth="7" strokeLinecap="round" />
-        <path d="M0,0 Q70,55 130,120 Q180,180 150,260" fill="none" stroke="#0A1A0A" strokeWidth="4" strokeLinecap="round" />
-        <path d="M180,150 Q260,190 300,250 Q320,290 280,330" fill="none" stroke="#0A1A0A" strokeWidth="3.5" strokeLinecap="round" />
+      {/* ── Right hanging branch (mirrored) ── */}
+      <g transform="scale(-1,1) translate(-1440,0)">
+        <path d="M-20,0 Q80,120 150,240 Q200,320 170,420 Q150,480 120,540"
+          fill="none" stroke="#0C180C" strokeWidth="9" strokeLinecap="round" />
+        <path d="M80,120 Q160,155 210,210 Q240,255 215,310"
+          fill="none" stroke="#0C180C" strokeWidth="5.5" strokeLinecap="round" />
+        <path d="M150,240 Q230,265 270,330 Q295,375 265,420"
+          fill="none" stroke="#0C180C" strokeWidth="4" strokeLinecap="round" />
+        <path d="M80,120 Q30,160 15,230 Q5,280 25,340"
+          fill="none" stroke="#0C180C" strokeWidth="4" strokeLinecap="round" />
         {[
-          [180,150],[220,300],[150,260],[280,330],[200,250],
-          [160,190],[250,230],[130,300],[270,170],[185,340],
+          [80,120],[150,240],[170,420],[210,210],[215,310],[270,330],[265,420],[25,340],
+          [50,175],[120,190],[185,285],[240,375],[30,290],[155,380],[195,460],[90,310],
         ].map(([bx, by], i) => (
           <g key={i}>
-            <circle cx={bx} cy={by} r={4 + rng(i * 3.1) * 5} fill="#E8C0C8" fillOpacity={0.5 + rng(i * 1.3) * 0.3} />
-            <circle cx={bx + 6} cy={by - 4} r={3 + rng(i * 2.1) * 3} fill="#F0D0D8" fillOpacity={0.35 + rng(i * 2.7) * 0.3} />
+            <circle cx={bx}    cy={by}    r={5+i%3*2} fill="#E8B8C8" fillOpacity={0.5+i%3*0.12} />
+            <circle cx={bx+7}  cy={by-5}  r={3+i%2*2} fill="#F4CCD8" fillOpacity={0.4+i%4*0.1} />
+            <circle cx={bx-6}  cy={by+6}  r={4+i%3*1} fill="#DCA8BC" fillOpacity={0.38+i%3*0.1} />
           </g>
         ))}
       </g>
+
+      {/* Foreground close bamboo — very dark, framing edges */}
+      {[
+        [0,520,16],[18,480,13],[36,560,15],[54,500,12],[-10,440,11],
+        [1440,520,16],[1422,475,13],[1404,555,15],[1386,495,12],[1450,440,11],
+        [72,380,10],[88,410,9],[104,350,9],
+        [1368,380,10],[1352,405,9],[1336,345,9],
+      ].map(([x, h, w], i) => (
+        <g key={i}>
+          <rect x={x - w/2} y={900 - h} width={w} height={h} fill="#040A04" rx={w*0.25} />
+          {Array.from({ length: Math.floor(h/50) }, (_, n) => (
+            <rect key={n}
+              x={x - w/2 - 2} y={900 - (n+1)*50 - 2}
+              width={w+4} height={4} fill="#030804" rx={1.5}
+            />
+          ))}
+        </g>
+      ))}
     </svg>
   )
 }
 
-// Default export for any legacy imports
 export default SceneSky
