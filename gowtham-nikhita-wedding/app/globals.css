@@ -15,7 +15,7 @@
 }
 
 :root {
-  --background: #1E2B14;
+  --background: #4A5C2F;
   --foreground: #FDFCF8;
 }
 
@@ -32,7 +32,7 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #1E2B14; }
+::-webkit-scrollbar-track { background: #4A5C2F; }
 ::-webkit-scrollbar-thumb { background: #B8972A; border-radius: 3px; }
 
 /* Gold gradient divider */

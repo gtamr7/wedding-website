@@ -33,7 +33,7 @@ export default function Nav() {
   useEffect(() => { setMenuOpen(false) }, [pathname])
 
   const navBg = scrolled || !isHome
-    ? 'bg-olive-dark/95 backdrop-blur-sm shadow-sm border-b border-gold/15'
+    ? 'bg-[#3A4A24]/97 backdrop-blur-sm shadow-sm border-b border-gold/15'
     : 'bg-transparent'
 
   return (
@@ -87,7 +87,7 @@ export default function Nav() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="lg:hidden bg-olive-dark/98 backdrop-blur-sm border-t border-gold/15 overflow-hidden"
+            className="lg:hidden bg-[#3A4A24]/98 backdrop-blur-sm border-t border-gold/15 overflow-hidden"
             aria-label="Mobile navigation"
           >
             <div className="flex flex-col py-4 px-6 gap-4">

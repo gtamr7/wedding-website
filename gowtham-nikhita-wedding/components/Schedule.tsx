@@ -14,7 +14,7 @@ const events = [
     description:
       'An evening of music, dance, and joyful celebration as both families come together for the first time. Performances, food, and the energy of two worlds colliding in the best way.',
     dresscode: 'Festive Indian attire — lehengas, sarees, sherwanis, kurtas',
-    color: 'from-olive-dark/50 to-olive-dark/30',
+    color: 'from-black/20 to-black/10',
     borderColor: 'border-gold/15',
     badgeColor: 'bg-olive-mid/50 text-ivory',
     calendar: {
@@ -35,7 +35,7 @@ const events = [
     description:
       'The sacred Tamil & Telugu Vedic ceremony (Muhurtham) conducted according to ancient tradition. A profoundly moving ceremony rich with ritual, meaning, and family.',
     dresscode: 'Traditional Indian attire or formal Western',
-    color: 'from-gold/10 to-olive-dark/40',
+    color: 'from-gold/12 to-black/15',
     borderColor: 'border-gold/45',
     badgeColor: 'bg-gold/20 text-gold-light',
     featured: true,
@@ -57,7 +57,7 @@ const events = [
     description:
       'Dinner, dancing, speeches, and celebration under the Sarasota sky. The waterfront setting of Powel Crosley Estate provides a breathtaking backdrop for an evening to remember.',
     dresscode: 'Black tie optional / Cocktail attire',
-    color: 'from-olive-dark/50 to-olive-dark/30',
+    color: 'from-black/20 to-black/10',
     borderColor: 'border-gold/15',
     badgeColor: 'bg-olive-mid/40 text-ivory',
     calendar: {

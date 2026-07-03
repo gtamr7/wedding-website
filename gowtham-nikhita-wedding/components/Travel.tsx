@@ -97,7 +97,7 @@ export default function Travel() {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={mapInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="relative rounded-xl overflow-hidden border border-gold/15 shadow-sm aspect-video bg-olive-dark/30"
+                className="relative rounded-xl overflow-hidden border border-gold/15 shadow-sm aspect-video bg-black/15"
               >
                 <iframe
                   title="Powel Crosley Estate Map"
@@ -122,7 +122,7 @@ export default function Travel() {
             </FadeIn>
 
             <FadeIn delay={0.15}>
-              <div className="flex items-start gap-3 bg-olive-dark/50 rounded-xl p-4 border border-gold/15">
+              <div className="flex items-start gap-3 bg-black/20 rounded-xl p-4 border border-gold/15">
                 <span className="text-2xl" aria-hidden="true">☀️</span>
                 <div>
                   <p className="font-medium text-ivory text-sm">February in Sarasota</p>
@@ -148,7 +148,7 @@ export default function Travel() {
                       className={`flex items-center justify-between p-3 rounded-lg border ${
                         a.recommended
                           ? 'bg-gold/12 border-gold/40'
-                          : 'bg-olive-dark/40 border-gold/12'
+                          : 'bg-black/15 border-gold/12'
                       }`}
                     >
                       <div className="flex items-center gap-3">
@@ -178,7 +178,7 @@ export default function Travel() {
                   {hotels.map((h) => (
                     <div
                       key={h.name}
-                      className="p-4 rounded-lg border border-gold/12 bg-olive-dark/40 hover:border-gold/35 hover:shadow-sm transition-all duration-200"
+                      className="p-4 rounded-lg border border-gold/12 bg-black/15 hover:border-gold/35 hover:shadow-sm transition-all duration-200"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <p className="font-medium text-ivory text-sm leading-snug">{h.name}</p>
