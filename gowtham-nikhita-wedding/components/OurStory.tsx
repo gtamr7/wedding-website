@@ -30,13 +30,13 @@ const chapters = [
   },
   {
     num: '02',
-    heading: 'Five years of friendship',
-    body: `For five years they were the best of friends. The kind who know each other's families, finish each other's sentences, and show up without being asked. Life pulled them apart for a stretch, but Nikki came back. Something was different this time. They have been together ever since, nearly three years and counting.`,
+    heading: 'Friends first',
+    body: `For five years, they were the best of friends. The kind who finish each other's sentences and never have to explain themselves. Life pulled them apart for a stretch, but like a pendulum, they were back. Something was different this time. They've been together ever since, nearly three years and counting.`,
   },
   {
     num: '03',
     heading: 'The proposal',
-    body: `Japan, 2025. A national garden, a warm summer afternoon, and a ring Gowtham had been carrying for the right moment. He got down on one knee beneath the trees and asked the question he had been holding for years. She said yes. They found a patch of grass, spread a picnic blanket, and sat there in the sun together. Then they called their families.`,
+    body: `Japan, 2025. A national garden, a warm summer afternoon, and a ring Gowtham had been carrying for the right moment. He got down on one knee beneath the trees and asked the question he'd been holding for years. She said yes. They found a patch of grass, spread a picnic blanket, and sat in the sun while they called their families.`,
   },
 ]
 
