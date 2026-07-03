@@ -174,6 +174,13 @@ export default function Travel() {
               <div>
                 <h3 className="font-display text-2xl italic text-ivory mb-1">Where to Stay</h3>
                 <div className="gold-divider w-12 mb-5" />
+                <div className="flex items-start gap-3 bg-gold/8 rounded-xl p-4 border border-gold/25 mb-5">
+                  <span className="text-lg shrink-0" aria-hidden="true">🔔</span>
+                  <p className="text-sm text-ivory/70 leading-relaxed">
+                    <span className="text-gold font-medium">Hotel block & shuttle details coming soon.</span>{' '}
+                    We&apos;re finalizing room blocks and transportation — check back for updates before booking.
+                  </p>
+                </div>
                 <div className="space-y-3">
                   {hotels.map((h) => (
                     <div
