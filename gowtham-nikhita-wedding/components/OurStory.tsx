@@ -156,7 +156,7 @@ export default function OurStory() {
 
         {/* Photo carousel */}
         <FadeIn delay={0.1} className="mt-12">
-          <p className="text-xs tracking-widest uppercase text-gold mb-5">Our Photos</p>
+          <p className="text-xs tracking-widest uppercase text-gold mb-5 text-center">Our Photos</p>
           <PhotoCarousel />
         </FadeIn>
       </div>
