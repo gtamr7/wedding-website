@@ -18,6 +18,7 @@ type ExistingRsvp = {
   dietary_restrictions: string | null
   needs_hotel: boolean
   notes: string | null
+  email: string | null
 }
 
 const MAX_PARTY = 5
@@ -133,6 +134,7 @@ export default function RsvpForm() {
         ? existingRsvp.party_members.filter(m => m.firstName)
         : []
     )
+    setEmail(existingRsvp.email ?? '')
     setDietary(existingRsvp.dietary_restrictions ?? '')
     setNeedsHotel(existingRsvp.needs_hotel)
     setNotes(existingRsvp.notes ?? '')
@@ -486,7 +488,7 @@ export default function RsvpForm() {
 
             {totalGuests >= MAX_PARTY && (
               <p className="mt-2 text-xs text-center text-charcoal/30">
-                Maximum party size of {MAX_PARTY} reached. Contact us for larger parties.
+                Maximum party size of {MAX_PARTY} reached. Contact Gowtham or Nikhita directly for larger groups.
               </p>
             )}
           </div>

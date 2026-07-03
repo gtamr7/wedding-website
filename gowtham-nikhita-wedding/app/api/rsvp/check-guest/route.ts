@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     // Check for an existing RSVP under this name
     const { data: existing } = await supabase
       .from('rsvps')
-      .select('id, sangeet, wedding, reception, party_size, party_members, dietary_restrictions, needs_hotel, notes')
+      .select('id, sangeet, wedding, reception, party_size, party_members, dietary_restrictions, needs_hotel, notes, email')
       .ilike('guest_name', fullMatchedName)
       .limit(1)
 

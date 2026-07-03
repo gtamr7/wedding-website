@@ -27,7 +27,7 @@ const events = [
   },
   {
     date: 'Feb 18',
-    day: 'Thursday',
+    day: 'Thursday Morning',
     name: 'Ceremony (Kalyaanam)',
     emoji: '🪔',
     time: '9:00 AM – 12:00 PM',
