@@ -9,8 +9,8 @@ const events = [
     day: 'Sunday',
     name: 'Sangeet Night',
     emoji: '🎶',
-    time: 'Time TBD · Evening',
-    venue: 'Venue TBD',
+    time: '6:00 PM – 10:00 PM',
+    venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
       'An evening of music, dance, and joyful celebration as both families come together for the first time. Performances, food, and the energy of two worlds colliding in the best way.',
     dresscode: 'Festive Indian attire — lehengas, sarees, sherwanis, kurtas',
@@ -19,10 +19,10 @@ const events = [
     badgeColor: 'bg-olive-light text-olive-dark',
     calendar: {
       title: 'Sangeet Night — Gowtham & Nikhita',
-      date: '20270216',
-      endDate: '20270217',
-      location: 'Venue TBD',
-      description: 'An evening of music, dance, and joyful celebration. Festive Indian attire. Check gowthamandnikhita.com for venue and time updates.',
+      date: '20270216T180000',
+      endDate: '20270216T220000',
+      location: 'Powel Crosley Estate, 8490 Crosley Ln, Sarasota, FL 34241',
+      description: 'An evening of music, dance, and joyful celebration. Festive Indian attire.',
     },
   },
   {
@@ -30,7 +30,7 @@ const events = [
     day: 'Monday',
     name: 'Muhurtham',
     emoji: '🪔',
-    time: 'Muhurtham time TBD · Morning',
+    time: '9:00 AM – 12:00 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
       'The sacred Tamil & Telugu Vedic ceremony (Muhurtham) conducted according to ancient tradition. A profoundly moving ceremony rich with ritual, meaning, and family.',
@@ -41,10 +41,10 @@ const events = [
     featured: true,
     calendar: {
       title: 'Muhurtham — Gowtham & Nikhita Wedding',
-      date: '20270217',
-      endDate: '20270218',
+      date: '20270217T090000',
+      endDate: '20270217T120000',
       location: 'Powel Crosley Estate, 8490 Crosley Ln, Sarasota, FL 34241',
-      description: 'Tamil & Telugu Vedic wedding ceremony. Traditional Indian attire or formal Western. Check gowthamandnikhita.com for exact time.',
+      description: 'Tamil & Telugu Vedic wedding ceremony. Traditional Indian attire or formal Western.',
     },
   },
   {
@@ -52,7 +52,7 @@ const events = [
     day: 'Monday Evening',
     name: 'Reception',
     emoji: '🥂',
-    time: 'Time TBD · Evening',
+    time: '6:00 PM – 11:45 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
       'Dinner, dancing, speeches, and celebration under the Sarasota sky. The waterfront setting of Powel Crosley Estate provides a breathtaking backdrop for an evening to remember.',
@@ -62,10 +62,10 @@ const events = [
     badgeColor: 'bg-charcoal/5 text-charcoal',
     calendar: {
       title: 'Reception — Gowtham & Nikhita Wedding',
-      date: '20270217',
-      endDate: '20270218',
+      date: '20270217T180000',
+      endDate: '20270217T235500',
       location: 'Powel Crosley Estate, 8490 Crosley Ln, Sarasota, FL 34241',
-      description: 'Wedding reception — dinner, dancing, and celebration. Black tie optional / cocktail attire. Check gowthamandnikhita.com for exact time.',
+      description: 'Wedding reception — dinner, dancing, and celebration. Black tie optional / cocktail attire.',
     },
   },
 ]
@@ -76,8 +76,8 @@ function makeIcs(cal: typeof events[0]['calendar']) {
     'VERSION:2.0',
     'PRODID:-//Gowtham & Nikhita Wedding//EN',
     'BEGIN:VEVENT',
-    `DTSTART;VALUE=DATE:${cal.date}`,
-    `DTEND;VALUE=DATE:${cal.endDate}`,
+    `DTSTART:${cal.date}`,
+    `DTEND:${cal.endDate}`,
     `SUMMARY:${cal.title}`,
     `LOCATION:${cal.location}`,
     `DESCRIPTION:${cal.description}`,
