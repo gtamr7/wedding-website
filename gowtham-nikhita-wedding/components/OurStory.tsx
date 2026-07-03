@@ -84,7 +84,7 @@ export default function OurStory() {
             <FadeIn delay={0.35}>
               <h3 className="font-display text-3xl italic text-charcoal">The proposal</h3>
               <p className="text-charcoal/70 leading-relaxed mt-3">
-                Japan, 2024. A national garden on a warm summer day. Gowtham got down on one knee
+                Japan, 2025. A national garden on a warm summer day. Gowtham got down on one knee
                 among the trees and asked the question he&apos;d been holding for years. She said
                 yes. They spread a picnic blanket, sat in the sun, and soaked it all in — then
                 called their families. Magical doesn&apos;t quite cover it.
