@@ -74,4 +74,5 @@ export interface RsvpEntry {
   needs_hotel: boolean;
   notes: string | null;
   created_at: string;
+  table_number: number | null;
 }

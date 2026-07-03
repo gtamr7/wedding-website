@@ -38,7 +38,7 @@ export default async function GuestbookPage() {
             <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">Guestbook</h1>
             <div className="gold-divider w-24 mt-4 mx-auto" />
             <p className="text-charcoal/50 text-sm mt-4">
-              Leave a note for Gowtham &amp; Nikhita — they&apos;ll read every single one.
+              Leave a note for Gowtham &amp; Nikhita — they&apos;ll read every single one. Keep it family friendly! :)
             </p>
           </div>
 
