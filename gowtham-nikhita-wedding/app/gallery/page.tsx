@@ -4,7 +4,9 @@ import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 
-const photos = [
+type Photo = { src: string; span: 'tall' | 'wide' | 'normal' }
+
+const photos: Photo[] = [
   { src: '/gallery/IMG_0314.jpg', span: 'tall' },
   { src: '/gallery/IMG_0334.jpg', span: 'wide' },
   { src: '/gallery/IMG_0363.jpg', span: 'normal' },
@@ -68,7 +70,7 @@ function GalleryItem({ photo, index, onClick }: {
 }
 
 function Lightbox({ photos, index, onClose, onPrev, onNext }: {
-  photos: typeof photos
+  photos: Photo[]
   index: number
   onClose: () => void
   onPrev: () => void
