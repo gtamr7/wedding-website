@@ -7,7 +7,7 @@ const events = [
   {
     date: 'Feb 16',
     day: 'Sunday',
-    name: 'Sangeet Night',
+    name: 'Sangeet',
     emoji: '🎶',
     time: '6:00 PM – 10:00 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
@@ -18,7 +18,7 @@ const events = [
     borderColor: 'border-gold/15',
     badgeColor: 'bg-olive-mid/50 text-ivory',
     calendar: {
-      title: 'Sangeet Night — Gowtham & Nikhita',
+      title: 'Sangeet — Gowtham & Nikhita',
       date: '20270216T180000',
       endDate: '20270216T220000',
       location: 'Powel Crosley Estate, 8490 Crosley Ln, Sarasota, FL 34241',

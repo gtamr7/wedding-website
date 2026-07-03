@@ -32,10 +32,10 @@ export default function Hero() {
       {/* Three-column layout: photo — text — photo */}
       <div className="flex items-center justify-center min-h-screen gap-0 sm:gap-8 lg:gap-16 px-4">
 
-        {/* Left photo */}
+        {/* Left photo — hidden on mobile, shown sm+ */}
         <motion.div
           style={{ y: leftPhotoY }}
-          className="shrink-0 w-32 sm:w-44 lg:w-56"
+          className="hidden sm:block shrink-0 sm:w-44 lg:w-56"
           aria-hidden="true"
         >
           <div
@@ -112,10 +112,10 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Right photo */}
+        {/* Right photo — hidden on mobile, shown sm+ */}
         <motion.div
           style={{ y: rightPhotoY }}
-          className="shrink-0 w-32 sm:w-44 lg:w-56"
+          className="hidden sm:block shrink-0 sm:w-44 lg:w-56"
           aria-hidden="true"
         >
           <div
