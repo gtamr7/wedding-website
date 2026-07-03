@@ -24,10 +24,10 @@ const hotels = [
     note: 'Great pool, central location on the Bay',
   },
   {
-    name: 'Courtyard Sarasota at University Town Center',
+    name: 'Hampton Inn & Suites Sarasota/Bradenton Airport',
     type: 'Mid-range',
-    distance: '~15 min to venue',
-    note: 'Reliable, comfortable, good value',
+    distance: '~10 min to venue',
+    note: 'Close to the airport and venue, free hot breakfast',
   },
   {
     name: 'Holiday Inn Express & Suites Sarasota',
