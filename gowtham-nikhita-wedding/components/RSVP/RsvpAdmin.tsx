@@ -280,9 +280,9 @@ export default function RsvpAdmin() {
           <div className="bg-white border-2 border-olive-light rounded-xl p-6">
             <h2 className="font-display text-xl italic text-charcoal mb-5">Event Attendance</h2>
             <div className="space-y-4">
-              <EventBar label="🎶 Sangeet — Feb 16" count={stats.sangeet} total={stats.totalGuests} color="bg-olive-mid" />
-              <EventBar label="🪔 Muhurtham — Feb 17 Morning" count={stats.wedding} total={stats.totalGuests} color="bg-gold" />
-              <EventBar label="🥂 Reception — Feb 17 Evening" count={stats.reception} total={stats.totalGuests} color="bg-olive-dark" />
+              <EventBar label="🎶 Sangeet — Feb 17" count={stats.sangeet} total={stats.totalGuests} color="bg-olive-mid" />
+              <EventBar label="🪔 Muhurtham — Feb 18 Morning" count={stats.wedding} total={stats.totalGuests} color="bg-gold" />
+              <EventBar label="🥂 Reception — Feb 18 Evening" count={stats.reception} total={stats.totalGuests} color="bg-olive-dark" />
             </div>
           </div>
 

@@ -316,9 +316,9 @@ export default function RsvpForm() {
             </p>
             <div className="space-y-3">
               {([
-                { key: 'sangeet',   label: 'Sangeet',           desc: 'Feb 16 · Music, dancing & celebration', checked: sangeet,   set: setSangeet },
-                { key: 'wedding',   label: 'Wedding Ceremony',  desc: 'Feb 17 · Tamil & Telugu Vedic ceremony', checked: wedding,   set: setWedding },
-                { key: 'reception', label: 'Reception',         desc: 'Feb 17 · Dinner, toasts & party',        checked: reception, set: setReception },
+                { key: 'sangeet',   label: 'Sangeet',                      desc: 'Feb 17 · Music, dancing & celebration', checked: sangeet,   set: setSangeet },
+                { key: 'wedding',   label: 'Muhurtham (Wedding Ceremony)', desc: 'Feb 18 · Tamil & Telugu Vedic ceremony', checked: wedding,   set: setWedding },
+                { key: 'reception', label: 'Reception',                    desc: 'Feb 18 · Dinner, toasts & party',        checked: reception, set: setReception },
               ] as const).map(ev => (
                 <label
                   key={ev.key}
