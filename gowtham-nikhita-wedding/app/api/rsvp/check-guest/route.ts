@@ -40,10 +40,25 @@ export async function POST(request: Request) {
 
     if (!match) return Response.json({ found: false })
 
+    const matchedFirst = (match.first_name as string | null) ?? firstName
+    const matchedLast  = (match.last_name  as string | null) ?? lastName
+    const fullMatchedName = [matchedFirst, matchedLast].filter(Boolean).join(' ')
+
+    // Check for an existing RSVP under this name
+    const { data: existing } = await supabase
+      .from('rsvps')
+      .select('id, sangeet, wedding, reception, party_size, party_members, dietary_restrictions, needs_hotel, notes')
+      .ilike('guest_name', fullMatchedName)
+      .limit(1)
+
+    const existingRsvp = existing?.[0] ?? null
+
     return Response.json({
       found: true,
-      matchedFirst: (match.first_name as string | null) ?? firstName,
-      matchedLast:  (match.last_name  as string | null) ?? lastName,
+      matchedFirst,
+      matchedLast,
+      alreadyRsvped: !!existingRsvp,
+      existingRsvp,
     })
   } catch (err) {
     console.error('[check-guest]', err)

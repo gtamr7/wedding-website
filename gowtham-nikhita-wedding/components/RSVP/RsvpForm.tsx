@@ -4,11 +4,63 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createSupabaseClient } from '@/lib/supabase'
 
-type Step = 'gate' | 'form' | 'success'
+type Step = 'gate' | 'already-rsvped' | 'form' | 'success'
 type FormState = 'idle' | 'submitting' | 'error'
 type PartyMember = { firstName: string; lastName: string }
 
-const MAX_PARTY = 5  // including the lead guest
+type ExistingRsvp = {
+  id: string
+  sangeet: boolean
+  wedding: boolean
+  reception: boolean
+  party_size: number
+  party_members: PartyMember[]
+  dietary_restrictions: string | null
+  needs_hotel: boolean
+  notes: string | null
+}
+
+const MAX_PARTY = 5
+
+const EVENTS = [
+  {
+    key: 'sangeet'   as const,
+    label: 'Sangeet',
+    desc:  'Feb 17 · Music, dancing & celebration',
+    emoji: '🎶',
+    calStart: '20270217T180000',
+    calEnd:   '20270217T230000',
+  },
+  {
+    key: 'wedding'   as const,
+    label: 'Muhurtham (Ceremony)',
+    desc:  'Feb 18 · Tamil & Telugu Vedic ceremony',
+    emoji: '🪔',
+    calStart: '20270218T090000',
+    calEnd:   '20270218T130000',
+  },
+  {
+    key: 'reception' as const,
+    label: 'Reception',
+    desc:  'Feb 18 · Dinner, toasts & party',
+    emoji: '🥂',
+    calStart: '20270218T180000',
+    calEnd:   '20270218T230000',
+  },
+]
+
+function calendarUrl(title: string, start: string, end: string) {
+  return (
+    'https://www.google.com/calendar/render?' +
+    new URLSearchParams({
+      action: 'TEMPLATE',
+      text: title,
+      dates: `${start}/${end}`,
+      location: 'Powel Crosley Estate, 8374 N Tamiami Trail, Sarasota, FL 34243',
+      details: 'Celebrating the wedding of Gowtham & Nikhita!',
+    }).toString()
+  )
+}
 
 export default function RsvpForm() {
   const [step, setStep] = useState<Step>('gate')
@@ -19,14 +71,15 @@ export default function RsvpForm() {
   const [checking,  setChecking]  = useState(false)
   const [gateError, setGateError] = useState('')
 
+  // ── Existing RSVP ──
+  const [existingRsvp, setExistingRsvp] = useState<ExistingRsvp | null>(null)
+  const [isEditMode,   setIsEditMode]   = useState(false)
+
   // ── Form ──
   const [firstName, setFirstName] = useState('')
   const [lastName,  setLastName]  = useState('')
   const [email,     setEmail]     = useState('')
-
-  // Additional party members
   const [partyMembers, setPartyMembers] = useState<PartyMember[]>([])
-
   const [sangeet,   setSangeet]   = useState(false)
   const [wedding,   setWedding]   = useState(false)
   const [reception, setReception] = useState(false)
@@ -49,11 +102,16 @@ export default function RsvpForm() {
         body: JSON.stringify({ firstName: gateFirst.trim(), lastName: gateLast.trim() }),
       })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const { found, matchedFirst, matchedLast } = await res.json()
+      const { found, matchedFirst, matchedLast, alreadyRsvped, existingRsvp: existing } = await res.json()
       if (found) {
         setFirstName(matchedFirst || gateFirst.trim())
         setLastName(matchedLast  || gateLast.trim())
-        setStep('form')
+        if (alreadyRsvped && existing) {
+          setExistingRsvp(existing)
+          setStep('already-rsvped')
+        } else {
+          setStep('form')
+        }
       } else {
         setGateError('not-found')
       }
@@ -62,6 +120,24 @@ export default function RsvpForm() {
     } finally {
       setChecking(false)
     }
+  }
+
+  // ── Enter edit mode from already-rsvped screen ──
+  const enterEditMode = () => {
+    if (!existingRsvp) return
+    setSangeet(existingRsvp.sangeet)
+    setWedding(existingRsvp.wedding)
+    setReception(existingRsvp.reception)
+    setPartyMembers(
+      Array.isArray(existingRsvp.party_members)
+        ? existingRsvp.party_members.filter(m => m.firstName)
+        : []
+    )
+    setDietary(existingRsvp.dietary_restrictions ?? '')
+    setNeedsHotel(existingRsvp.needs_hotel)
+    setNotes(existingRsvp.notes ?? '')
+    setIsEditMode(true)
+    setStep('form')
   }
 
   // ── Party member helpers ──
@@ -84,35 +160,62 @@ export default function RsvpForm() {
     setEventError(false)
     if (needsHotel === null) return
     setFormState('submitting')
-    try {
-      const supabase = createSupabaseClient()
-      const fullName = `${firstName.trim()} ${lastName.trim()}`.trim()
-      // Filter out empty party members
-      const cleanMembers = partyMembers
-        .filter(m => m.firstName.trim())
-        .map(m => ({ firstName: m.firstName.trim(), lastName: m.lastName.trim() }))
 
-      const { error } = await supabase.from('rsvps').insert({
-        guest_name:      fullName,
-        first_name:      firstName.trim(),
-        last_name:       lastName.trim(),
-        email:           email.trim().toLowerCase(),
-        party_size:      1 + cleanMembers.length,
-        party_members:   cleanMembers,
-        sangeet,
-        wedding,
-        reception,
-        dietary_restrictions: dietary.trim() || null,
-        needs_hotel:     needsHotel,
-        notes:           notes.trim() || null,
-      })
-      if (error) throw error
+    const fullName = `${firstName.trim()} ${lastName.trim()}`.trim()
+    const cleanMembers = partyMembers
+      .filter(m => m.firstName.trim())
+      .map(m => ({ firstName: m.firstName.trim(), lastName: m.lastName.trim() }))
+
+    const payload = {
+      guest_name:           fullName,
+      first_name:           firstName.trim(),
+      last_name:            lastName.trim(),
+      email:                email.trim().toLowerCase(),
+      party_size:           1 + cleanMembers.length,
+      party_members:        cleanMembers,
+      sangeet,
+      wedding,
+      reception,
+      dietary_restrictions: dietary.trim() || null,
+      needs_hotel:          needsHotel,
+      notes:                notes.trim() || null,
+    }
+
+    try {
+      if (isEditMode && existingRsvp?.id) {
+        const res = await fetch('/api/rsvp/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: existingRsvp.id, ...payload }),
+        })
+        if (!res.ok) throw new Error('Update failed')
+      } else {
+        const supabase = createSupabaseClient()
+        const { error } = await supabase.from('rsvps').insert(payload)
+        if (error) throw error
+      }
       setStep('success')
     } catch {
       setFormState('error')
       setTimeout(() => setFormState('idle'), 3000)
     }
   }
+
+  // Events the guest selected (for success / already-rsvped display)
+  const selectedEvents = EVENTS.filter(ev =>
+    ev.key === 'sangeet'   ? sangeet   :
+    ev.key === 'wedding'   ? wedding   :
+    ev.key === 'reception' ? reception : false
+  )
+
+  // Events from existing RSVP (for already-rsvped display)
+  const existingEvents = EVENTS.filter(ev =>
+    existingRsvp
+      ? ev.key === 'sangeet'   ? existingRsvp.sangeet   :
+        ev.key === 'wedding'   ? existingRsvp.wedding   :
+        ev.key === 'reception' ? existingRsvp.reception : false
+      : false
+  )
 
   return (
     <AnimatePresence mode="wait">
@@ -190,6 +293,81 @@ export default function RsvpForm() {
         </motion.div>
       )}
 
+      {/* ── Already RSVPed ── */}
+      {step === 'already-rsvped' && existingRsvp && (
+        <motion.div
+          key="already-rsvped"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.4 }}
+          className="max-w-md mx-auto"
+        >
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 rounded-full bg-gold/15 flex items-center justify-center mx-auto mb-4 text-3xl">✓</div>
+            <h2 className="font-display text-3xl italic text-charcoal">You&apos;re already on the list!</h2>
+            <p className="text-charcoal/50 text-sm mt-2">
+              We have an RSVP on file for <span className="font-medium text-charcoal/70">{firstName} {lastName}</span>.
+            </p>
+          </div>
+
+          {/* Existing RSVP summary */}
+          <div className="bg-olive-light/30 border-2 border-olive-light rounded-xl p-5 mb-6 space-y-3">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-charcoal/40 mb-2">Events you&apos;re attending</p>
+              <div className="space-y-1.5">
+                {existingEvents.length > 0
+                  ? existingEvents.map(ev => (
+                      <div key={ev.key} className="flex items-center gap-2 text-sm text-charcoal">
+                        <span>{ev.emoji}</span>
+                        <span className="font-medium">{ev.label}</span>
+                        <span className="text-charcoal/40">· {ev.desc.split(' · ')[0]}</span>
+                      </div>
+                    ))
+                  : <p className="text-sm text-charcoal/50">No events selected</p>
+                }
+              </div>
+            </div>
+            <div className="pt-2 border-t border-olive-light">
+              <p className="text-xs uppercase tracking-widest text-charcoal/40 mb-1">Party size</p>
+              <p className="text-sm text-charcoal font-medium">{existingRsvp.party_size} {existingRsvp.party_size === 1 ? 'guest' : 'guests'}</p>
+            </div>
+            {existingRsvp.dietary_restrictions && (
+              <div className="pt-2 border-t border-olive-light">
+                <p className="text-xs uppercase tracking-widest text-charcoal/40 mb-1">Dietary notes</p>
+                <p className="text-sm text-charcoal">{existingRsvp.dietary_restrictions}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={() => {
+                setSangeet(existingRsvp.sangeet)
+                setWedding(existingRsvp.wedding)
+                setReception(existingRsvp.reception)
+                setStep('success')
+              }}
+              className="w-full bg-olive-dark text-white py-4 rounded-xl font-medium tracking-wider uppercase text-sm hover:bg-olive-mid transition-colors"
+            >
+              Looks right — see my calendar links
+            </button>
+            <button
+              onClick={enterEditMode}
+              className="w-full py-4 rounded-xl border-2 border-olive-light text-charcoal/60 text-sm hover:border-olive-mid hover:text-charcoal transition-colors"
+            >
+              I need to update my RSVP
+            </button>
+            <button
+              onClick={() => setStep('gate')}
+              className="text-xs text-charcoal/30 hover:text-charcoal/50 transition-colors text-center"
+            >
+              ← That&apos;s not me
+            </button>
+          </div>
+        </motion.div>
+      )}
+
       {/* ── RSVP Form ── */}
       {step === 'form' && (
         <motion.form
@@ -203,8 +381,12 @@ export default function RsvpForm() {
         >
           {/* Welcome */}
           <div className="text-center pb-2">
-            <p className="font-display text-2xl italic text-gold">Welcome, {firstName}!</p>
-            <p className="text-sm text-charcoal/40 mt-1">Please fill in your details below.</p>
+            <p className="font-display text-2xl italic text-gold">
+              {isEditMode ? `Updating your RSVP, ${firstName}!` : `Welcome, ${firstName}!`}
+            </p>
+            <p className="text-sm text-charcoal/40 mt-1">
+              {isEditMode ? 'Make your changes below and resubmit.' : 'Please fill in your details below.'}
+            </p>
           </div>
 
           {/* Your name (pre-filled, editable) */}
@@ -304,7 +486,7 @@ export default function RsvpForm() {
 
             {totalGuests >= MAX_PARTY && (
               <p className="mt-2 text-xs text-center text-charcoal/30">
-                Maximum party size of {MAX_PARTY} reached.
+                Maximum party size of {MAX_PARTY} reached. Contact us for larger parties.
               </p>
             )}
           </div>
@@ -315,27 +497,27 @@ export default function RsvpForm() {
               Which events will you attend?
             </p>
             <div className="space-y-3">
-              {([
-                { key: 'sangeet',   label: 'Sangeet',                      desc: 'Feb 17 · Music, dancing & celebration', checked: sangeet,   set: setSangeet },
-                { key: 'wedding',   label: 'Muhurtham (Wedding Ceremony)', desc: 'Feb 18 · Tamil & Telugu Vedic ceremony', checked: wedding,   set: setWedding },
-                { key: 'reception', label: 'Reception',                    desc: 'Feb 18 · Dinner, toasts & party',        checked: reception, set: setReception },
-              ] as const).map(ev => (
-                <label
-                  key={ev.key}
-                  className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${ev.checked ? 'border-gold bg-gold/5' : 'border-olive-light bg-white hover:border-olive-mid'}`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={ev.checked}
-                    onChange={e => { ev.set(e.target.checked); setEventError(false) }}
-                    className="mt-1 w-4 h-4 accent-gold"
-                  />
-                  <div>
-                    <span className="font-medium text-charcoal">{ev.label}</span>
-                    <span className="block text-xs text-charcoal/40 mt-0.5">{ev.desc}</span>
-                  </div>
-                </label>
-              ))}
+              {EVENTS.map(ev => {
+                const checked = ev.key === 'sangeet' ? sangeet : ev.key === 'wedding' ? wedding : reception
+                const setter  = ev.key === 'sangeet' ? setSangeet : ev.key === 'wedding' ? setWedding : setReception
+                return (
+                  <label
+                    key={ev.key}
+                    className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${checked ? 'border-gold bg-gold/5' : 'border-olive-light bg-white hover:border-olive-mid'}`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={e => { setter(e.target.checked); setEventError(false) }}
+                      className="mt-1 w-4 h-4 accent-gold"
+                    />
+                    <div>
+                      <span className="font-medium text-charcoal">{ev.label}</span>
+                      <span className="block text-xs text-charcoal/40 mt-0.5">{ev.desc}</span>
+                    </div>
+                  </label>
+                )
+              })}
             </div>
             {eventError && <p className="text-red-500 text-sm mt-2">Please select at least one event.</p>}
           </div>
@@ -400,7 +582,7 @@ export default function RsvpForm() {
           <div className="flex gap-3">
             <button
               type="button"
-              onClick={() => setStep('gate')}
+              onClick={() => { setStep(isEditMode ? 'already-rsvped' : 'gate'); setIsEditMode(false) }}
               className="px-5 py-4 rounded-xl border-2 border-olive-light text-charcoal/50 text-sm hover:border-olive-mid transition-colors"
             >
               ← Back
@@ -410,7 +592,12 @@ export default function RsvpForm() {
               disabled={!firstName.trim() || !lastName.trim() || !email.trim() || needsHotel === null || formState === 'submitting'}
               className="flex-1 bg-olive-dark text-white py-4 rounded-xl font-medium tracking-wider uppercase text-sm hover:bg-olive-mid transition-colors disabled:opacity-40"
             >
-              {formState === 'submitting' ? 'Sending…' : `Send RSVP for ${totalGuests} ${totalGuests === 1 ? 'Guest' : 'Guests'} 💌`}
+              {formState === 'submitting'
+                ? (isEditMode ? 'Updating…' : 'Sending…')
+                : isEditMode
+                  ? 'Update RSVP →'
+                  : `Send RSVP for ${totalGuests} ${totalGuests === 1 ? 'Guest' : 'Guests'} →`
+              }
             </button>
           </div>
         </motion.form>
@@ -420,9 +607,9 @@ export default function RsvpForm() {
       {step === 'success' && (
         <motion.div
           key="success"
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center py-16"
+          className="text-center py-10 max-w-md mx-auto"
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -444,14 +631,50 @@ export default function RsvpForm() {
               />
             </motion.svg>
           </motion.div>
-          <h2 className="font-display text-4xl italic text-charcoal mb-3">We Can&apos;t Wait!</h2>
-          <p className="text-charcoal/50 text-sm max-w-md mx-auto">
-            Your RSVP for{' '}
-            <span className="text-charcoal/70 font-medium">{firstName} {lastName}</span>
-            {partyMembers.filter(m => m.firstName).length > 0 && (
-              <> + {partyMembers.filter(m => m.firstName).length} more</>
-            )}{' '}
-            has been received. We&apos;re so excited to celebrate with you in Sarasota!
+
+          <h2 className="font-display text-4xl italic text-charcoal mb-2">
+            {isEditMode ? 'RSVP Updated!' : 'We Can\'t Wait!'}
+          </h2>
+          <p className="text-charcoal/50 text-sm max-w-sm mx-auto mb-8">
+            {isEditMode
+              ? `Your RSVP has been updated. See you in Sarasota, ${firstName}!`
+              : <>
+                  Your RSVP for{' '}
+                  <span className="text-charcoal/70 font-medium">{firstName} {lastName}</span>
+                  {partyMembers.filter(m => m.firstName).length > 0 && (
+                    <> + {partyMembers.filter(m => m.firstName).length} more</>
+                  )}{' '}
+                  has been received. We&apos;re so excited to celebrate with you in Sarasota!
+                </>
+            }
+          </p>
+
+          {/* Event summary */}
+          <div className="bg-olive-light/30 border-2 border-olive-light rounded-xl p-5 mb-6 text-left">
+            <p className="text-xs uppercase tracking-widest text-charcoal/40 mb-3">Your events</p>
+            <div className="space-y-2">
+              {selectedEvents.map(ev => (
+                <div key={ev.key} className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-2 text-sm text-charcoal">
+                    <span>{ev.emoji}</span>
+                    <span className="font-medium">{ev.label}</span>
+                    <span className="text-charcoal/40">· {ev.desc.split(' · ')[0]}</span>
+                  </div>
+                  <a
+                    href={calendarUrl(`Gowtham & Nikhita — ${ev.label}`, ev.calStart, ev.calEnd)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-gold hover:text-gold-light transition-colors whitespace-nowrap shrink-0"
+                  >
+                    + Calendar
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="text-xs text-charcoal/30">
+            Questions? Reach out to Gowtham or Nikhita directly.
           </p>
         </motion.div>
       )}
