@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Timeline from './Timeline'
+import PhotoCarousel from './PhotoCarousel'
 
 function FadeIn({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -134,6 +135,12 @@ export default function OurStory() {
             </FadeIn>
           </div>
         </div>
+
+        {/* Photo carousel — all 17 photos, scrollable */}
+        <FadeIn delay={0.1} className="mt-16">
+          <p className="text-xs tracking-widest uppercase text-gold mb-5">Our Photos</p>
+          <PhotoCarousel />
+        </FadeIn>
       </div>
 
       {/* Lightbox */}
