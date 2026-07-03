@@ -8,7 +8,7 @@ export default function Footer() {
         <div>
           <p className="font-display text-3xl italic text-gold-light">Gowtham &amp; Nikhita</p>
           <p className="text-olive-light/70 mt-1 text-sm tracking-widest uppercase">
-            February 17, 2027 · Powel Crosley Estate · Sarasota, FL
+            February 17–18, 2027 · Powel Crosley Estate · Sarasota, FL
           </p>
         </div>
 
@@ -32,11 +32,6 @@ export default function Footer() {
             </Link>
           ))}
         </nav>
-
-        {/* QR note */}
-        <p className="text-xs text-olive-light/40 italic">
-          Scan the QR code at the venue to access live photo order updates
-        </p>
 
         {/* Made with love */}
         <p className="text-xs text-olive-light/40">Made with love in Atlanta 🌿</p>

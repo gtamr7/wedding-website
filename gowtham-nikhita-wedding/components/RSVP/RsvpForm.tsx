@@ -540,9 +540,10 @@ export default function RsvpForm() {
 
           {/* Hotel */}
           <div>
-            <p className="block text-xs uppercase tracking-widest text-charcoal/50 mb-3">
+            <p className="block text-xs uppercase tracking-widest text-charcoal/50 mb-1">
               Do you need hotel accommodation?
             </p>
+            <p className="text-xs text-charcoal/35 mb-3">Hotel block details coming soon — we&apos;ll share booking info before you need to decide.</p>
             <div className="flex gap-4">
               {([
                 { value: true,  label: 'Yes, I need a room' },

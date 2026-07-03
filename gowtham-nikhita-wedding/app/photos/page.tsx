@@ -37,8 +37,8 @@ export default async function PhotosPage() {
             <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">Photo Line-Up</h1>
             <div className="gold-divider w-24 mt-4 mx-auto" />
             <p className="text-charcoal/50 text-sm mt-4 leading-relaxed max-w-sm mx-auto">
-              Updates in real-time as the photographer progresses through each group.
-              Your card will highlight when it&apos;s your turn.
+              This page goes live on February 18 during the ceremony. Come back on the day
+              and your group card will highlight when it&apos;s your turn.
             </p>
           </div>
 

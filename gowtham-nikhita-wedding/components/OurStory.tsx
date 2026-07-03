@@ -57,7 +57,7 @@ export default function OurStory() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-xs tracking-widest uppercase text-gold mb-3">Chapter One</p>
+          <p className="text-xs tracking-widest uppercase text-gold mb-3">A Love Story</p>
           <h2 className="font-display text-5xl sm:text-6xl italic text-ivory">Our Story</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
         </motion.div>
