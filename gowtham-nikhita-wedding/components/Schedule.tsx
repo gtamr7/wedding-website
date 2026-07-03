@@ -5,8 +5,8 @@ import { motion, useInView, AnimatePresence } from 'framer-motion'
 
 const events = [
   {
-    date: 'Feb 16',
-    day: 'Sunday',
+    date: 'Feb 17',
+    day: 'Wednesday',
     name: 'Sangeet',
     emoji: '🎶',
     time: '6:00 PM – 10:00 PM',
@@ -19,15 +19,15 @@ const events = [
     badgeColor: 'bg-olive-mid/50 text-ivory',
     calendar: {
       title: 'Sangeet — Gowtham & Nikhita',
-      date: '20270216T180000',
-      endDate: '20270216T220000',
+      date: '20270217T180000',
+      endDate: '20270217T220000',
       location: 'Powel Crosley Estate, 8490 Crosley Ln, Sarasota, FL 34241',
       description: 'An evening of music, dance, and joyful celebration. Festive Indian attire.',
     },
   },
   {
-    date: 'Feb 17',
-    day: 'Monday',
+    date: 'Feb 18',
+    day: 'Thursday',
     name: 'Muhurtham',
     emoji: '🪔',
     time: '9:00 AM – 12:00 PM',
@@ -35,21 +35,20 @@ const events = [
     description:
       'The sacred Tamil & Telugu Vedic ceremony (Muhurtham) conducted according to ancient tradition. A profoundly moving ceremony rich with ritual, meaning, and family.',
     dresscode: 'Traditional Indian attire or formal Western',
-    color: 'from-gold/12 to-black/15',
-    borderColor: 'border-gold/45',
-    badgeColor: 'bg-gold/20 text-gold-light',
-    featured: true,
+    color: 'from-black/20 to-black/10',
+    borderColor: 'border-gold/15',
+    badgeColor: 'bg-olive-mid/50 text-ivory',
     calendar: {
       title: 'Muhurtham — Gowtham & Nikhita Wedding',
-      date: '20270217T090000',
-      endDate: '20270217T120000',
+      date: '20270218T090000',
+      endDate: '20270218T120000',
       location: 'Powel Crosley Estate, 8490 Crosley Ln, Sarasota, FL 34241',
       description: 'Tamil & Telugu Vedic wedding ceremony. Traditional Indian attire or formal Western.',
     },
   },
   {
-    date: 'Feb 17',
-    day: 'Monday Evening',
+    date: 'Feb 18',
+    day: 'Thursday Evening',
     name: 'Reception',
     emoji: '🥂',
     time: '6:00 PM – 11:45 PM',
@@ -62,8 +61,8 @@ const events = [
     badgeColor: 'bg-olive-mid/40 text-ivory',
     calendar: {
       title: 'Reception — Gowtham & Nikhita Wedding',
-      date: '20270217T180000',
-      endDate: '20270217T235500',
+      date: '20270218T180000',
+      endDate: '20270218T235500',
       location: 'Powel Crosley Estate, 8490 Crosley Ln, Sarasota, FL 34241',
       description: 'Wedding reception — dinner, dancing, and celebration. Black tie optional / cocktail attire.',
     },
@@ -227,7 +226,7 @@ export default function Schedule() {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <p className="text-xs tracking-widest uppercase text-gold mb-3">Feb 16–17, 2027</p>
+          <p className="text-xs tracking-widest uppercase text-gold mb-3">Feb 17–18, 2027</p>
           <h2 className="font-display text-5xl sm:text-6xl italic text-ivory">The Events</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
         </motion.div>

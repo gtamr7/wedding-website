@@ -23,30 +23,26 @@ export default function Hero() {
       }}
       aria-label="Hero"
     >
-      {/* Subtle gold center bloom */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 50% 40% at 50% 50%, rgba(184,151,42,0.08) 0%, transparent 100%)' }}
       />
 
-      {/* Three-column layout: photo — text — photo */}
-      <div className="flex items-center justify-center min-h-screen gap-0 sm:gap-8 lg:gap-16 px-4">
+      <div className="flex items-center justify-center min-h-screen sm:gap-8 lg:gap-16 px-6 sm:px-4">
 
-        {/* Left photo */}
+        {/* Left photo — desktop only */}
         <motion.div
           style={{ y: leftPhotoY }}
-          className="shrink-0 w-14 sm:w-44 lg:w-56"
+          className="hidden sm:block shrink-0 sm:w-44 lg:w-56"
           aria-hidden="true"
         >
-          <div
-            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[110px] sm:h-[200px] [transform:none] sm:[transform:rotate(-6deg)]"
-          >
+          <div className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[200px] sm:[transform:rotate(-6deg)]">
             <Image
               src="/gallery/IMG_0400.jpg"
               alt=""
               fill
               className="object-cover"
-              sizes="(max-width: 640px) 128px, (max-width: 1024px) 176px, 224px"
+              sizes="(max-width: 1024px) 176px, 224px"
               quality={90}
               priority
             />
@@ -95,7 +91,7 @@ export default function Hero() {
             className="space-y-1.5"
           >
             <p className="text-ivory/85 tracking-widest text-xs sm:text-sm uppercase">
-              February 17, 2027
+              February 17–18, 2027
             </p>
             <p className="text-ivory/40 text-[10px] sm:text-xs tracking-wider">
               Powel Crosley Estate · Sarasota, Florida
@@ -109,23 +105,53 @@ export default function Hero() {
           >
             <Countdown />
           </motion.div>
+
+          {/* Mobile-only: two photos below countdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 2.1 }}
+            className="flex sm:hidden gap-4 mt-1"
+            aria-hidden="true"
+          >
+            <div className="w-28 h-40 relative rounded-xl overflow-hidden border border-gold/25 shadow-xl shadow-black/40">
+              <Image
+                src="/gallery/IMG_0400.jpg"
+                alt=""
+                fill
+                className="object-cover"
+                sizes="112px"
+                quality={90}
+                priority
+              />
+            </div>
+            <div className="w-28 h-40 relative rounded-xl overflow-hidden border border-gold/25 shadow-xl shadow-black/40">
+              <Image
+                src="/gallery/IMG_0563.jpg"
+                alt=""
+                fill
+                className="object-cover"
+                sizes="112px"
+                quality={90}
+                priority
+              />
+            </div>
+          </motion.div>
         </motion.div>
 
-        {/* Right photo */}
+        {/* Right photo — desktop only */}
         <motion.div
           style={{ y: rightPhotoY }}
-          className="shrink-0 w-14 sm:w-44 lg:w-56"
+          className="hidden sm:block shrink-0 sm:w-44 lg:w-56"
           aria-hidden="true"
         >
-          <div
-            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[110px] sm:h-[200px] [transform:none] sm:[transform:rotate(6deg)]"
-          >
+          <div className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[200px] sm:[transform:rotate(6deg)]">
             <Image
               src="/gallery/IMG_0563.jpg"
               alt=""
               fill
               className="object-cover"
-              sizes="(max-width: 640px) 128px, (max-width: 1024px) 176px, 224px"
+              sizes="(max-width: 1024px) 176px, 224px"
               quality={90}
               priority
             />
@@ -134,7 +160,6 @@ export default function Hero() {
 
       </div>
 
-      {/* Scroll cue */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
