@@ -302,6 +302,37 @@ export default function SeatingAdmin() {
     }
   }
 
+  const exportCsv = () => {
+    const rows = [...parties]
+      .sort((a, b) => (a.table_number ?? 999) - (b.table_number ?? 999))
+      .map((p) => {
+        const members = Array.isArray(p.party_members)
+          ? p.party_members.filter((m) => m.firstName).map((m) => `${m.firstName} ${m.lastName}`.trim()).join('; ')
+          : ''
+        const events = [p.sangeet && 'Sangeet', p.wedding && 'Muhurtham', p.reception && 'Reception']
+          .filter(Boolean).join(', ')
+        return [
+          p.table_number ?? 'Unassigned',
+          p.guest_name,
+          members,
+          p.party_size,
+          events,
+          p.dietary_restrictions ?? '',
+        ]
+      })
+
+    const headers = ['Table', 'Lead Guest', 'Party Members', 'Party Size', 'Events', 'Dietary']
+    const csv = [headers, ...rows]
+      .map((row) => row.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(','))
+      .join('\n')
+
+    const a = Object.assign(document.createElement('a'), {
+      href: URL.createObjectURL(new Blob([csv], { type: 'text/csv' })),
+      download: `seating-${new Date().toISOString().slice(0, 10)}.csv`,
+    })
+    a.click()
+  }
+
   const clearAll = async () => {
     if (!confirm('Clear all table assignments?')) return
     const updates = parties.filter((p) => p.table_number).map((p) => ({ id: p.id, table_number: null }))
@@ -359,6 +390,13 @@ export default function SeatingAdmin() {
             className="bg-olive-dark text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-olive-mid transition-colors disabled:opacity-40"
           >
             Auto-fill
+          </button>
+          <button
+            onClick={exportCsv}
+            disabled={parties.length === 0}
+            className="bg-gold text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-40"
+          >
+            Export CSV
           </button>
           <button
             onClick={clearAll}
