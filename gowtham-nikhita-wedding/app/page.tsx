@@ -5,7 +5,6 @@ import Schedule from '@/components/Schedule'
 import Travel from '@/components/Travel'
 import Registry from '@/components/Registry'
 import Footer from '@/components/Footer'
-import PhotoStrip from '@/components/PhotoStrip'
 import Link from 'next/link'
 
 function FeatureLink({ href, emoji, title, desc }: { href: string; emoji: string; title: string; desc: string }) {
@@ -34,32 +33,9 @@ export default function HomePage() {
       <main>
         <Hero />
         <OurStory />
-
-        {/* Lifestyle strip — casual moments */}
-        <PhotoStrip photos={[
-          '/gallery/IMG_9641.jpg',
-          '/gallery/IMG_indian_attire.jpg',
-          '/gallery/IMG_couple_restaurant.jpg',
-        ]} />
-
         <Schedule />
         <Travel />
-
-        {/* Garden + ring strip */}
-        <PhotoStrip photos={[
-          '/gallery/IMG_0388.jpg',
-          '/gallery/IMG_0473.jpg',
-          '/gallery/IMG_0410.jpg',
-        ]} />
-
         <Registry />
-
-        {/* Adventures strip */}
-        <PhotoStrip photos={[
-          '/gallery/IMG_7335.jpg',
-          '/gallery/IMG_0450.jpg',
-          '/gallery/IMG_0502.jpg',
-        ]} />
 
         <section className="section-py px-6">
           <div className="max-w-4xl mx-auto">

@@ -46,8 +46,14 @@ export default function Nav() {
         {/* Logo */}
         <Link
           href="/"
+          onClick={(e) => {
+            if (pathname === '/') {
+              e.preventDefault()
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }
+          }}
           className="font-display text-xl lg:text-2xl italic text-gold tracking-wide hover:text-gold-light transition-colors"
-          aria-label="Home"
+          aria-label="Back to top"
         >
           G &amp; N
         </Link>

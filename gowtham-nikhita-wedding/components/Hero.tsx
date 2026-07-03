@@ -88,12 +88,12 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.4 }}
-            className="space-y-1.5"
+            className="space-y-2"
           >
-            <p className="text-ivory/85 tracking-widest text-xs sm:text-sm uppercase">
+            <p className="font-display italic text-gold-light/90 text-lg sm:text-xl tracking-wide">
               February 17–18, 2027
             </p>
-            <p className="text-ivory/40 text-[10px] sm:text-xs tracking-wider">
+            <p className="text-ivory/60 text-xs sm:text-sm tracking-widest uppercase">
               Powel Crosley Estate · Sarasota, Florida
             </p>
           </motion.div>
