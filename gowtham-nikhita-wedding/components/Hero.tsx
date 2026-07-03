@@ -32,15 +32,15 @@ export default function Hero() {
       {/* Three-column layout: photo — text — photo */}
       <div className="flex items-center justify-center min-h-screen gap-0 sm:gap-8 lg:gap-16 px-4">
 
-        {/* Left photo — hidden on mobile, shown sm+ */}
+        {/* Left photo */}
         <motion.div
           style={{ y: leftPhotoY }}
-          className="hidden sm:block shrink-0 sm:w-44 lg:w-56"
+          className="shrink-0 w-14 sm:w-44 lg:w-56"
           aria-hidden="true"
         >
           <div
-            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40"
-            style={{ height: '200px', transform: 'rotate(-6deg)' }}
+            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[110px] sm:h-[200px]"
+            style={{ transform: 'rotate(-6deg)' }}
           >
             <Image
               src="/gallery/IMG_0400.jpg"
@@ -112,15 +112,15 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Right photo — hidden on mobile, shown sm+ */}
+        {/* Right photo */}
         <motion.div
           style={{ y: rightPhotoY }}
-          className="hidden sm:block shrink-0 sm:w-44 lg:w-56"
+          className="shrink-0 w-14 sm:w-44 lg:w-56"
           aria-hidden="true"
         >
           <div
-            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40"
-            style={{ height: '200px', transform: 'rotate(6deg)' }}
+            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[110px] sm:h-[200px]"
+            style={{ transform: 'rotate(6deg)' }}
           >
             <Image
               src="/gallery/IMG_0563.jpg"

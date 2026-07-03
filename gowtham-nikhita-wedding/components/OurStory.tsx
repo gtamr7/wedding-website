@@ -69,7 +69,23 @@ export default function OurStory() {
                 </div>
               </div>
 
-              {/* Front card — the proposal */}
+              {/* Accent card — ring closeup, sits between back and front in stacking */}
+              <div
+                className="absolute w-28 rounded-lg overflow-hidden border border-gold/30 shadow-xl cursor-pointer group"
+                style={{ top: '172px', right: '8px', height: '160px', transform: 'rotate(-5deg)' }}
+                onClick={() => setLightbox('/gallery/IMG_0363.jpg')}
+              >
+                <Image
+                  src="/gallery/IMG_0363.jpg"
+                  alt=""
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="200px"
+                  quality={92}
+                />
+              </div>
+
+              {/* Front card — the proposal, last in DOM so naturally on top */}
               <div
                 className="absolute bottom-0 left-0 w-56 rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 cursor-pointer group"
                 style={{ height: '330px', transform: 'rotate(-3deg)' }}
@@ -91,22 +107,6 @@ export default function OurStory() {
                     </svg>
                   </div>
                 </div>
-              </div>
-
-              {/* Accent card — ring closeup */}
-              <div
-                className="absolute w-28 rounded-lg overflow-hidden border border-gold/30 shadow-xl z-10 cursor-pointer group"
-                style={{ top: '148px', left: '12px', height: '160px', transform: 'rotate(6deg)' }}
-                onClick={() => setLightbox('/gallery/IMG_0363.jpg')}
-              >
-                <Image
-                  src="/gallery/IMG_0363.jpg"
-                  alt=""
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="200px"
-                  quality={92}
-                />
               </div>
             </div>
           </FadeIn>
