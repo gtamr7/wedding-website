@@ -2,7 +2,6 @@
 
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import Image from 'next/image'
 
 const funds = [
   {
@@ -37,9 +36,6 @@ export default function Registry() {
           <p className="text-xs tracking-widest uppercase text-gold mb-3">Gifts</p>
           <h2 className="font-display text-5xl sm:text-6xl italic text-ivory">Registry</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
-          <div className="relative mx-auto mt-8 mb-2 w-36 h-44 rounded-xl overflow-hidden border border-gold/20 shadow-xl" style={{ transform: 'rotate(-2deg)' }}>
-            <Image src="/gallery/IMG_0473.jpg" alt="" fill className="object-cover" sizes="144px" />
-          </div>
           <p className="mt-8 text-ivory/60 leading-relaxed">
             Your presence is the greatest gift of all. If you&apos;d like to give, we&apos;d love
             contributions toward our honeymoon or our first home together.
