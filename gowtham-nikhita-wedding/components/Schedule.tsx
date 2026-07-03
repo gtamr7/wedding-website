@@ -172,14 +172,8 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
         initial={{ scaleX: 0 }}
         animate={inView ? { scaleX: 1 } : {}}
         transition={{ duration: 0.7, delay: index * 0.15 + 0.3 }}
-        className={`absolute top-0 left-0 right-0 h-0.5 origin-left ${'featured' in event && event.featured ? 'bg-gold' : 'bg-white/30'}`}
+        className="absolute top-0 left-0 right-0 h-0.5 origin-left bg-white/30"
       />
-
-      {'featured' in event && event.featured && (
-        <div className="absolute top-4 right-4 text-xs tracking-widest uppercase text-gold border border-gold/40 rounded-full px-3 py-1 bg-gold/10">
-          Main Event
-        </div>
-      )}
 
       <div className="flex items-start gap-4">
         <span className="text-3xl" aria-hidden="true">{event.emoji}</span>
