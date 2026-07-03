@@ -3,49 +3,45 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Countdown from './Countdown'
-import TempleSilhouette from './TempleSilhouette'
+import { SceneSky, SceneMid, SceneFore } from './TempleSilhouette'
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] })
 
-  // Background extends 40% above/below the section (180% total height).
-  // Moving it 30% of its own height = 54% of section height → dramatic visible parallax.
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-18%'])
+  // Three layers at different speeds → real parallax depth
+  const skyY  = useTransform(scrollYProgress, [0, 1], ['0%', '10%'])  // slowest
+  const midY  = useTransform(scrollYProgress, [0, 1], ['0%', '28%'])  // medium
+  const foreY = useTransform(scrollYProgress, [0, 1], ['0%', '48%'])  // fastest
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-15%'])
 
   return (
     <section
       ref={containerRef}
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
-      style={{ backgroundColor: '#05020A' }}
+      style={{ backgroundColor: '#020510' }}
       aria-label="Hero"
     >
-      {/* Full-bleed background with parallax — extends beyond section for movement room */}
-      <motion.div
-        style={{
-          y: bgY,
-          position: 'absolute',
-          top: '-40%',
-          left: 0,
-          right: 0,
-          height: '180%',
-        }}
-        aria-hidden="true"
-      >
-        <TempleSilhouette className="w-full h-full" />
+      {/* Sky — barely moves */}
+      <motion.div aria-hidden="true" style={{ y: skyY, position: 'absolute', top: '-15%', left: 0, right: 0, height: '130%' }}>
+        <SceneSky className="w-full h-full" />
       </motion.div>
 
-      {/* Dark vignette so text pops against the temple */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'linear-gradient(to bottom, rgba(2,1,6,0.55) 0%, rgba(2,1,6,0.2) 40%, rgba(2,1,6,0.35) 100%)' }}
-      />
-      {/* Center bloom to lift the names off the background */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 45% at 50% 42%, rgba(2,1,8,0.6) 0%, transparent 100%)' }}
-      />
+      {/* Bamboo grove + hills — medium speed */}
+      <motion.div aria-hidden="true" style={{ y: midY, position: 'absolute', top: '-30%', left: 0, right: 0, height: '160%' }}>
+        <SceneMid className="w-full h-full" />
+      </motion.div>
+
+      {/* Water + close bamboo + branches — fastest */}
+      <motion.div aria-hidden="true" style={{ y: foreY, position: 'absolute', top: '-45%', left: 0, right: 0, height: '190%' }}>
+        <SceneFore className="w-full h-full" />
+      </motion.div>
+
+      {/* Vignette so text pops */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: 'linear-gradient(to bottom, rgba(2,5,16,0.5) 0%, rgba(2,5,16,0.1) 45%, rgba(2,5,16,0.45) 100%)' }} />
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 55% 40% at 50% 44%, rgba(2,5,14,0.65) 0%, transparent 100%)' }} />
 
       {/* Text content — drifts up faster than the background */}
       <motion.div
