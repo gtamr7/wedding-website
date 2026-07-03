@@ -16,32 +16,28 @@ function Node({ m, index, isLast }: { m: typeof milestones[0]; index: number; is
 
   return (
     <div ref={ref} className="relative flex gap-6 sm:gap-10">
-      {/* Line + dot column */}
       <div className="flex flex-col items-center w-6 shrink-0">
-        {/* Dot */}
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={inView ? { scale: 1, opacity: 1 } : {}}
           transition={{ duration: 0.4, delay: index * 0.15 }}
           className={`w-4 h-4 rounded-full border-2 shrink-0 mt-1 ${
             m.label === 'The Wedding'
-              ? 'bg-gold border-gold shadow-[0_0_0_4px_rgba(184,151,42,0.2)]'
-              : 'bg-ivory border-olive-mid'
+              ? 'bg-gold border-gold shadow-[0_0_0_4px_rgba(184,151,42,0.3)]'
+              : 'bg-white/30 border-gold/60'
           }`}
         />
-        {/* Connecting line */}
         {!isLast && (
           <motion.div
             initial={{ scaleY: 0 }}
             animate={inView ? { scaleY: 1 } : {}}
             transition={{ duration: 0.6, delay: index * 0.15 + 0.3 }}
-            className="w-px flex-1 bg-olive-mid/40 origin-top mt-1"
+            className="w-px flex-1 bg-gold/30 origin-top mt-1"
             style={{ minHeight: '3rem' }}
           />
         )}
       </div>
 
-      {/* Content */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -49,8 +45,8 @@ function Node({ m, index, isLast }: { m: typeof milestones[0]; index: number; is
         className="pb-10"
       >
         <span className="text-xs tracking-widest uppercase text-gold font-medium">{m.year}</span>
-        <h4 className="font-display text-xl italic text-charcoal mt-0.5">{m.label}</h4>
-        <p className="text-sm text-charcoal/60 mt-1 leading-relaxed">{m.desc}</p>
+        <h4 className="font-display text-xl italic text-ivory mt-0.5">{m.label}</h4>
+        <p className="text-sm text-ivory/60 mt-1 leading-relaxed">{m.desc}</p>
       </motion.div>
     </div>
   )

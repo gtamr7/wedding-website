@@ -25,7 +25,7 @@ export default function Registry() {
   const inView = useInView(headerRef, { once: true, margin: '-80px' })
 
   return (
-    <section id="registry" className="section-py bg-olive-light/20 px-6">
+    <section id="registry" className="section-py px-6">
       <div className="max-w-2xl mx-auto text-center">
         <motion.div
           ref={headerRef}
@@ -34,9 +34,9 @@ export default function Registry() {
           transition={{ duration: 0.6 }}
         >
           <p className="text-xs tracking-widest uppercase text-gold mb-3">Gifts</p>
-          <h2 className="font-display text-5xl sm:text-6xl italic text-charcoal">Registry</h2>
+          <h2 className="font-display text-5xl sm:text-6xl italic text-ivory">Registry</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
-          <p className="mt-8 text-charcoal/60 leading-relaxed">
+          <p className="mt-8 text-ivory/60 leading-relaxed">
             Your presence is the greatest gift of all. If you&apos;d like to give, we&apos;d love
             contributions toward our honeymoon or our first home together.
           </p>
@@ -49,20 +49,20 @@ export default function Registry() {
               initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
-              className="bg-white border border-olive-light rounded-xl p-6 text-left"
+              className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 text-left"
             >
               <div className="text-3xl mb-3">{fund.icon}</div>
-              <p className="font-display text-xl italic text-charcoal">{fund.title}</p>
-              <p className="text-sm text-charcoal/50 mt-1 mb-5">{fund.description}</p>
+              <p className="font-display text-xl italic text-ivory">{fund.title}</p>
+              <p className="text-sm text-ivory/50 mt-1 mb-5">{fund.description}</p>
 
               <div className="space-y-3">
-                <div className="flex items-center gap-3 bg-[#008CFF]/8 rounded-lg px-4 py-3">
-                  <span className="text-[#008CFF] font-bold text-sm tracking-wide">Venmo</span>
-                  <span className="text-charcoal/70 text-sm ml-auto font-mono">{fund.venmo}</span>
+                <div className="flex items-center gap-3 bg-[#008CFF]/15 rounded-lg px-4 py-3">
+                  <span className="text-[#5BB8FF] font-bold text-sm tracking-wide">Venmo</span>
+                  <span className="text-ivory/70 text-sm ml-auto font-mono">{fund.venmo}</span>
                 </div>
-                <div className="flex items-center gap-3 bg-[#6B2D8B]/8 rounded-lg px-4 py-3">
-                  <span className="text-[#6B2D8B] font-bold text-sm tracking-wide">Zelle</span>
-                  <span className="text-charcoal/70 text-sm ml-auto font-mono">{fund.zelle}</span>
+                <div className="flex items-center gap-3 bg-[#6B2D8B]/15 rounded-lg px-4 py-3">
+                  <span className="text-[#C87FFF] font-bold text-sm tracking-wide">Zelle</span>
+                  <span className="text-ivory/70 text-sm ml-auto font-mono">{fund.zelle}</span>
                 </div>
               </div>
             </motion.div>
@@ -73,7 +73,7 @@ export default function Registry() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-6 text-xs text-charcoal/40 italic"
+          className="mt-6 text-xs text-ivory/40 italic"
         >
           No box gifts please — we appreciate your understanding.
         </motion.p>

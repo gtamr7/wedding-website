@@ -18,10 +18,16 @@ const photos: Photo[] = [
   { src: '/gallery/IMG_0563.jpg', span: 'normal' },
   { src: '/gallery/IMG_0600.jpg', span: 'wide' },
   { src: '/gallery/IMG_0649.jpg', span: 'normal' },
+  { src: '/gallery/IMG_indian_attire.jpg', span: 'tall' },
+  { src: '/gallery/IMG_9641.jpg', span: 'tall' },
+  { src: '/gallery/IMG_7335.jpg', span: 'wide' },
+  { src: '/gallery/IMG_couple_restaurant.jpg', span: 'normal' },
+  { src: '/gallery/IMG_0450.jpg', span: 'wide' },
+  { src: '/gallery/IMG_0502.jpg', span: 'normal' },
 ]
 
 function GalleryItem({ photo, index, onClick }: {
-  photo: typeof photos[0]
+  photo: Photo
   index: number
   onClick: () => void
 }) {
