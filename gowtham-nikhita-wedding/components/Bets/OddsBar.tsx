@@ -52,7 +52,7 @@ export default function OddsBar({ labelA, labelB, countA, countB, userPick, resu
       {/* Labels */}
       <div className="flex justify-between text-xs text-charcoal/50">
         <span>{labelA} ({countA})</span>
-        <span>{countB} ({labelB})</span>
+        <span>{labelB} ({countB})</span>
       </div>
     </div>
   )

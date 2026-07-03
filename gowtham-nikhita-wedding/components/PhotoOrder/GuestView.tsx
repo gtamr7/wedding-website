@@ -6,13 +6,17 @@ import { createSupabaseClient } from '@/lib/supabase'
 import { PHOTO_GROUPS } from '@/lib/photoGroups'
 import GroupCard from './GroupCard'
 
+const WEDDING_DAY = new Date('2027-02-18T00:00:00-05:00')
+
 export default function GuestView({ initialIndex }: { initialIndex: number }) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex)
   const [connected, setConnected] = useState(false)
   const activeRef = useRef<HTMLDivElement>(null)
+  const isLive = new Date() >= WEDDING_DAY
 
-  // Realtime subscription
+  // Realtime subscription — only connect on wedding day
   useEffect(() => {
+    if (!isLive) return
     const supabase = createSupabaseClient()
 
     const channel = supabase
@@ -30,7 +34,7 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
       })
 
     return () => { supabase.removeChannel(channel) }
-  }, [])
+  }, [isLive])
 
   // Auto-scroll to active card
   useEffect(() => {
@@ -49,6 +53,18 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
   }
 
   const nowGroup = PHOTO_GROUPS[currentIndex]
+
+  if (!isLive) {
+    return (
+      <div className="text-center py-16 text-charcoal/40">
+        <div className="text-5xl mb-5">📷</div>
+        <p className="font-display text-2xl italic text-charcoal mb-2">See you on February 18</p>
+        <p className="text-sm leading-relaxed max-w-xs mx-auto">
+          This page activates during the ceremony. Open it on the day and your group will highlight when it&apos;s your turn.
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-xl mx-auto">

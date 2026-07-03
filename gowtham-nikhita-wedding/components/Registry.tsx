@@ -1,7 +1,25 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+
+function CopyButton({ value }: { value: string }) {
+  const [copied, setCopied] = useState(false)
+  const copy = () => {
+    navigator.clipboard.writeText(value).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+  return (
+    <button
+      onClick={copy}
+      className="text-xs px-2 py-1 rounded-md border border-white/20 text-white/50 hover:text-white hover:border-white/40 transition-colors shrink-0"
+    >
+      {copied ? 'Copied!' : 'Copy'}
+    </button>
+  )
+}
 
 const funds = [
   {
@@ -57,12 +75,14 @@ export default function Registry() {
 
               <div className="space-y-3">
                 <div className="flex items-center gap-3 bg-[#008CFF]/15 rounded-lg px-4 py-3">
-                  <span className="text-[#5BB8FF] font-bold text-sm tracking-wide">Venmo</span>
-                  <span className="text-ivory/70 text-sm ml-auto font-mono">{fund.venmo}</span>
+                  <span className="text-[#5BB8FF] font-bold text-sm tracking-wide shrink-0">Venmo</span>
+                  <span className="text-ivory/70 text-sm font-mono flex-1 truncate">{fund.venmo}</span>
+                  <CopyButton value={fund.venmo} />
                 </div>
                 <div className="flex items-center gap-3 bg-[#6B2D8B]/15 rounded-lg px-4 py-3">
-                  <span className="text-[#C87FFF] font-bold text-sm tracking-wide">Zelle</span>
-                  <span className="text-ivory/70 text-sm ml-auto font-mono">{fund.zelle}</span>
+                  <span className="text-[#C87FFF] font-bold text-sm tracking-wide shrink-0">Zelle</span>
+                  <span className="text-ivory/70 text-sm font-mono flex-1 truncate">{fund.zelle}</span>
+                  <CopyButton value={fund.zelle} />
                 </div>
               </div>
             </motion.div>

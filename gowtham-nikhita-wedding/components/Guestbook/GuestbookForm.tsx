@@ -70,6 +70,7 @@ export default function GuestbookForm({ onSubmit }: GuestbookFormProps) {
 
       onSubmit(name.trim(), message.trim(), photoUrl)
       setState('success')
+      setName('')
       setMessage('')
       removePhoto()
       setTimeout(() => setState('idle'), 3500)

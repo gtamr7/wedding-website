@@ -166,6 +166,7 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.15, ease: 'easeOut' }}
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
+      whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
       className={`relative rounded-xl border bg-gradient-to-br backdrop-blur-sm ${event.color} ${event.borderColor} p-7 sm:p-9 overflow-hidden group`}
     >
       <motion.div

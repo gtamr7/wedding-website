@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import type { GuestbookEntry } from '@/lib/types'
@@ -21,6 +21,12 @@ function formatDate(iso: string) {
 export default function GuestbookWall({ initialEntries }: { initialEntries: GuestbookEntry[] }) {
   const [entries, setEntries] = useState(initialEntries)
   const [lightbox, setLightbox] = useState<string | null>(null)
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightbox(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   const handleNewEntry = (name: string, message: string, photoUrl?: string) => {
     const newEntry: GuestbookEntry = {

@@ -17,14 +17,16 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Gowtham & Nikhita · February 17, 2027',
+  metadataBase: new URL('https://wedding-website-gtamr7.vercel.app'),
+  title: 'Gowtham & Nikhita · February 17–18, 2027',
   description:
-    'Join us for our wedding celebration at Powel Crosley Estate, Sarasota, FL — A Tamil & Telugu celebration of love.',
+    'Join us for our wedding celebration at Powel Crosley Estate, Sarasota, FL — A Tamil/Telugu Hindu celebration of love.',
   robots: 'noindex, nofollow',
   openGraph: {
-    title: 'Gowtham & Nikhita · February 17, 2027',
-    description: 'A Tamil & Telugu celebration of love at Powel Crosley Estate, Sarasota, FL.',
+    title: 'Gowtham & Nikhita · February 17–18, 2027',
+    description: 'A Tamil/Telugu Hindu celebration of love at Powel Crosley Estate, Sarasota, FL.',
     type: 'website',
+    images: [{ url: '/gallery/IMG_0314.jpg', width: 1200, height: 800, alt: 'Gowtham & Nikhita' }],
   },
 }
 

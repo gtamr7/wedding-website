@@ -100,7 +100,7 @@ export default function Nav() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-sm tracking-widest uppercase text-ivory/80 hover:text-gold py-1 transition-colors"
+                  className="text-sm tracking-widest uppercase text-ivory/80 hover:text-gold py-3 transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
                   {l.label}
