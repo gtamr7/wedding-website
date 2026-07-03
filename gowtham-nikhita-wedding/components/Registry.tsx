@@ -49,7 +49,7 @@ export default function Registry() {
               initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
-              className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 text-left"
+              className="bg-olive-dark/50 border border-gold/15 rounded-xl p-6 text-left"
             >
               <div className="text-3xl mb-3">{fund.icon}</div>
               <p className="font-display text-xl italic text-ivory">{fund.title}</p>

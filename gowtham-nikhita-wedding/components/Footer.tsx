@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="bg-olive-dark text-olive-light py-16 px-6">
+    <footer className="text-olive-light py-16 px-6 border-t border-gold/15" style={{ backgroundColor: '#111A0A' }}>
       <div className="max-w-4xl mx-auto text-center space-y-6">
         {/* Names */}
         <div>

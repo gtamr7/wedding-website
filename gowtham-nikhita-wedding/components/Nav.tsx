@@ -33,7 +33,7 @@ export default function Nav() {
   useEffect(() => { setMenuOpen(false) }, [pathname])
 
   const navBg = scrolled || !isHome
-    ? 'bg-ivory/95 backdrop-blur-sm shadow-sm border-b border-olive-light'
+    ? 'bg-olive-dark/95 backdrop-blur-sm shadow-sm border-b border-gold/15'
     : 'bg-transparent'
 
   return (
@@ -59,7 +59,7 @@ export default function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              className={`text-sm tracking-widest uppercase transition-colors duration-200 hover:text-gold ${scrolled || !isHome ? 'text-charcoal/80' : 'text-ivory/80'}`}
+              className="text-sm tracking-widest uppercase transition-colors duration-200 hover:text-gold text-ivory/80"
             >
               {l.label}
             </Link>
@@ -73,9 +73,9 @@ export default function Nav() {
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
         >
-          <span className={`block w-6 h-0.5 transition-all duration-300 ${scrolled || !isHome ? 'bg-charcoal' : 'bg-ivory'} ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-          <span className={`block w-6 h-0.5 transition-all duration-300 ${scrolled || !isHome ? 'bg-charcoal' : 'bg-ivory'} ${menuOpen ? 'opacity-0' : ''}`} />
-          <span className={`block w-6 h-0.5 transition-all duration-300 ${scrolled || !isHome ? 'bg-charcoal' : 'bg-ivory'} ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+          <span className={`block w-6 h-0.5 transition-all duration-300 bg-ivory ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+          <span className={`block w-6 h-0.5 transition-all duration-300 bg-ivory ${menuOpen ? 'opacity-0' : ''}`} />
+          <span className={`block w-6 h-0.5 transition-all duration-300 bg-ivory ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
         </button>
       </div>
 
@@ -87,7 +87,7 @@ export default function Nav() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="lg:hidden bg-ivory/98 backdrop-blur-sm border-t border-olive-light overflow-hidden"
+            className="lg:hidden bg-olive-dark/98 backdrop-blur-sm border-t border-gold/15 overflow-hidden"
             aria-label="Mobile navigation"
           >
             <div className="flex flex-col py-4 px-6 gap-4">
@@ -95,7 +95,7 @@ export default function Nav() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-sm tracking-widest uppercase text-charcoal/80 hover:text-gold py-1 transition-colors"
+                  className="text-sm tracking-widest uppercase text-ivory/80 hover:text-gold py-1 transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
                   {l.label}

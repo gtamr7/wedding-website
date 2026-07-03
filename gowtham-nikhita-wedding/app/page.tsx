@@ -1,5 +1,3 @@
-'use client'
-
 import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'
 import OurStory from '@/components/OurStory'
@@ -7,14 +5,13 @@ import Schedule from '@/components/Schedule'
 import Travel from '@/components/Travel'
 import Registry from '@/components/Registry'
 import Footer from '@/components/Footer'
-import ParallaxBackground from '@/components/ParallaxBackground'
 import Link from 'next/link'
 
 function FeatureLink({ href, emoji, title, desc }: { href: string; emoji: string; title: string; desc: string }) {
   return (
     <Link
       href={href}
-      className="group block rounded-xl border border-white/20 bg-white/8 backdrop-blur-sm p-6 hover:border-gold/50 hover:bg-white/12 hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
+      className="group block rounded-xl border border-gold/15 bg-olive-dark/50 p-6 hover:border-gold/40 hover:bg-olive-dark/70 hover:-translate-y-1 transition-all duration-200"
     >
       <div className="text-3xl mb-3">{emoji}</div>
       <h3 className="font-display text-xl italic text-ivory group-hover:text-gold transition-colors">{title}</h3>
@@ -32,7 +29,6 @@ function FeatureLink({ href, emoji, title, desc }: { href: string; emoji: string
 export default function HomePage() {
   return (
     <>
-      <ParallaxBackground />
       <Nav />
       <main>
         <Hero />
@@ -49,24 +45,9 @@ export default function HomePage() {
               <div className="gold-divider w-24 mt-5 mx-auto" />
             </div>
             <div className="grid sm:grid-cols-3 gap-5">
-              <FeatureLink
-                href="/photos"
-                emoji="📷"
-                title="Photo Line-Up"
-                desc="See exactly when your group is up for photos — live updates so you're never caught off guard."
-              />
-              <FeatureLink
-                href="/bets"
-                emoji="🎰"
-                title="The Bets"
-                desc="Over/unders and prop bets on wedding day outcomes. Bragging rights await."
-              />
-              <FeatureLink
-                href="/guestbook"
-                emoji="💌"
-                title="Guestbook"
-                desc="Leave us a note. We'll treasure every word."
-              />
+              <FeatureLink href="/photos" emoji="📷" title="Photo Line-Up" desc="See exactly when your group is up for photos — live updates so you're never caught off guard." />
+              <FeatureLink href="/bets" emoji="🎰" title="The Bets" desc="Over/unders and prop bets on wedding day outcomes. Bragging rights await." />
+              <FeatureLink href="/guestbook" emoji="💌" title="Guestbook" desc="Leave us a note. We'll treasure every word." />
             </div>
           </div>
         </section>

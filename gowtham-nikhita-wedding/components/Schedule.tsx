@@ -14,9 +14,9 @@ const events = [
     description:
       'An evening of music, dance, and joyful celebration as both families come together for the first time. Performances, food, and the energy of two worlds colliding in the best way.',
     dresscode: 'Festive Indian attire — lehengas, sarees, sherwanis, kurtas',
-    color: 'from-white/8 to-white/4',
-    borderColor: 'border-white/15',
-    badgeColor: 'bg-olive-mid/40 text-ivory',
+    color: 'from-olive-dark/50 to-olive-dark/30',
+    borderColor: 'border-gold/15',
+    badgeColor: 'bg-olive-mid/50 text-ivory',
     calendar: {
       title: 'Sangeet Night — Gowtham & Nikhita',
       date: '20270216T180000',
@@ -35,9 +35,9 @@ const events = [
     description:
       'The sacred Tamil & Telugu Vedic ceremony (Muhurtham) conducted according to ancient tradition. A profoundly moving ceremony rich with ritual, meaning, and family.',
     dresscode: 'Traditional Indian attire or formal Western',
-    color: 'from-gold/12 to-gold/6',
-    borderColor: 'border-gold/50',
-    badgeColor: 'bg-gold/25 text-gold',
+    color: 'from-gold/10 to-olive-dark/40',
+    borderColor: 'border-gold/45',
+    badgeColor: 'bg-gold/20 text-gold-light',
     featured: true,
     calendar: {
       title: 'Muhurtham — Gowtham & Nikhita Wedding',
@@ -57,9 +57,9 @@ const events = [
     description:
       'Dinner, dancing, speeches, and celebration under the Sarasota sky. The waterfront setting of Powel Crosley Estate provides a breathtaking backdrop for an evening to remember.',
     dresscode: 'Black tie optional / Cocktail attire',
-    color: 'from-white/8 to-black/10',
-    borderColor: 'border-white/15',
-    badgeColor: 'bg-white/15 text-ivory',
+    color: 'from-olive-dark/50 to-olive-dark/30',
+    borderColor: 'border-gold/15',
+    badgeColor: 'bg-olive-mid/40 text-ivory',
     calendar: {
       title: 'Reception — Gowtham & Nikhita Wedding',
       date: '20270217T180000',
@@ -121,13 +121,13 @@ function AddToCalendar({ cal }: { cal: typeof events[0]['calendar'] }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 4, scale: 0.97 }}
               transition={{ duration: 0.15 }}
-              className="absolute left-0 bottom-full mb-2 z-20 bg-charcoal/95 backdrop-blur-sm rounded-xl shadow-xl border border-white/15 overflow-hidden w-44"
+              className="absolute left-0 bottom-full mb-2 z-20 bg-olive-dark/98 backdrop-blur-sm rounded-xl shadow-xl border border-gold/20 overflow-hidden w-44"
             >
               <a
                 href={googleCalUrl(cal)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2.5 px-4 py-3 text-sm text-ivory hover:bg-white/10 transition-colors"
+                className="flex items-center gap-2.5 px-4 py-3 text-sm text-ivory hover:bg-white/8 transition-colors"
                 onClick={() => setOpen(false)}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -139,7 +139,7 @@ function AddToCalendar({ cal }: { cal: typeof events[0]['calendar'] }) {
               <a
                 href={makeIcs(cal)}
                 download={`${cal.title.replace(/[^a-z0-9]/gi, '-')}.ics`}
-                className="flex items-center gap-2.5 px-4 py-3 text-sm text-ivory hover:bg-white/10 transition-colors border-t border-white/10"
+                className="flex items-center gap-2.5 px-4 py-3 text-sm text-ivory hover:bg-white/8 transition-colors border-t border-gold/15"
                 onClick={() => setOpen(false)}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
