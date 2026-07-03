@@ -33,7 +33,7 @@ const events = [
     time: '9:00 AM – 12:00 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
-      'The sacred Hindu Vedic Kalyaanam conducted according to ancient tradition. A profoundly moving ceremony rich with ritual, meaning, and family.',
+      'The sacred Tamil/Telugu Hindu Kalyaanam conducted according to ancient tradition. A profoundly moving ceremony rich with ritual, meaning, and family.',
     dresscode: 'Traditional Indian attire or formal Western',
     color: 'from-black/20 to-black/10',
     borderColor: 'border-gold/15',
@@ -43,7 +43,7 @@ const events = [
       date: '20270218T090000',
       endDate: '20270218T120000',
       location: 'Powel Crosley Estate, 8490 Crosley Ln, Sarasota, FL 34241',
-      description: 'Hindu Vedic Kalyaanam. Traditional Indian attire or formal Western.',
+      description: 'Tamil/Telugu Hindu Kalyaanam. Traditional Indian attire or formal Western.',
     },
   },
   {
