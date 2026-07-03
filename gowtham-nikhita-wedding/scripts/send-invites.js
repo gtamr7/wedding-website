@@ -35,7 +35,7 @@ if (fs.existsSync(envPath)) {
 
 const DRY_RUN   = !process.argv.includes('--send')
 const TEST_NUM  = (() => { const i = process.argv.indexOf('--test'); return i > -1 ? process.argv[i + 1] : null })()
-const RSVP_URL  = 'https://wedding-website-virid-omega.vercel.app/rsvp'
+const RSVP_URL  = 'https://gowthamandnikhita.com/rsvp'
 
 const SID        = process.env.TWILIO_ACCOUNT_SID
 const AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN
@@ -51,7 +51,7 @@ if (!DRY_RUN && (!SID || !AUTH_TOKEN || !FROM)) {
 }
 
 // ── Parse & deduplicate the CSV ──────────────────────────────────────────────
-const csvPath = path.join(process.env.USERPROFILE || process.env.HOME, 'Downloads', 'export (1).csv')
+const csvPath = path.join(process.env.USERPROFILE || process.env.HOME, 'Downloads', 'export (4).csv')
 const raw = fs.readFileSync(csvPath, 'utf8')
 const rows = raw.split('\n').slice(1).filter(r => r.trim())
 
@@ -109,7 +109,7 @@ for (const [phone, group] of phoneGroups) {
   }
   for (const cluster of clusters) {
     const best = cluster.slice().sort((a, b) => b.firstName.length - a.firstName.length)[0]
-    contacts.push({ firstName: best.firstName, phone })
+    contacts.push({ firstName: cleanFirstName(best.firstName), phone })
   }
 }
 
@@ -118,12 +118,21 @@ contacts.sort((a, b) => a.firstName.localeCompare(b.firstName))
 
 console.log(`\n📱  ${contacts.length} contacts loaded from CSV\n`)
 
+// ── Name cleaning ─────────────────────────────────────────────────────────────
+function cleanFirstName(raw) {
+  // Strip parenthetical notes e.g. "Deepika (Daddy's Relative)" -> "Deepika"
+  let name = raw.replace(/\s*\(.*?\)\s*/g, '').trim()
+  // Capitalize first letter (fixes "usha" -> "Usha")
+  if (name.length > 0) name = name[0].toUpperCase() + name.slice(1)
+  return name
+}
+
 // ── Message template ──────────────────────────────────────────────────────────
 // Keep under 160 chars for single-segment SMS (no emoji to stay in GSM-7 encoding)
 function buildMessage(firstName) {
   return (
-    `Hey ${firstName}! Gowtham & Nikhita's wedding is Feb 17, 2027 in Sarasota, FL. ` +
-    `Please RSVP on our website (takes 2 mins): ${RSVP_URL}`
+    `Hey ${firstName}! Gowtham & Nikhita's wedding is Feb 17-18, 2027. ` +
+    `RSVP by Aug 24: ${RSVP_URL} We hope to see you there!`
   )
 }
 

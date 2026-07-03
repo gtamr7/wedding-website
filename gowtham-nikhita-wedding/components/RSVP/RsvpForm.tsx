@@ -22,6 +22,7 @@ type ExistingRsvp = {
 }
 
 const MAX_PARTY = 5
+const RSVP_DEADLINE = new Date('2026-08-25T00:00:00-05:00')
 
 const EVENTS = [
   {
@@ -218,6 +219,18 @@ export default function RsvpForm() {
         ev.key === 'reception' ? existingRsvp.reception : false
       : false
   )
+
+  if (new Date() >= RSVP_DEADLINE) {
+    return (
+      <div className="max-w-md mx-auto text-center py-12">
+        <div className="w-16 h-16 rounded-full bg-charcoal/8 flex items-center justify-center mx-auto mb-5 text-3xl">🔒</div>
+        <h2 className="font-display text-3xl italic text-charcoal mb-2">RSVP submissions are closed</h2>
+        <p className="text-charcoal/50 text-sm leading-relaxed">
+          The deadline has passed. If you need to make changes, please contact Gowtham or Nikhita directly.
+        </p>
+      </div>
+    )
+  }
 
   return (
     <AnimatePresence mode="wait">

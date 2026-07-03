@@ -21,6 +21,9 @@ export default function RsvpPage() {
             <p className="text-charcoal/50 text-sm mt-4 max-w-md mx-auto">
               We&apos;d love to have you celebrate with us. Please type your full name below.
             </p>
+            <p className="text-gold text-xs mt-2 font-medium tracking-wide">
+              Please RSVP by August 24 or sooner
+            </p>
           </div>
 
           <RsvpForm />
