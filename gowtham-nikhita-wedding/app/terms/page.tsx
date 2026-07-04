@@ -17,7 +17,7 @@ export default function TermsAndConditions() {
       <p>Message and data rates may apply depending on your mobile carrier and plan.</p>
 
       <h2 style={{ fontSize: '1.1rem', marginTop: 32 }}>Website Use</h2>
-      <p>This website (<a href="https://wedding-website-virid-omega.vercel.app" style={{ color: '#8B6838' }}>wedding-website-virid-omega.vercel.app</a>) is a personal wedding website for the sole purpose of sharing event information and collecting RSVPs from invited guests. Unauthorized use of this site is prohibited.</p>
+      <p>This website (<a href="https://gowthamandnikhita.com" style={{ color: '#8B6838' }}>gowthamandnikhita.com</a>) is a personal wedding website for the sole purpose of sharing event information and collecting RSVPs from invited guests. Unauthorized use of this site is prohibited.</p>
 
       <h2 style={{ fontSize: '1.1rem', marginTop: 32 }}>Contact</h2>
       <p>Questions? Reach us at <a href="mailto:gowtham7ramesh@gmail.com" style={{ color: '#8B6838' }}>gowtham7ramesh@gmail.com</a>.</p>
