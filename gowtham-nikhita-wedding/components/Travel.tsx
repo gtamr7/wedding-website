@@ -127,8 +127,8 @@ export default function Travel() {
                 <div>
                   <p className="font-medium text-ivory text-sm">February in Sarasota</p>
                   <p className="text-ivory/60 text-sm mt-1">
-                    Expect ~75°F, low humidity, and sunny skies. Sarasota in February is paradise —
-                    light layers for the evening reception.
+                    Expect ~75°F, low humidity, and sunny skies. Sarasota in February is paradise.
+                    Light layers for the evening reception.
                   </p>
                 </div>
               </div>
@@ -165,7 +165,7 @@ export default function Travel() {
                   ))}
                 </div>
                 <p className="text-xs text-ivory/40 mt-2">
-                  Driving from Atlanta: ~8.5 hours via I-75 South — a beautiful drive!
+                  Driving from Atlanta: ~8.5 hours via I-75 South. A beautiful drive!
                 </p>
               </div>
             </FadeIn>
@@ -178,7 +178,7 @@ export default function Travel() {
                   <span className="text-lg shrink-0" aria-hidden="true">🔔</span>
                   <p className="text-sm text-ivory/70 leading-relaxed">
                     <span className="text-gold font-medium">Hotel block & shuttle details coming soon.</span>{' '}
-                    We&apos;re finalizing room blocks and transportation — check back for updates before booking.
+                    We&apos;re finalizing room blocks and transportation. Check back for updates before booking.
                   </p>
                 </div>
                 <div className="space-y-3">

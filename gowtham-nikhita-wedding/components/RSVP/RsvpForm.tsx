@@ -365,7 +365,7 @@ export default function RsvpForm() {
               }}
               className="w-full bg-olive-dark text-white py-4 rounded-xl font-medium tracking-wider uppercase text-sm hover:bg-olive-mid transition-colors"
             >
-              Looks right — see my calendar links
+              Looks right, see my calendar links
             </button>
             <button
               onClick={enterEditMode}
@@ -540,7 +540,7 @@ export default function RsvpForm() {
           {/* Dietary */}
           <div>
             <label htmlFor="rsvp-dietary" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
-              Dietary Restrictions <span className="normal-case text-charcoal/30">(optional — list for all guests)</span>
+              Dietary Restrictions <span className="normal-case text-charcoal/30">(optional, list for all guests)</span>
             </label>
             <input
               id="rsvp-dietary"
@@ -558,7 +558,7 @@ export default function RsvpForm() {
             <p className="block text-xs uppercase tracking-widest text-charcoal/50 mb-1">
               Do you need hotel accommodation?
             </p>
-            <p className="text-xs text-charcoal/35 mb-3">Hotel block details coming soon — we&apos;ll share booking info before you need to decide.</p>
+            <p className="text-xs text-charcoal/35 mb-3">Hotel block details coming soon. We&apos;ll share booking info before you need to decide.</p>
             <div className="flex gap-4">
               {([
                 { value: true,  label: 'Yes, I need a room' },
@@ -677,7 +677,7 @@ export default function RsvpForm() {
                     <span className="text-charcoal/40">· {ev.desc.split(' · ')[0]}</span>
                   </div>
                   <a
-                    href={calendarUrl(`Gowtham & Nikhita — ${ev.label}`, ev.calStart, ev.calEnd)}
+                    href={calendarUrl(`Gowtham & Nikhita: ${ev.label}`, ev.calStart, ev.calEnd)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-gold hover:text-gold-light transition-colors whitespace-nowrap shrink-0"

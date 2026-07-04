@@ -95,7 +95,7 @@ export default function Registry() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-6 text-xs text-ivory/40 italic"
         >
-          No box gifts please — we appreciate your understanding.
+          No box gifts please. We appreciate your understanding.
         </motion.p>
       </div>
     </section>

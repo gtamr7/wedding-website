@@ -105,7 +105,7 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
             <div>
               <p className="text-xs uppercase tracking-widest text-white/70">Now Photographing</p>
               <p className="font-display text-xl italic font-medium">
-                Group {currentIndex + 1} — {nowGroup.name}
+                Group {currentIndex + 1}: {nowGroup.name}
               </p>
             </div>
           </motion.div>
@@ -118,7 +118,7 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
             className="mb-6 rounded-xl bg-olive-mid text-white px-5 py-4 text-center"
           >
             <p className="font-display text-xl italic">🎉 All photos complete!</p>
-            <p className="text-sm text-white/70 mt-1">Time to celebrate — see you on the dance floor.</p>
+            <p className="text-sm text-white/70 mt-1">Time to celebrate. See you on the dance floor.</p>
           </motion.div>
         )}
       </AnimatePresence>

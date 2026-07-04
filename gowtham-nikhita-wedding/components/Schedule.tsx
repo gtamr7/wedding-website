@@ -13,12 +13,12 @@ const events = [
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
       'An evening of music, dance, and joyful celebration as both families come together for the first time. Performances, food, and the energy of two worlds colliding in the best way.',
-    dresscode: 'Festive Indian attire — lehengas, sarees, sherwanis, kurtas',
+    dresscode: 'Festive Indian attire: lehengas, sarees, sherwanis, kurtas',
     color: 'from-black/20 to-black/10',
     borderColor: 'border-gold/15',
     badgeColor: 'bg-olive-mid/50 text-ivory',
     calendar: {
-      title: 'Sangeet — Gowtham & Nikhita',
+      title: 'Sangeet | Gowtham & Nikhita',
       date: '20270217T180000',
       endDate: '20270217T220000',
       location: 'Powel Crosley Estate, 8374 N Tamiami Trl, Sarasota, FL 34243',
@@ -39,7 +39,7 @@ const events = [
     borderColor: 'border-gold/15',
     badgeColor: 'bg-olive-mid/50 text-ivory',
     calendar: {
-      title: 'Ceremony (Kalyaanam) — Gowtham & Nikhita Wedding',
+      title: 'Ceremony (Kalyaanam) | Gowtham & Nikhita Wedding',
       date: '20270218T090000',
       endDate: '20270218T120000',
       location: 'Powel Crosley Estate, 8374 N Tamiami Trl, Sarasota, FL 34243',
@@ -60,11 +60,11 @@ const events = [
     borderColor: 'border-gold/15',
     badgeColor: 'bg-olive-mid/40 text-ivory',
     calendar: {
-      title: 'Reception — Gowtham & Nikhita Wedding',
+      title: 'Reception | Gowtham & Nikhita Wedding',
       date: '20270218T180000',
       endDate: '20270218T235500',
       location: 'Powel Crosley Estate, 8374 N Tamiami Trl, Sarasota, FL 34243',
-      description: 'Wedding reception — dinner, dancing, and celebration. Black tie optional / cocktail attire.',
+      description: 'Wedding reception: dinner, dancing, and celebration. Black tie optional / cocktail attire.',
     },
   },
 ]
