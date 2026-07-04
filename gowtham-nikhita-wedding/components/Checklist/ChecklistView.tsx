@@ -24,7 +24,6 @@ type ItemDef = {
   tbd: boolean
   subtitle: string
   href: string
-  cta: string
   showCta: boolean
 }
 
@@ -43,7 +42,6 @@ function buildItems(data: ChecklistData): ItemDef[] {
       tbd: false,
       subtitle: data.rsvped ? "You're on the guest list" : 'Let us know you can make it before August 24.',
       href: '/rsvp',
-      cta: data.rsvped ? 'Edit RSVP' : 'RSVP now',
       showCta: true,
     },
     {
@@ -59,8 +57,7 @@ function buildItems(data: ChecklistData): ItemDef[] {
           ? `${data.betsPlaced} of ${data.totalBets} bets placed. A few more to go.`
           : `All ${data.totalBets} bets placed.`,
       href: '/bets',
-      cta: data.betsPlaced === 0 ? 'Place bets' : 'View bets',
-      showCta: data.betsPlaced < data.totalBets,
+      showCta: true,
     },
     {
       key: 'guestbook',
@@ -72,7 +69,6 @@ function buildItems(data: ChecklistData): ItemDef[] {
         ? 'Message left for the couple.'
         : 'Leave Gowtham & Nikhita a note they will keep forever.',
       href: '/guestbook',
-      cta: 'Sign guestbook',
       showCta: !data.hasGuestbook,
     },
     {
@@ -83,7 +79,6 @@ function buildItems(data: ChecklistData): ItemDef[] {
       tbd: data.photoGroup === null,
       subtitle: photoName ?? 'Coming soon. Groups will be assigned once the guest list is finalized.',
       href: '/photos',
-      cta: 'View lineup',
       showCta: data.photoGroup !== null,
     },
     {
@@ -94,7 +89,6 @@ function buildItems(data: ChecklistData): ItemDef[] {
       tbd: true,
       subtitle: 'Coming soon. Your table number will appear here before the wedding.',
       href: '',
-      cta: '',
       showCta: false,
     },
     {
@@ -109,7 +103,6 @@ function buildItems(data: ChecklistData): ItemDef[] {
         ? 'None noted. Update your RSVP if you have restrictions.'
         : 'RSVP first, then add any dietary needs.',
       href: '/rsvp',
-      cta: 'Update RSVP',
       showCta: data.rsvped && !data.hasDietary,
     },
     {
@@ -124,7 +117,6 @@ function buildItems(data: ChecklistData): ItemDef[] {
         ? 'Let us know if you need a room.'
         : 'RSVP first, then note your hotel preference.',
       href: '/rsvp',
-      cta: 'Update RSVP',
       showCta: data.rsvped && !data.hasHotel,
     },
   ]
@@ -133,62 +125,69 @@ function buildItems(data: ChecklistData): ItemDef[] {
 function StatusIcon({ done, tbd }: { done: boolean; tbd: boolean }) {
   if (tbd) {
     return (
-      <div className="w-8 h-8 rounded-full border-2 border-gold/40 bg-gold/8 flex items-center justify-center shrink-0">
+      <div className="w-9 h-9 rounded-full border-2 border-gold/40 bg-gold/8 flex items-center justify-center shrink-0">
         <div className="w-1.5 h-1.5 rounded-full bg-gold/60" />
       </div>
     )
   }
   if (done) {
     return (
-      <div className="w-8 h-8 rounded-full bg-olive-dark flex items-center justify-center shrink-0">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <div className="w-9 h-9 rounded-full bg-olive-dark flex items-center justify-center shrink-0">
+        <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
           <path d="M2.5 7l3.5 3.5 5.5-7" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
     )
   }
   return (
-    <div className="w-8 h-8 rounded-full border-2 border-charcoal/20 bg-white flex items-center justify-center shrink-0">
+    <div className="w-9 h-9 rounded-full border-2 border-charcoal/20 bg-white flex items-center justify-center shrink-0">
       <div className="w-1.5 h-1.5 rounded-full bg-charcoal/20" />
     </div>
   )
 }
 
 function ChecklistCard({ item, index }: { item: ItemDef; index: number }) {
+  const cardClass = `flex items-center gap-4 p-4 rounded-xl border transition-all ${
+    item.done && !item.tbd
+      ? 'bg-olive-dark/4 border-olive-dark/15'
+      : item.tbd
+      ? 'bg-gold/4 border-gold/15'
+      : 'bg-white border-charcoal/10'
+  } ${item.showCta && item.href ? 'active:scale-[0.99] active:bg-charcoal/4' : ''}`
+
+  const inner = (
+    <>
+      <StatusIcon done={item.done} tbd={item.tbd} />
+      <div className="flex-1 min-w-0">
+        <p className={`font-medium text-sm leading-snug ${item.done && !item.tbd ? 'text-charcoal/60' : 'text-charcoal'}`}>
+          <span className="mr-1.5">{item.emoji}</span>
+          {item.label}
+        </p>
+        <p className="text-xs text-charcoal/45 mt-0.5 leading-relaxed">{item.subtitle}</p>
+      </div>
+      {item.showCta && item.href && (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 text-charcoal/25" aria-hidden="true">
+          <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      )}
+    </>
+  )
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: index * 0.05 }}
-      className={`flex items-start gap-4 p-4 rounded-xl border transition-colors ${
-        item.done && !item.tbd
-          ? 'bg-olive-dark/4 border-olive-dark/15'
-          : item.tbd
-          ? 'bg-gold/4 border-gold/15'
-          : 'bg-white border-charcoal/10'
-      }`}
     >
-      <StatusIcon done={item.done} tbd={item.tbd} />
-
-      <div className="flex-1 min-w-0">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className={`font-medium text-sm leading-snug ${item.done && !item.tbd ? 'text-charcoal/70' : 'text-charcoal'}`}>
-              <span className="mr-1.5">{item.emoji}</span>
-              {item.label}
-            </p>
-            <p className="text-xs text-charcoal/45 mt-1 leading-relaxed">{item.subtitle}</p>
-          </div>
-          {item.showCta && (
-            <Link
-              href={item.href}
-              className="text-xs text-gold hover:text-gold-light font-medium whitespace-nowrap shrink-0 mt-0.5 transition-colors"
-            >
-              {item.cta} →
-            </Link>
-          )}
+      {item.showCta && item.href ? (
+        <Link href={item.href} className={cardClass}>
+          {inner}
+        </Link>
+      ) : (
+        <div className={cardClass}>
+          {inner}
         </div>
-      </div>
+      )}
     </motion.div>
   )
 }
@@ -249,14 +248,15 @@ export default function ChecklistView() {
             value={nameInput}
             onChange={e => setNameInput(e.target.value)}
             placeholder="Your full name"
-            className="flex-1 border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
+            autoComplete="name"
+            className="flex-1 border-2 border-olive-light rounded-xl px-4 py-3 text-base text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
           />
           <button
             type="submit"
             disabled={!nameInput.trim() || loading}
-            className="bg-olive-dark text-white px-5 py-3 rounded-xl font-medium text-sm tracking-wide hover:bg-olive-mid transition-colors disabled:opacity-40"
+            className="bg-olive-dark text-white px-6 py-3 rounded-xl font-medium text-sm tracking-wide hover:bg-olive-mid transition-colors disabled:opacity-40 min-w-[64px]"
           >
-            {loading ? '...' : 'Go'}
+            {loading ? '…' : 'Go'}
           </button>
         </div>
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
@@ -271,14 +271,14 @@ export default function ChecklistView() {
             exit={{ opacity: 0 }}
           >
             {/* Score */}
-            <div className="mb-6">
+            <div className="mb-5">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm font-medium text-charcoal">
                   {doneCount === items.length
                     ? "You're all set!"
                     : `${doneCount} of ${items.length} complete`}
                 </p>
-                <p className="text-xs text-charcoal/40">{submittedName}</p>
+                <p className="text-xs text-charcoal/40 truncate max-w-[140px]">{submittedName}</p>
               </div>
               <div className="h-1.5 w-full bg-olive-light/50 rounded-full overflow-hidden">
                 <motion.div
@@ -291,21 +291,18 @@ export default function ChecklistView() {
             </div>
 
             {/* Items */}
-            <div className="space-y-3">
+            <div className="space-y-2">
               {items.map((item, i) => (
                 <ChecklistCard key={item.key} item={item} index={i} />
               ))}
             </div>
 
-            <p className="text-xs text-charcoal/30 text-center mt-8">
-              Not you?{' '}
-              <button
-                onClick={() => { setData(null); setNameInput(''); setSubmittedName('') }}
-                className="underline hover:text-charcoal/50 transition-colors"
-              >
-                Search again
-              </button>
-            </p>
+            <button
+              onClick={() => { setData(null); setNameInput(''); setSubmittedName('') }}
+              className="w-full text-center text-sm text-charcoal/35 hover:text-charcoal/55 transition-colors mt-8 py-3"
+            >
+              Not you? Search again
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

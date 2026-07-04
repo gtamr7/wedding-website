@@ -256,21 +256,23 @@ function AdminPanel() {
                   </span>
                 </button>
 
-                {/* Toggle done */}
+                {/* Toggle done — 44px tap target wrapping smaller visual */}
                 <button
                   onClick={() => toggleDone(i)}
-                  className={`mr-2 w-8 h-8 rounded-full border-2 flex items-center justify-center shrink-0 transition-all active:scale-90 ${
+                  className="mr-1 w-11 h-11 flex items-center justify-center shrink-0 active:scale-90 transition-transform"
+                  aria-label={isDone ? 'Mark undone' : 'Mark done'}
+                >
+                  <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center transition-colors ${
                     isDone
                       ? 'bg-olive-dark border-olive-dark text-white'
                       : 'border-olive-light hover:border-olive-mid bg-white'
-                  }`}
-                  aria-label={isDone ? 'Mark undone' : 'Mark done'}
-                >
-                  {isDone && (
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M2 6l3 3 5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
+                  }`}>
+                    {isDone && (
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <path d="M2 6l3 3 5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </div>
                 </button>
               </div>
             )
