@@ -87,6 +87,17 @@ function buildItems(data: ChecklistData): ItemDef[] {
       showCta: data.photoGroup !== null,
     },
     {
+      key: 'seating',
+      emoji: '🪑',
+      label: 'Seating chart',
+      done: false,
+      tbd: true,
+      subtitle: 'Coming soon. Your table number will appear here before the wedding.',
+      href: '',
+      cta: '',
+      showCta: false,
+    },
+    {
       key: 'dietary',
       emoji: '🍽️',
       label: 'Dietary restrictions',
