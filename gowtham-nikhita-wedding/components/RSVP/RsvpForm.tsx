@@ -510,11 +510,12 @@ export default function RsvpForm() {
               </button>
             )}
 
-            {totalGuests >= MAX_PARTY && (
-              <p className="mt-2 text-xs text-center text-charcoal/30">
-                Maximum party size of {MAX_PARTY} reached. Contact Gowtham or Nikhita directly for larger groups.
-              </p>
-            )}
+            <p className="mt-2 text-xs text-charcoal/40 leading-relaxed">
+              {totalGuests >= MAX_PARTY
+                ? `Maximum party size of ${MAX_PARTY} reached. `
+                : ''}
+              If your party members are not immediate family, please reach out to Gowtham or Nikhita directly before adding them.
+            </p>
           </div>
 
           {/* Events */}
@@ -628,10 +629,6 @@ export default function RsvpForm() {
             </button>
           </div>
 
-          <p className="text-[11px] text-charcoal/45 text-center mt-3 leading-relaxed">
-            By submitting, you agree to receive text message updates about the wedding from Gowtham &amp; Nikhita.
-            Message &amp; data rates may apply. Reply STOP to opt out.
-          </p>
         </motion.form>
       )}
 
