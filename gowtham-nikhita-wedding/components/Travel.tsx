@@ -107,7 +107,7 @@ export default function Travel() {
                   allowFullScreen
                   referrerPolicy="no-referrer-when-downgrade"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3544.3!2d-82.5259!3d27.4112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88c3410a1f2cde29%3A0x3b7d4c2c9b56a0!2sPowel%20Crosley%20Estate!5e0!3m2!1sen!2sus!4v1000000000000"
-                  className="absolute inset-0 w-full h-full"
+                  className="absolute inset-0 w-full h-full pointer-events-none"
                 />
                 <motion.div
                   initial={{ y: -20, opacity: 0 }}
