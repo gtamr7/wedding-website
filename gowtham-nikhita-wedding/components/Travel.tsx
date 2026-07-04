@@ -87,7 +87,7 @@ export default function Travel() {
                   century-old oaks draped in Spanish moss. The perfect backdrop for a celebration of
                   this magnitude.
                 </p>
-                <p className="text-xs text-ivory/40 mt-2">Ample parking on-site · Valet available</p>
+                <p className="text-xs text-ivory/40 mt-2">Parking is limited · Shuttle service may be used</p>
               </div>
             </FadeIn>
 
