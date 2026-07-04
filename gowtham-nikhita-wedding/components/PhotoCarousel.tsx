@@ -80,7 +80,7 @@ export default function PhotoCarousel() {
       <div className="relative select-none">
         {/* Track */}
         <div
-          className="relative h-[300px] sm:h-[400px] overflow-hidden flex items-center justify-center"
+          className="relative h-[310px] sm:h-[390px] overflow-hidden flex items-center justify-center"
           onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
           onTouchEnd={e => {
             const diff = touchStartX.current - e.changedTouches[0].clientX
@@ -97,14 +97,14 @@ export default function PhotoCarousel() {
                 className="absolute cursor-pointer"
                 onClick={() => offset === 0 ? setLightbox(i) : setCurrent(i)}
               >
-                <div className="relative w-[170px] sm:w-[220px] h-[240px] sm:h-[300px] rounded-xl overflow-hidden border border-gold/20 shadow-2xl shadow-black/50">
+                <div className="relative w-[200px] sm:w-[260px] h-[270px] sm:h-[340px] rounded-xl overflow-hidden border border-gold/20 shadow-2xl shadow-black/50">
                   <Image
                     src={src}
                     alt=""
                     fill
                     className="object-cover"
-                    sizes="(max-width: 640px) 170px, 220px"
-                    quality={88}
+                    sizes="(max-width: 640px) 200px, 260px"
+                    quality={93}
                   />
                   {/* Expand hint on center card */}
                   {offset === 0 && (

@@ -79,11 +79,11 @@ export default function OurStory() {
           {/* Stacked photo cards — sticky on desktop */}
           <div className="lg:sticky lg:top-24">
             <FadeIn delay={0.1}>
-              <div className="relative w-full" style={{ height: '520px' }}>
-                {/* Back card — top-right, larger */}
+              <div className="relative mx-auto" style={{ width: '100%', maxWidth: '420px', height: '500px' }}>
+                {/* Back card */}
                 <div
-                  className="absolute top-0 right-0 w-[62%] rounded-xl overflow-hidden border border-gold/15 shadow-xl cursor-pointer group"
-                  style={{ height: '380px', transform: 'rotate(3.5deg)' }}
+                  className="absolute top-0 right-0 w-64 rounded-xl overflow-hidden border border-gold/15 shadow-xl cursor-pointer group"
+                  style={{ height: '350px', transform: 'rotate(4deg)' }}
                   onClick={() => setLightbox('/gallery/IMG_0334.jpg')}
                 >
                   <Image
@@ -91,8 +91,8 @@ export default function OurStory() {
                     alt=""
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 55vw, 340px"
-                    quality={92}
+                    sizes="(max-width: 768px) 55vw, 256px"
+                    quality={95}
                     priority
                   />
                   <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/55 backdrop-blur-sm rounded-lg flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
@@ -102,10 +102,10 @@ export default function OurStory() {
                   </div>
                 </div>
 
-                {/* Front card — bottom-left, larger */}
+                {/* Front card */}
                 <div
-                  className="absolute bottom-0 left-0 w-[64%] rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 cursor-pointer group"
-                  style={{ height: '400px', transform: 'rotate(-3.5deg)' }}
+                  className="absolute bottom-0 left-0 w-72 rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 cursor-pointer group"
+                  style={{ height: '370px', transform: 'rotate(-4deg)' }}
                   onClick={() => setLightbox('/gallery/IMG_0314.jpg')}
                 >
                   <Image
@@ -113,8 +113,8 @@ export default function OurStory() {
                     alt=""
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 60vw, 360px"
-                    quality={92}
+                    sizes="(max-width: 768px) 65vw, 288px"
+                    quality={95}
                     priority
                   />
                   <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/55 backdrop-blur-sm rounded-lg flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
