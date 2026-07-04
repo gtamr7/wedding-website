@@ -99,7 +99,7 @@ export default function Travel() {
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Left column */}
-          <div className="space-y-10">
+          <div className="space-y-10 min-w-0">
             <FadeIn>
               <div>
                 <h3 className="font-display text-2xl italic text-ivory mb-1">The Venue</h3>
@@ -142,12 +142,10 @@ export default function Travel() {
                         ${i === 1 ? 'h-52 sm:h-52' : i === 2 ? 'h-52 sm:h-44' : 'h-52 sm:h-48'}
                       `}
                     />
-                    <div className="absolute inset-0 bg-black/10 sm:bg-black/0 sm:group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center">
-                      <div className="sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 bg-black/50 backdrop-blur-sm rounded-full p-2.5">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
-                        </svg>
-                      </div>
+                    <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/55 backdrop-blur-sm rounded-lg flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" />
+                      </svg>
                     </div>
                   </motion.button>
                 ))}
@@ -193,7 +191,7 @@ export default function Travel() {
           </div>
 
           {/* Right column */}
-          <div className="space-y-10">
+          <div className="space-y-10 min-w-0">
             <FadeIn delay={0.05}>
               <div>
                 <h3 className="font-display text-2xl italic text-ivory mb-1">Nearest Airports</h3>
@@ -208,16 +206,16 @@ export default function Travel() {
                           : 'bg-black/15 border-gold/12'
                       }`}
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="font-display text-xl font-semibold text-gold w-12">{a.code}</span>
-                        <div>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="font-display text-xl font-semibold text-gold w-12 shrink-0">{a.code}</span>
+                        <div className="min-w-0">
                           <p className="text-sm text-ivory leading-snug">{a.name}</p>
                           {a.recommended && (
                             <p className="text-[10px] uppercase tracking-wider text-gold mt-0.5">Recommended</p>
                           )}
                         </div>
                       </div>
-                      <span className="text-sm text-ivory/50 whitespace-nowrap ml-2">{a.distance}</span>
+                      <span className="text-sm text-ivory/50 ml-2 text-right">{a.distance}</span>
                     </div>
                   ))}
                 </div>
