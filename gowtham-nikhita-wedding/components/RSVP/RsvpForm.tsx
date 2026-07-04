@@ -617,7 +617,7 @@ export default function RsvpForm() {
             </button>
           </div>
 
-          <p className="text-[11px] text-charcoal/30 text-center mt-3 leading-relaxed">
+          <p className="text-[11px] text-charcoal/45 text-center mt-3 leading-relaxed">
             By submitting, you agree to receive text message updates about the wedding from Gowtham &amp; Nikhita.
             Message &amp; data rates may apply. Reply STOP to opt out.
           </p>
