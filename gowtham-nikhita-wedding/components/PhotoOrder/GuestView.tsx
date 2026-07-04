@@ -10,6 +10,7 @@ const WEDDING_DAY = new Date('2027-02-18T00:00:00-05:00')
 
 export default function GuestView({ initialIndex }: { initialIndex: number }) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex)
+  const [completedGroups, setCompletedGroups] = useState<number[]>([])
   const [connected, setConnected] = useState(false)
   const activeRef = useRef<HTMLDivElement>(null)
   const isLive = new Date() >= WEDDING_DAY
@@ -19,14 +20,28 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
     if (!isLive) return
     const supabase = createSupabaseClient()
 
+    // Load initial completed_groups
+    supabase
+      .from('photo_order')
+      .select('current_index, completed_groups')
+      .eq('id', 'wedding')
+      .single()
+      .then(({ data }) => {
+        if (data) {
+          setCurrentIndex(data.current_index)
+          setCompletedGroups(data.completed_groups ?? [])
+        }
+      })
+
     const channel = supabase
       .channel('photo-order-guest')
       .on(
         'postgres_changes',
         { event: 'UPDATE', schema: 'public', table: 'photo_order', filter: 'id=eq.wedding' },
         (payload) => {
-          const newIndex = (payload.new as { current_index: number }).current_index
-          setCurrentIndex(newIndex)
+          const row = payload.new as { current_index: number; completed_groups: number[] | null }
+          setCurrentIndex(row.current_index)
+          setCompletedGroups(row.completed_groups ?? [])
         }
       )
       .subscribe((status) => {
@@ -43,16 +58,21 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
     }
   }, [currentIndex])
 
-  const isDone = currentIndex >= PHOTO_GROUPS.length
+  const isDone = currentIndex >= PHOTO_GROUPS.length && completedGroups.length >= PHOTO_GROUPS.length
 
   function getStatus(index: number) {
-    if (index < currentIndex) return 'done' as const
+    if (completedGroups.includes(index)) return 'done' as const
     if (index === currentIndex) return 'now' as const
-    if (index === currentIndex + 1) return 'next' as const
+    // next = first uncompleted group after current
+    const nextUncompleted = PHOTO_GROUPS.findIndex(
+      (_, i) => i > currentIndex && !completedGroups.includes(i)
+    )
+    if (index === nextUncompleted) return 'next' as const
     return 'upcoming' as const
   }
 
-  const nowGroup = PHOTO_GROUPS[currentIndex]
+  const nowGroup = currentIndex < PHOTO_GROUPS.length ? PHOTO_GROUPS[currentIndex] : null
+  const nowIsAlreadyDone = nowGroup ? completedGroups.includes(currentIndex) : false
 
   if (!isLive) {
     return (
@@ -77,7 +97,7 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
           </span>
         </div>
         <span className="text-xs text-charcoal/40">
-          {Math.min(currentIndex, PHOTO_GROUPS.length)} / {PHOTO_GROUPS.length} complete
+          {completedGroups.length} / {PHOTO_GROUPS.length} complete
         </span>
       </div>
 
@@ -85,14 +105,14 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
       <div className="w-full h-1 bg-olive-light rounded-full mb-8 overflow-hidden">
         <motion.div
           className="h-full bg-gold rounded-full"
-          animate={{ width: `${(Math.min(currentIndex, PHOTO_GROUPS.length) / PHOTO_GROUPS.length) * 100}%` }}
+          animate={{ width: `${(completedGroups.length / PHOTO_GROUPS.length) * 100}%` }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
         />
       </div>
 
       {/* Sticky "Now Photographing" banner */}
       <AnimatePresence mode="wait">
-        {!isDone && nowGroup && (
+        {!isDone && nowGroup && !nowIsAlreadyDone && (
           <motion.div
             key={currentIndex}
             initial={{ opacity: 0, scale: 0.97 }}

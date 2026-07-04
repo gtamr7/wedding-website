@@ -26,6 +26,7 @@ export default function Footer() {
             { label: 'Photos', href: '/photos' },
             { label: 'The Bets', href: '/bets' },
             { label: 'Guestbook', href: '/guestbook' },
+            { label: 'My Status', href: '/checklist' },
           ].map((l) => (
             <Link key={l.href} href={l.href} className="hover:text-gold-light transition-colors">
               {l.label}

@@ -77,6 +77,7 @@ function PinEntry({ onUnlock }: { onUnlock: () => void }) {
 
 function AdminPanel() {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [completedGroups, setCompletedGroups] = useState<number[]>([])
   const [saving, setSaving] = useState(false)
   const [resetConfirm, setResetConfirm] = useState(false)
 
@@ -84,26 +85,63 @@ function AdminPanel() {
     const supabase = createSupabaseClient()
     supabase
       .from('photo_order')
-      .select('current_index')
+      .select('current_index, completed_groups')
       .eq('id', 'wedding')
       .single()
-      .then(({ data }) => { if (data) setCurrentIndex(data.current_index) })
+      .then(({ data }) => {
+        if (data) {
+          setCurrentIndex(data.current_index)
+          setCompletedGroups(data.completed_groups ?? [])
+        }
+      })
   }, [])
 
-  const updateIndex = async (newIndex: number) => {
+  const persist = async (newIndex: number, newCompleted: number[]) => {
     setSaving(true)
     const supabase = createSupabaseClient()
     await supabase
       .from('photo_order')
-      .update({ current_index: newIndex, updated_at: new Date().toISOString() })
+      .update({ current_index: newIndex, completed_groups: newCompleted, updated_at: new Date().toISOString() })
       .eq('id', 'wedding')
     setCurrentIndex(newIndex)
+    setCompletedGroups(newCompleted)
     setSaving(false)
     setResetConfirm(false)
   }
 
+  // Advance current, mark current as done, skip already-done groups
+  const nextGroup = async () => {
+    const newCompleted = [...new Set([...completedGroups, currentIndex])]
+    let nextIdx = currentIndex + 1
+    while (nextIdx < PHOTO_GROUPS.length && newCompleted.includes(nextIdx)) nextIdx++
+    await persist(Math.min(nextIdx, PHOTO_GROUPS.length), newCompleted)
+  }
+
+  const prevGroup = async () => {
+    if (currentIndex > 0) await persist(currentIndex - 1, completedGroups)
+  }
+
+  // Set currently-shooting without touching completed
+  const jumpTo = async (index: number) => {
+    await persist(index, completedGroups)
+  }
+
+  // Toggle a group's done status without moving current
+  const toggleDone = async (index: number) => {
+    const newCompleted = completedGroups.includes(index)
+      ? completedGroups.filter(i => i !== index)
+      : [...new Set([...completedGroups, index])]
+    await persist(currentIndex, newCompleted)
+  }
+
+  const reset = async () => {
+    await persist(0, [])
+  }
+
+  const allDone = currentIndex >= PHOTO_GROUPS.length
   const canPrev = currentIndex > 0
   const canNext = currentIndex < PHOTO_GROUPS.length
+  const nowGroup = PHOTO_GROUPS[currentIndex]
 
   return (
     <div className="max-w-xl mx-auto pb-12">
@@ -118,13 +156,13 @@ function AdminPanel() {
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-medium text-charcoal">Progress</span>
           <span className="text-sm text-charcoal/60">
-            {Math.min(currentIndex, PHOTO_GROUPS.length)} / {PHOTO_GROUPS.length} groups
+            {completedGroups.length} / {PHOTO_GROUPS.length} done
           </span>
         </div>
         <div className="w-full h-2 bg-olive-light rounded-full overflow-hidden">
           <motion.div
             className="h-full bg-gold rounded-full"
-            animate={{ width: `${(Math.min(currentIndex, PHOTO_GROUPS.length) / PHOTO_GROUPS.length) * 100}%` }}
+            animate={{ width: `${(completedGroups.length / PHOTO_GROUPS.length) * 100}%` }}
             transition={{ duration: 0.4 }}
           />
         </div>
@@ -132,19 +170,25 @@ function AdminPanel() {
 
       {/* Current group display */}
       <AnimatePresence mode="wait">
-        {currentIndex < PHOTO_GROUPS.length ? (
+        {!allDone && nowGroup ? (
           <motion.div
             key={currentIndex}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="bg-gold/10 border-2 border-gold rounded-xl p-5 mb-6 text-center"
+            className={`border-2 rounded-xl p-5 mb-6 text-center ${
+              completedGroups.includes(currentIndex)
+                ? 'bg-charcoal/5 border-charcoal/15'
+                : 'bg-gold/10 border-gold'
+            }`}
           >
-            <p className="text-xs uppercase tracking-widest text-gold mb-1">Currently Shooting</p>
-            <p className="font-display text-2xl italic text-charcoal">
-              #{currentIndex + 1} — {PHOTO_GROUPS[currentIndex].name}
+            <p className={`text-xs uppercase tracking-widest mb-1 ${completedGroups.includes(currentIndex) ? 'text-charcoal/40' : 'text-gold'}`}>
+              {completedGroups.includes(currentIndex) ? 'Already done' : 'Currently Shooting'}
             </p>
-            <p className="text-sm text-charcoal/60 mt-1">{PHOTO_GROUPS[currentIndex].description}</p>
+            <p className="font-display text-2xl italic text-charcoal">
+              #{currentIndex + 1} — {nowGroup.name}
+            </p>
+            <p className="text-sm text-charcoal/60 mt-1">{nowGroup.description}</p>
           </motion.div>
         ) : (
           <motion.div
@@ -158,54 +202,79 @@ function AdminPanel() {
         )}
       </AnimatePresence>
 
-      {/* Nav buttons — big for day-of use */}
+      {/* Nav buttons */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <button
-          onClick={() => canPrev && updateIndex(currentIndex - 1)}
+          onClick={prevGroup}
           disabled={!canPrev || saving}
           className="py-5 rounded-xl border-2 border-olive-mid text-olive-dark font-semibold text-lg disabled:opacity-30 hover:bg-olive-light/30 active:scale-95 transition-all"
-          aria-label="Previous group"
         >
           ← Previous
         </button>
         <button
-          onClick={() => canNext && updateIndex(currentIndex + 1)}
+          onClick={nextGroup}
           disabled={!canNext || saving}
           className="py-5 rounded-xl bg-olive-dark text-white font-semibold text-lg disabled:opacity-30 hover:bg-olive-mid active:scale-95 transition-all"
-          aria-label="Next group"
         >
-          Next Group →
+          {saving ? '…' : 'Done, Next →'}
         </button>
       </div>
 
-      {saving && (
-        <p className="text-center text-sm text-charcoal/40 mb-4">Saving…</p>
-      )}
-
-      {/* Jump to group */}
+      {/* Group list — tap to set current, checkmark to toggle done */}
       <div className="mb-8">
-        <p className="text-xs uppercase tracking-widest text-charcoal/40 mb-3">Jump to group</p>
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-xs uppercase tracking-widest text-charcoal/40">All groups</p>
+          <p className="text-xs text-charcoal/30">Tap row = set current · Checkmark = mark done</p>
+        </div>
         <div className="space-y-2">
-          {PHOTO_GROUPS.map((g, i) => (
-            <button
-              key={g.index}
-              onClick={() => updateIndex(i)}
-              className={`w-full text-left px-4 py-3 rounded-lg text-sm transition-all flex items-center gap-3 ${
-                i === currentIndex
-                  ? 'bg-gold/10 border border-gold text-charcoal font-medium'
-                  : i < currentIndex
-                  ? 'bg-white/50 border border-charcoal/10 text-charcoal/40 line-through'
-                  : 'bg-white border border-olive-light hover:border-olive-mid text-charcoal'
-              }`}
-            >
-              <span className={`w-6 h-6 rounded-full text-xs flex items-center justify-center shrink-0 ${
-                i < currentIndex ? 'bg-charcoal/10 text-charcoal/40' : i === currentIndex ? 'bg-gold text-white' : 'bg-olive-light text-olive-dark'
-              }`}>
-                {i + 1}
-              </span>
-              {g.name}
-            </button>
-          ))}
+          {PHOTO_GROUPS.map((g, i) => {
+            const isDone = completedGroups.includes(i)
+            const isCurrent = i === currentIndex
+            return (
+              <div
+                key={g.index}
+                className={`flex items-center gap-2 rounded-lg border transition-all ${
+                  isCurrent && !isDone
+                    ? 'bg-gold/10 border-gold'
+                    : isDone
+                    ? 'bg-charcoal/4 border-charcoal/10'
+                    : 'bg-white border-olive-light hover:border-olive-mid'
+                }`}
+              >
+                {/* Tap to set current */}
+                <button
+                  onClick={() => jumpTo(i)}
+                  className="flex items-center gap-3 flex-1 text-left px-4 py-3 text-sm"
+                >
+                  <span className={`w-6 h-6 rounded-full text-xs flex items-center justify-center shrink-0 font-medium ${
+                    isCurrent && !isDone ? 'bg-gold text-white' : isDone ? 'bg-charcoal/10 text-charcoal/40' : 'bg-olive-light text-olive-dark'
+                  }`}>
+                    {i + 1}
+                  </span>
+                  <span className={isDone ? 'text-charcoal/35 line-through' : isCurrent ? 'text-charcoal font-medium' : 'text-charcoal'}>
+                    {g.name}
+                  </span>
+                </button>
+
+                {/* Toggle done */}
+                <button
+                  onClick={() => toggleDone(i)}
+                  className={`mr-2 w-8 h-8 rounded-full border-2 flex items-center justify-center shrink-0 transition-all active:scale-90 ${
+                    isDone
+                      ? 'bg-olive-dark border-olive-dark text-white'
+                      : 'border-olive-light hover:border-olive-mid bg-white'
+                  }`}
+                  aria-label={isDone ? 'Mark undone' : 'Mark done'}
+                >
+                  {isDone && (
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M2 6l3 3 5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            )
+          })}
         </div>
       </div>
 
@@ -221,10 +290,10 @@ function AdminPanel() {
           </button>
         ) : (
           <div className="space-y-2">
-            <p className="text-sm text-red-500">Are you sure? This resets progress for all guests.</p>
+            <p className="text-sm text-red-500">Reset all progress for all guests?</p>
             <div className="flex gap-2">
               <button
-                onClick={() => updateIndex(0)}
+                onClick={reset}
                 className="flex-1 bg-red-500 text-white py-2 rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
               >
                 Yes, reset

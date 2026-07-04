@@ -8,6 +8,7 @@ export interface PhotoGroup {
 export interface PhotoOrderState {
   id: string;
   current_index: number;
+  completed_groups: number[];
   updated_at: string;
 }
 

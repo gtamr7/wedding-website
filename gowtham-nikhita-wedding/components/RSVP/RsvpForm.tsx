@@ -616,6 +616,11 @@ export default function RsvpForm() {
               }
             </button>
           </div>
+
+          <p className="text-[11px] text-charcoal/30 text-center mt-3 leading-relaxed">
+            By submitting, you agree to receive text message updates about the wedding from Gowtham &amp; Nikhita.
+            Message &amp; data rates may apply. Reply STOP to opt out.
+          </p>
         </motion.form>
       )}
 
@@ -689,7 +694,16 @@ export default function RsvpForm() {
             </div>
           </div>
 
-          <p className="text-xs text-charcoal/30">
+          <div className="mt-4 pt-4 border-t border-charcoal/8">
+            <p className="text-xs text-charcoal/40 mb-3">What else can you do before the wedding?</p>
+            <a
+              href={`/checklist?name=${encodeURIComponent([firstName, lastName].filter(Boolean).join(' '))}`}
+              className="inline-flex items-center gap-1.5 text-sm text-gold hover:text-gold-light font-medium transition-colors"
+            >
+              See your full checklist →
+            </a>
+          </div>
+          <p className="text-xs text-charcoal/30 mt-4">
             Questions? Reach out to Gowtham or Nikhita directly.
           </p>
         </motion.div>

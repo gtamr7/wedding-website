@@ -14,6 +14,7 @@ const links = [
   { label: 'Photo Line-Up', href: '/photos' },
   { label: 'The Bets', href: '/bets' },
   { label: 'Guestbook', href: '/guestbook' },
+  { label: 'My Status', href: '/checklist', highlight: true },
 ]
 
 export default function Nav() {
@@ -64,7 +65,7 @@ export default function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm tracking-widest uppercase transition-colors duration-200 hover:text-gold text-ivory/80"
+              className={`text-sm tracking-widest uppercase transition-colors duration-200 hover:text-gold ${'highlight' in l && l.highlight ? 'text-gold border border-gold/40 rounded-full px-3 py-1 hover:border-gold' : 'text-ivory/80'}`}
             >
               {l.label}
             </Link>
@@ -100,7 +101,7 @@ export default function Nav() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-sm tracking-widest uppercase text-ivory/80 hover:text-gold py-3 transition-colors"
+                  className={`text-sm tracking-widest uppercase py-3 transition-colors ${'highlight' in l && l.highlight ? 'text-gold' : 'text-ivory/80 hover:text-gold'}`}
                   onClick={() => setMenuOpen(false)}
                 >
                   {l.label}
