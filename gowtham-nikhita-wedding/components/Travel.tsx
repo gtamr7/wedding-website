@@ -118,6 +118,15 @@ export default function Travel() {
                 >
                   <div className="w-6 h-6 bg-gold rounded-full border-2 border-white shadow-lg animate-pulse-gold" />
                 </motion.div>
+                {/* Cover Google's built-in "View larger map" link with our own */}
+                <a
+                  href="https://maps.google.com/?q=Powel+Crosley+Estate,+8374+N+Tamiami+Trl,+Sarasota,+FL+34243"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute bottom-0 left-0 z-10 w-40 h-8 bg-white/95"
+                  aria-hidden="true"
+                  tabIndex={-1}
+                />
                 <a
                   href="https://maps.google.com/?q=Powel+Crosley+Estate,+8374+N+Tamiami+Trl,+Sarasota,+FL+34243"
                   target="_blank"
