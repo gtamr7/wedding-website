@@ -55,8 +55,8 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 export default function Travel() {
   const headerRef = useRef<HTMLDivElement>(null)
   const headerInView = useInView(headerRef, { once: true, margin: '-80px' })
-  const mapRef = useRef<HTMLDivElement>(null)
-  const mapInView = useInView(mapRef, { once: true, margin: '-80px' })
+  const collageRef = useRef<HTMLDivElement>(null)
+  const collageInView = useInView(collageRef, { once: true, margin: '-60px' })
 
   return (
     <section id="travel" className="section-py px-6">
@@ -91,35 +91,67 @@ export default function Travel() {
               </div>
             </FadeIn>
 
-            <FadeIn delay={0.1}>
+            {/* Venue photo collage */}
+            <div ref={collageRef}>
+              <div className="relative h-64 sm:h-72">
+                {/* Photo 1 — outdoor reception, large, bottom-left */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20, rotate: -2 }}
+                  animate={collageInView ? { opacity: 1, y: 0, rotate: -1.5 } : {}}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  className="absolute left-0 bottom-0 w-[62%] rounded-xl overflow-hidden border border-gold/25 shadow-2xl"
+                  style={{ zIndex: 1 }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/venue-1.jpg" alt="Powel Crosley Estate reception" className="w-full h-44 sm:h-52 object-cover" />
+                </motion.div>
+
+                {/* Photo 2 — entrance with palms, top-right */}
+                <motion.div
+                  initial={{ opacity: 0, y: -20, rotate: 2 }}
+                  animate={collageInView ? { opacity: 1, y: 0, rotate: 1.5 } : {}}
+                  transition={{ duration: 0.6, delay: 0.25 }}
+                  className="absolute top-0 right-0 w-[45%] rounded-xl overflow-hidden border border-gold/20 shadow-xl"
+                  style={{ zIndex: 2 }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/venue-2.jpg" alt="Powel Crosley Estate entrance" className="w-full h-40 sm:h-48 object-cover" />
+                </motion.div>
+
+                {/* Photo 3 — evening string lights, bottom-right, front */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, rotate: 1 }}
+                  animate={collageInView ? { opacity: 1, scale: 1, rotate: -0.5 } : {}}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="absolute bottom-0 right-[3%] w-[42%] rounded-xl overflow-hidden border-2 border-gold/35 shadow-2xl"
+                  style={{ zIndex: 3 }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/venue-3.webp" alt="Powel Crosley Estate at night" className="w-full h-36 sm:h-40 object-cover" />
+                </motion.div>
+              </div>
+
+              {/* Open in Maps */}
               <motion.div
-                ref={mapRef}
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={mapInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="relative rounded-xl overflow-hidden border border-gold/15 shadow-sm aspect-video bg-black/20"
+                initial={{ opacity: 0, y: 8 }}
+                animate={collageInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.55 }}
+                className="mt-5 flex justify-end"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/venue.jpg"
-                  alt="Powel Crosley Estate"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 <a
                   href="https://maps.google.com/?q=Powel+Crosley+Estate,+8374+N+Tamiami+Trl,+Sarasota,+FL+34243"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-black/80 transition-colors"
+                  className="inline-flex items-center gap-2 bg-black/40 backdrop-blur-sm border border-gold/30 text-ivory/80 hover:text-gold hover:border-gold/60 text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-200"
                 >
-                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M8 2C5.79 2 4 3.79 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.21-1.79-4-4-4z" />
                     <circle cx="8" cy="6" r="1.5" />
                   </svg>
                   Open in Maps
                 </a>
               </motion.div>
-            </FadeIn>
+            </div>
 
             <FadeIn delay={0.15}>
               <div className="flex items-start gap-3 bg-black/20 rounded-xl p-4 border border-gold/15">
