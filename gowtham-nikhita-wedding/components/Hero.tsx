@@ -1,14 +1,34 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Countdown from './Countdown'
 import FloatingPetals from './FloatingPetals'
 
+const expandIcon = (
+  <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/55 backdrop-blur-sm rounded-lg flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  </div>
+)
+
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] })
+  const [lightbox, setLightbox] = useState<string | null>(null)
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightbox(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = lightbox ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [lightbox])
 
   const bgGlowY     = useTransform(scrollYProgress, [0, 1], ['0%', '45%'])
   const textY       = useTransform(scrollYProgress, [0, 1], ['0%', '-15%'])
@@ -42,18 +62,13 @@ export default function Hero() {
         <motion.div
           style={{ y: leftPhotoY }}
           className="hidden sm:block shrink-0 sm:w-44 lg:w-56"
-          aria-hidden="true"
         >
-          <div className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[200px] sm:[transform:rotate(-6deg)]">
-            <Image
-              src="/gallery/IMG_0400.jpg"
-              alt=""
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 176px, 224px"
-              quality={90}
-              priority
-            />
+          <div
+            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[200px] sm:[transform:rotate(-6deg)] cursor-pointer group"
+            onClick={() => setLightbox('/gallery/IMG_0400.jpg')}
+          >
+            <Image src="/gallery/IMG_0400.jpg" alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 1024px) 176px, 224px" quality={90} priority />
+            {expandIcon}
           </div>
         </motion.div>
 
@@ -120,29 +135,20 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 2.1 }}
             className="flex sm:hidden gap-4 mt-1"
-            aria-hidden="true"
           >
-            <div className="w-28 h-40 relative rounded-xl overflow-hidden border border-gold/25 shadow-xl shadow-black/40">
-              <Image
-                src="/gallery/IMG_0400.jpg"
-                alt=""
-                fill
-                className="object-cover"
-                sizes="112px"
-                quality={90}
-                priority
-              />
+            <div
+              className="w-28 h-40 relative rounded-xl overflow-hidden border border-gold/25 shadow-xl shadow-black/40 cursor-pointer group"
+              onClick={() => setLightbox('/gallery/IMG_0400.jpg')}
+            >
+              <Image src="/gallery/IMG_0400.jpg" alt="" fill className="object-cover" sizes="112px" quality={90} priority />
+              {expandIcon}
             </div>
-            <div className="w-28 h-40 relative rounded-xl overflow-hidden border border-gold/25 shadow-xl shadow-black/40">
-              <Image
-                src="/gallery/IMG_0563.jpg"
-                alt=""
-                fill
-                className="object-cover"
-                sizes="112px"
-                quality={90}
-                priority
-              />
+            <div
+              className="w-28 h-40 relative rounded-xl overflow-hidden border border-gold/25 shadow-xl shadow-black/40 cursor-pointer group"
+              onClick={() => setLightbox('/gallery/IMG_0563.jpg')}
+            >
+              <Image src="/gallery/IMG_0563.jpg" alt="" fill className="object-cover" sizes="112px" quality={90} priority />
+              {expandIcon}
             </div>
           </motion.div>
         </motion.div>
@@ -151,18 +157,13 @@ export default function Hero() {
         <motion.div
           style={{ y: rightPhotoY }}
           className="hidden sm:block shrink-0 sm:w-44 lg:w-56"
-          aria-hidden="true"
         >
-          <div className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[200px] sm:[transform:rotate(6deg)]">
-            <Image
-              src="/gallery/IMG_0563.jpg"
-              alt=""
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 176px, 224px"
-              quality={90}
-              priority
-            />
+          <div
+            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[200px] sm:[transform:rotate(6deg)] cursor-pointer group"
+            onClick={() => setLightbox('/gallery/IMG_0563.jpg')}
+          >
+            <Image src="/gallery/IMG_0563.jpg" alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 1024px) 176px, 224px" quality={90} priority />
+            {expandIcon}
           </div>
         </motion.div>
 
@@ -184,6 +185,38 @@ export default function Hero() {
           <path d="M2 5L8 11L14 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </motion.svg>
       </motion.div>
+
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-sm"
+            onClick={() => setLightbox(null)}
+          >
+            <button
+              onClick={() => setLightbox(null)}
+              className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white z-10"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="relative w-full h-full max-w-4xl max-h-[88vh] mx-6"
+              onClick={e => e.stopPropagation()}
+            >
+              <Image src={lightbox} alt="" fill className="object-contain" sizes="90vw" quality={95} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
