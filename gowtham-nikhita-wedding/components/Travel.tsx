@@ -93,50 +93,49 @@ export default function Travel() {
 
             {/* Venue photo collage */}
             <div ref={collageRef}>
-              <div className="relative h-64 sm:h-72">
-                {/* Photo 1 — outdoor reception, large, bottom-left */}
+              {/* Mobile: snap-scroll row. Desktop: side-by-side with float offsets */}
+              <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden pb-1 -mx-6 px-6 sm:mx-0 sm:px-0 sm:overflow-visible sm:pb-10 sm:items-start">
+
                 <motion.div
-                  initial={{ opacity: 0, y: 20, rotate: -2 }}
-                  animate={collageInView ? { opacity: 1, y: 0, rotate: -1.5 } : {}}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  className="absolute left-0 bottom-0 w-[62%] rounded-xl overflow-hidden border border-gold/25 shadow-2xl"
-                  style={{ zIndex: 1 }}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={collageInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.55, delay: 0.1 }}
+                  className="snap-center shrink-0 w-[78vw] sm:w-auto sm:flex-1 rounded-xl overflow-hidden border border-gold/25 shadow-xl sm:-rotate-[1deg] sm:translate-y-0"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/venue-1.jpg" alt="Powel Crosley Estate reception" className="w-full h-44 sm:h-52 object-cover" />
+                  <img src="/venue-1.jpg" alt="Powel Crosley Estate reception" className="w-full h-52 sm:h-48 object-cover" />
                 </motion.div>
 
-                {/* Photo 2 — entrance with palms, top-right */}
                 <motion.div
-                  initial={{ opacity: 0, y: -20, rotate: 2 }}
-                  animate={collageInView ? { opacity: 1, y: 0, rotate: 1.5 } : {}}
-                  transition={{ duration: 0.6, delay: 0.25 }}
-                  className="absolute top-0 right-0 w-[45%] rounded-xl overflow-hidden border border-gold/20 shadow-xl"
-                  style={{ zIndex: 2 }}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={collageInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.55, delay: 0.22 }}
+                  className="snap-center shrink-0 w-[78vw] sm:w-auto sm:flex-1 rounded-xl overflow-hidden border border-gold/20 shadow-xl sm:rotate-[0.8deg] sm:translate-y-6"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/venue-2.jpg" alt="Powel Crosley Estate entrance" className="w-full h-40 sm:h-48 object-cover" />
+                  <img src="/venue-2.jpg" alt="Powel Crosley Estate entrance" className="w-full h-52 sm:h-52 object-cover" />
                 </motion.div>
 
-                {/* Photo 3 — evening string lights, bottom-right, front */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9, rotate: 1 }}
-                  animate={collageInView ? { opacity: 1, scale: 1, rotate: -0.5 } : {}}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  className="absolute bottom-0 right-[3%] w-[42%] rounded-xl overflow-hidden border-2 border-gold/35 shadow-2xl"
-                  style={{ zIndex: 3 }}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={collageInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.55, delay: 0.34 }}
+                  className="snap-center shrink-0 w-[78vw] sm:w-auto sm:flex-1 rounded-xl overflow-hidden border border-gold/30 shadow-xl sm:-rotate-[0.5deg] sm:translate-y-3"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/venue-3.webp" alt="Powel Crosley Estate at night" className="w-full h-36 sm:h-40 object-cover" />
+                  <img src="/venue-3.webp" alt="Powel Crosley Estate evening" className="w-full h-52 sm:h-44 object-cover" />
                 </motion.div>
               </div>
 
+              {/* Swipe hint — mobile only */}
+              <p className="mt-2 text-center text-[11px] text-ivory/30 tracking-wide sm:hidden">Swipe to see more</p>
+
               {/* Open in Maps */}
               <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={collageInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.55 }}
-                className="mt-5 flex justify-end"
+                initial={{ opacity: 0 }}
+                animate={collageInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="mt-4 flex justify-end"
               >
                 <a
                   href="https://maps.google.com/?q=Powel+Crosley+Estate,+8374+N+Tamiami+Trl,+Sarasota,+FL+34243"
