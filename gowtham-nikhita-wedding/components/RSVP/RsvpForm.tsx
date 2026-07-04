@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createSupabaseClient } from '@/lib/supabase'
+import confetti from 'canvas-confetti'
 
 type Step = 'gate' | 'already-rsvped' | 'form' | 'success'
 type FormState = 'idle' | 'submitting' | 'error'
@@ -66,6 +67,16 @@ function calendarUrl(title: string, start: string, end: string) {
 
 export default function RsvpForm() {
   const [step, setStep] = useState<Step>('gate')
+
+  useEffect(() => {
+    if (step !== 'success') return
+    const colors = ['#B8972A', '#D4B84A', '#FDFCF8', '#4A5C2F', '#6B7D4A']
+    const burst = (x: number, angle: number) =>
+      confetti({ particleCount: 70, angle, spread: 60, origin: { x, y: 0.9 }, colors, scalar: 1.1 })
+    burst(0.2, 65)
+    setTimeout(() => burst(0.8, 115), 120)
+    setTimeout(() => burst(0.5, 90), 300)
+  }, [step])
 
   // ── Gate ──
   const [gateFirst, setGateFirst] = useState('')
