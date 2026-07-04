@@ -510,12 +510,15 @@ export default function RsvpForm() {
               </button>
             )}
 
-            <p className="mt-2 text-xs text-charcoal/40 leading-relaxed">
-              {totalGuests >= MAX_PARTY
-                ? `Maximum party size of ${MAX_PARTY} reached. `
-                : ''}
-              If your party members are not immediate family, please reach out to Gowtham or Nikhita directly before adding them.
-            </p>
+            <div className="mt-3 px-3 py-2.5 rounded-lg bg-amber-50/60 border border-amber-200/70 flex gap-2 items-start">
+              <span className="text-amber-500 text-sm leading-none mt-0.5">⚠</span>
+              <p className="text-xs text-amber-800/80 leading-relaxed">
+                {totalGuests >= MAX_PARTY
+                  ? `Maximum party size of ${MAX_PARTY} reached. `
+                  : ''}
+                If your party members are not immediate family, please reach out to Gowtham or Nikhita directly before adding them.
+              </p>
+            </div>
           </div>
 
           {/* Events */}
