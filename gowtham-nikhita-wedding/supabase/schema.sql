@@ -65,7 +65,7 @@ insert into bets (category, question, option_a, option_b, option_a_line, option_
 ('prop', 'Who cries first?',                                                 'Bride', 'Groom / Parent', -150, +130, 11),
 ('prop', 'First song at the reception?',                                     'Bollywood', 'Western / Other', -110, -110, 12),
 ('prop', 'Will the baraat be on time (within 15 min of scheduled)?',         'Yes',   'No', -130, +110, 13),
-('prop', 'What color is Nikhita''s main outfit?',                            'Red',   'Other color', -180, +160, 14),
+('prop', 'What color is Nikhita''s ceremony outfit?',                            'Red',   'Other color', -180, +160, 14),
 ('prop', 'Who gives the longest speech?',                                    'Father of bride', 'Anyone else', +120, -140, 15),
 ('prop', 'Does Gowtham tie the thali on first try?',                         'Yes',   'No', -200, +170, 16),
 ('prop', 'Will it rain in Sarasota on February 17?',                         'Yes',   'No', +300, -375, 17),
