@@ -14,7 +14,7 @@ const links = [
   { label: 'Photo Line-Up', href: '/photos' },
   { label: 'The Bets', href: '/bets' },
   { label: 'Guestbook', href: '/guestbook' },
-  { label: 'My Status', href: '/checklist', highlight: true },
+  { label: 'My Checklist', href: '/checklist', highlight: true },
 ]
 
 export default function Nav() {
