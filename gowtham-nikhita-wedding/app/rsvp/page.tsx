@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import RsvpForm from '@/components/RSVP/RsvpForm'
-import RsvpDeadline from '@/components/RsvpDeadline'
 
 export const metadata: Metadata = {
   title: 'RSVP · Gowtham & Nikhita',
@@ -22,7 +21,9 @@ export default function RsvpPage() {
             <p className="text-charcoal/50 text-sm mt-4 max-w-md mx-auto">
               We&apos;d love to have you celebrate with us. Please type your full name below.
             </p>
-            <RsvpDeadline />
+            <p className="text-gold text-xs mt-2 font-medium tracking-wide">
+              Please RSVP by August 24
+            </p>
           </div>
 
           <RsvpForm />
