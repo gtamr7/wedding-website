@@ -118,6 +118,18 @@ export default function Travel() {
                 >
                   <div className="w-6 h-6 bg-gold rounded-full border-2 border-white shadow-lg animate-pulse-gold" />
                 </motion.div>
+                <a
+                  href="https://maps.google.com/?q=Powel+Crosley+Estate,+8374+N+Tamiami+Trl,+Sarasota,+FL+34243"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-black/80 transition-colors"
+                >
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M8 2C5.79 2 4 3.79 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.21-1.79-4-4-4z" />
+                    <circle cx="8" cy="6" r="1.5" />
+                  </svg>
+                  Open in Maps
+                </a>
               </motion.div>
             </FadeIn>
 
