@@ -160,7 +160,9 @@ INSERT INTO guest_list (first_name, last_name, name, email, phone) VALUES
   ('Freddy', NULL, 'Freddy', 'freddytheqt@icloud.com', NULL),
   ('Balu', 'Chithapa', 'Balu Chithapa', 'Balacbe.ca@gmail.com', NULL),
   ('Jayashree', 'Chithi', 'Jayashree Chithi', NULL, NULL),
-  ('saikrishna', NULL, 'saikrishna', NULL, NULL);
+  ('saikrishna', NULL, 'saikrishna', NULL, NULL),
+  ('Bhuvaneswari', 'Venkataramanan', 'Bhuvaneswari Venkataramanan', NULL, NULL),
+  ('Nanthakumar', 'Gopalakrishnan', 'Nanthakumar Gopalakrishnan', NULL, NULL);
 
 -- ── rsvps table upgrades (add columns if not already there) ──────────────────
 ALTER TABLE rsvps ADD COLUMN IF NOT EXISTS first_name     TEXT;
