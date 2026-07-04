@@ -72,9 +72,16 @@ export default function Nav() {
           ))}
         </nav>
 
-        {/* Mobile hamburger */}
-        <button
-          className="lg:hidden flex flex-col gap-1.5 p-3 min-w-[44px] min-h-[44px] items-center justify-center rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+        {/* Mobile right: checklist shortcut + hamburger */}
+        <div className="lg:hidden flex items-center gap-1">
+          <Link
+            href="/checklist"
+            className="text-[10px] tracking-widest uppercase text-gold border border-gold/40 rounded-full px-3 min-h-[44px] flex items-center hover:border-gold transition-colors"
+          >
+            Checklist
+          </Link>
+          <button
+          className="flex flex-col gap-1.5 p-3 min-w-[44px] min-h-[44px] items-center justify-center rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
@@ -83,6 +90,7 @@ export default function Nav() {
           <span className={`block w-6 h-0.5 transition-all duration-300 bg-ivory ${menuOpen ? 'opacity-0' : ''}`} />
           <span className={`block w-6 h-0.5 transition-all duration-300 bg-ivory ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
         </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
