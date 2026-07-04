@@ -4,11 +4,13 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Countdown from './Countdown'
+import FloatingPetals from './FloatingPetals'
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] })
 
+  const bgGlowY     = useTransform(scrollYProgress, [0, 1], ['0%', '45%'])
   const textY       = useTransform(scrollYProgress, [0, 1], ['0%', '-15%'])
   const leftPhotoY  = useTransform(scrollYProgress, [0, 1], ['0%', '-28%'])
   const rightPhotoY = useTransform(scrollYProgress, [0, 1], ['0%', '-10%'])
@@ -23,10 +25,16 @@ export default function Hero() {
       }}
       aria-label="Hero"
     >
-      <div
+      <motion.div
+        style={{ y: bgGlowY }}
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 50% 40% at 50% 50%, rgba(184,151,42,0.08) 0%, transparent 100%)' }}
-      />
+        aria-hidden="true"
+      >
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 50% 40% at 50% 50%, rgba(184,151,42,0.10) 0%, transparent 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 30% 25% at 30% 60%, rgba(184,151,42,0.05) 0%, transparent 100%)' }} />
+      </motion.div>
+
+      <FloatingPetals />
 
       <div className="flex items-center justify-center min-h-screen sm:gap-8 lg:gap-16 px-6 sm:px-4">
 

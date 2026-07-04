@@ -64,6 +64,15 @@ body {
 }
 .flip-in { animation: flip-in 0.3s ease-out forwards; }
 
+/* Floating petals */
+@keyframes petalFall {
+  0%   { transform: translateY(-24px)  translateX(0px)   rotate(0deg); }
+  25%  { transform: translateY(25vh)   translateX(14px)  rotate(90deg); }
+  50%  { transform: translateY(52vh)   translateX(-10px) rotate(180deg); }
+  75%  { transform: translateY(78vh)   translateX(18px)  rotate(270deg); }
+  100% { transform: translateY(110vh)  translateX(0px)   rotate(360deg); }
+}
+
 /* Reduced-motion overrides */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
