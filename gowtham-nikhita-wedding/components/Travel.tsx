@@ -1,7 +1,13 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
+
+const venuePhotos = [
+  { src: '/venue-1.jpg', alt: 'Powel Crosley Estate — outdoor reception' },
+  { src: '/venue-2.jpg', alt: 'Powel Crosley Estate — entrance' },
+  { src: '/venue-3.webp', alt: 'Powel Crosley Estate — evening lights' },
+]
 
 const airports = [
   { code: 'SRQ', name: 'Sarasota-Bradenton International', distance: '~15 min', recommended: true },
@@ -57,6 +63,18 @@ export default function Travel() {
   const headerInView = useInView(headerRef, { once: true, margin: '-80px' })
   const collageRef = useRef<HTMLDivElement>(null)
   const collageInView = useInView(collageRef, { once: true, margin: '-60px' })
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (lightboxIndex === null) return
+      if (e.key === 'Escape') setLightboxIndex(null)
+      if (e.key === 'ArrowLeft' && lightboxIndex > 0) setLightboxIndex(lightboxIndex - 1)
+      if (e.key === 'ArrowRight' && lightboxIndex < venuePhotos.length - 1) setLightboxIndex(lightboxIndex + 1)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [lightboxIndex])
 
   return (
     <section id="travel" className="section-py px-6">
@@ -96,35 +114,37 @@ export default function Travel() {
               {/* Mobile: snap-scroll row. Desktop: side-by-side with float offsets */}
               <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden pb-1 -mx-6 px-6 sm:mx-0 sm:px-0 sm:overflow-visible sm:pb-10 sm:items-start">
 
-                <motion.div
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={collageInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.55, delay: 0.1 }}
-                  className="snap-center shrink-0 w-[78vw] sm:w-auto sm:flex-1 rounded-xl overflow-hidden border border-gold/25 shadow-xl sm:-rotate-[1deg] sm:translate-y-0"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/venue-1.jpg" alt="Powel Crosley Estate reception" className="w-full h-52 sm:h-48 object-cover" />
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={collageInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.55, delay: 0.22 }}
-                  className="snap-center shrink-0 w-[78vw] sm:w-auto sm:flex-1 rounded-xl overflow-hidden border border-gold/20 shadow-xl sm:rotate-[0.8deg] sm:translate-y-6"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/venue-2.jpg" alt="Powel Crosley Estate entrance" className="w-full h-52 sm:h-52 object-cover" />
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={collageInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.55, delay: 0.34 }}
-                  className="snap-center shrink-0 w-[78vw] sm:w-auto sm:flex-1 rounded-xl overflow-hidden border border-gold/30 shadow-xl sm:-rotate-[0.5deg] sm:translate-y-3"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/venue-3.webp" alt="Powel Crosley Estate evening" className="w-full h-52 sm:h-44 object-cover" />
-                </motion.div>
+                {venuePhotos.map((photo, i) => (
+                  <motion.button
+                    key={photo.src}
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={collageInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.55, delay: 0.1 + i * 0.12 }}
+                    onClick={() => setLightboxIndex(i)}
+                    className={`snap-center shrink-0 w-[78vw] sm:w-auto sm:flex-1 rounded-xl overflow-hidden border shadow-xl cursor-zoom-in group relative
+                      ${i === 0 ? 'border-gold/25 sm:-rotate-[1deg] sm:translate-y-0' : ''}
+                      ${i === 1 ? 'border-gold/20 sm:rotate-[0.8deg] sm:translate-y-6' : ''}
+                      ${i === 2 ? 'border-gold/30 sm:-rotate-[0.5deg] sm:translate-y-3' : ''}
+                    `}
+                    aria-label={`View ${photo.alt}`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={photo.src}
+                      alt={photo.alt}
+                      className={`w-full object-cover transition-transform duration-500 group-hover:scale-105
+                        ${i === 1 ? 'h-52 sm:h-52' : i === 2 ? 'h-52 sm:h-44' : 'h-52 sm:h-48'}
+                      `}
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/50 backdrop-blur-sm rounded-full p-2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
+                        </svg>
+                      </div>
+                    </div>
+                  </motion.button>
+                ))}
               </div>
 
               {/* Swipe hint — mobile only */}
@@ -234,6 +254,85 @@ export default function Travel() {
           </div>
         </div>
       </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-md p-4"
+            onClick={() => setLightboxIndex(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+              className="relative w-full max-w-3xl"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={venuePhotos[lightboxIndex].src}
+                alt={venuePhotos[lightboxIndex].alt}
+                className="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+              />
+
+              {/* Close */}
+              <button
+                onClick={() => setLightboxIndex(null)}
+                className="absolute -top-3 -right-3 w-10 h-10 bg-charcoal border border-gold/30 rounded-full flex items-center justify-center text-ivory hover:text-gold transition-colors shadow-lg"
+                aria-label="Close"
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M1 1l12 12M13 1L1 13" />
+                </svg>
+              </button>
+
+              {/* Prev */}
+              {lightboxIndex > 0 && (
+                <button
+                  onClick={() => setLightboxIndex(lightboxIndex - 1)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-sm border border-gold/20 rounded-full flex items-center justify-center text-ivory hover:text-gold transition-colors"
+                  aria-label="Previous photo"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M10 3L5 8l5 5" />
+                  </svg>
+                </button>
+              )}
+
+              {/* Next */}
+              {lightboxIndex < venuePhotos.length - 1 && (
+                <button
+                  onClick={() => setLightboxIndex(lightboxIndex + 1)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-sm border border-gold/20 rounded-full flex items-center justify-center text-ivory hover:text-gold transition-colors"
+                  aria-label="Next photo"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 3l5 5-5 5" />
+                  </svg>
+                </button>
+              )}
+
+              {/* Dot indicators */}
+              <div className="flex justify-center gap-2 mt-4">
+                {venuePhotos.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setLightboxIndex(i)}
+                    className={`w-2 h-2 rounded-full transition-colors ${i === lightboxIndex ? 'bg-gold' : 'bg-white/30'}`}
+                    aria-label={`View photo ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
