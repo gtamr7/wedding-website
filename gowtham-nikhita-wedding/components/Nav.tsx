@@ -74,7 +74,7 @@ export default function Nav() {
 
         {/* Mobile hamburger */}
         <button
-          className="lg:hidden flex flex-col gap-1.5 p-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+          className="lg:hidden flex flex-col gap-1.5 p-3 min-w-[44px] min-h-[44px] items-center justify-center rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
@@ -101,7 +101,7 @@ export default function Nav() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className={`text-sm tracking-widest uppercase py-3 transition-colors ${'highlight' in l && l.highlight ? 'text-gold' : 'text-ivory/80 hover:text-gold'}`}
+                  className={`text-sm tracking-widest uppercase py-4 min-h-[44px] flex items-center transition-colors ${'highlight' in l && l.highlight ? 'text-gold' : 'text-ivory/80 hover:text-gold'}`}
                   onClick={() => setMenuOpen(false)}
                 >
                   {l.label}

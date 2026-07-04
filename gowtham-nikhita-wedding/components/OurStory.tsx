@@ -51,6 +51,11 @@ export default function OurStory() {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = lightbox ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [lightbox])
+
   return (
     <section id="story" className="section-py px-6">
       <div className="max-w-6xl mx-auto">
@@ -89,8 +94,8 @@ export default function OurStory() {
                   quality={92}
                   priority
                 />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/25">
-                  <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 bg-black/20 sm:bg-black/25">
+                  <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                       <path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -113,8 +118,8 @@ export default function OurStory() {
                   quality={92}
                   priority
                 />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/25">
-                  <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 bg-black/20 sm:bg-black/25">
+                  <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                       <path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -174,7 +179,7 @@ export default function OurStory() {
           >
             <button
               onClick={() => setLightbox(null)}
-              className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white z-10"
+              className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white z-10"
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

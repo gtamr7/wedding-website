@@ -76,6 +76,12 @@ export default function Travel() {
     return () => window.removeEventListener('keydown', onKey)
   }, [lightboxIndex])
 
+  // Lock body scroll when lightbox is open (prevents iOS background scroll)
+  useEffect(() => {
+    document.body.style.overflow = lightboxIndex !== null ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [lightboxIndex])
+
   return (
     <section id="travel" className="section-py px-6">
       <div className="max-w-6xl mx-auto">
@@ -136,8 +142,8 @@ export default function Travel() {
                         ${i === 1 ? 'h-52 sm:h-52' : i === 2 ? 'h-52 sm:h-44' : 'h-52 sm:h-48'}
                       `}
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/50 backdrop-blur-sm rounded-full p-2">
+                    <div className="absolute inset-0 bg-black/10 sm:bg-black/0 sm:group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center">
+                      <div className="sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 bg-black/50 backdrop-blur-sm rounded-full p-2.5">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                           <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
                         </svg>
@@ -263,40 +269,41 @@ export default function Travel() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-md p-4"
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/92 backdrop-blur-md"
             onClick={() => setLightboxIndex(null)}
           >
+            {/* Close — always in safe top-right corner */}
+            <button
+              onClick={() => setLightboxIndex(null)}
+              className="absolute top-4 right-4 w-11 h-11 bg-white/10 border border-white/20 rounded-full flex items-center justify-center text-white hover:text-gold hover:bg-white/20 transition-colors z-10"
+              aria-label="Close"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M1 1l12 12M13 1L1 13" />
+              </svg>
+            </button>
+
+            {/* Image + side arrows */}
             <motion.div
-              initial={{ scale: 0.92, opacity: 0 }}
+              initial={{ scale: 0.93, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.92, opacity: 0 }}
+              exit={{ scale: 0.93, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-              className="relative w-full max-w-3xl"
+              className="relative w-full max-w-3xl px-4"
               onClick={e => e.stopPropagation()}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={venuePhotos[lightboxIndex].src}
                 alt={venuePhotos[lightboxIndex].alt}
-                className="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+                className="w-full max-h-[75vh] object-contain rounded-2xl shadow-2xl"
               />
-
-              {/* Close */}
-              <button
-                onClick={() => setLightboxIndex(null)}
-                className="absolute -top-3 -right-3 w-10 h-10 bg-charcoal border border-gold/30 rounded-full flex items-center justify-center text-ivory hover:text-gold transition-colors shadow-lg"
-                aria-label="Close"
-              >
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M1 1l12 12M13 1L1 13" />
-                </svg>
-              </button>
 
               {/* Prev */}
               {lightboxIndex > 0 && (
                 <button
                   onClick={() => setLightboxIndex(lightboxIndex - 1)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-sm border border-gold/20 rounded-full flex items-center justify-center text-ivory hover:text-gold transition-colors"
+                  className="absolute left-6 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:text-gold transition-colors"
                   aria-label="Previous photo"
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -309,7 +316,7 @@ export default function Travel() {
               {lightboxIndex < venuePhotos.length - 1 && (
                 <button
                   onClick={() => setLightboxIndex(lightboxIndex + 1)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-sm border border-gold/20 rounded-full flex items-center justify-center text-ivory hover:text-gold transition-colors"
+                  className="absolute right-6 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:text-gold transition-colors"
                   aria-label="Next photo"
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -317,19 +324,21 @@ export default function Travel() {
                   </svg>
                 </button>
               )}
-
-              {/* Dot indicators */}
-              <div className="flex justify-center gap-2 mt-4">
-                {venuePhotos.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setLightboxIndex(i)}
-                    className={`w-2 h-2 rounded-full transition-colors ${i === lightboxIndex ? 'bg-gold' : 'bg-white/30'}`}
-                    aria-label={`View photo ${i + 1}`}
-                  />
-                ))}
-              </div>
             </motion.div>
+
+            {/* Dots — large tap targets below image */}
+            <div className="flex gap-1 mt-5" onClick={e => e.stopPropagation()}>
+              {venuePhotos.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setLightboxIndex(i)}
+                  className="p-3 flex items-center justify-center"
+                  aria-label={`View photo ${i + 1}`}
+                >
+                  <span className={`block w-2 h-2 rounded-full transition-colors ${i === lightboxIndex ? 'bg-gold' : 'bg-white/30'}`} />
+                </button>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
