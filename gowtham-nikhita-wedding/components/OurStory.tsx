@@ -76,14 +76,14 @@ export default function OurStory() {
         {/* Two-column: photos + narrative */}
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
 
-          {/* Stacked photo cards — sticky on desktop so they follow the narrative */}
+          {/* Stacked photo cards — sticky on desktop */}
           <div className="lg:sticky lg:top-24">
             <FadeIn delay={0.1}>
-              <div className="relative mx-auto max-w-sm" style={{ height: '400px' }}>
-                {/* Back card */}
+              <div className="relative w-full" style={{ height: '520px' }}>
+                {/* Back card — top-right, larger */}
                 <div
-                  className="absolute top-0 right-4 w-52 rounded-xl overflow-hidden border border-gold/15 shadow-xl cursor-pointer group"
-                  style={{ height: '300px', transform: 'rotate(4deg)' }}
+                  className="absolute top-0 right-0 w-[62%] rounded-xl overflow-hidden border border-gold/15 shadow-xl cursor-pointer group"
+                  style={{ height: '380px', transform: 'rotate(3.5deg)' }}
                   onClick={() => setLightbox('/gallery/IMG_0334.jpg')}
                 >
                   <Image
@@ -91,7 +91,7 @@ export default function OurStory() {
                     alt=""
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 50vw, 320px"
+                    sizes="(max-width: 768px) 55vw, 340px"
                     quality={92}
                     priority
                   />
@@ -102,10 +102,10 @@ export default function OurStory() {
                   </div>
                 </div>
 
-                {/* Front card */}
+                {/* Front card — bottom-left, larger */}
                 <div
-                  className="absolute bottom-0 left-0 w-56 rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 cursor-pointer group"
-                  style={{ height: '320px', transform: 'rotate(-4deg)' }}
+                  className="absolute bottom-0 left-0 w-[64%] rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 cursor-pointer group"
+                  style={{ height: '400px', transform: 'rotate(-3.5deg)' }}
                   onClick={() => setLightbox('/gallery/IMG_0314.jpg')}
                 >
                   <Image
@@ -113,7 +113,7 @@ export default function OurStory() {
                     alt=""
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 60vw, 350px"
+                    sizes="(max-width: 768px) 60vw, 360px"
                     quality={92}
                     priority
                   />
@@ -125,34 +125,6 @@ export default function OurStory() {
                 </div>
               </div>
             </FadeIn>
-
-            {/* Extra photos below to fill the column — desktop only */}
-            <div className="hidden lg:flex gap-3 mt-6 px-2">
-              <FadeIn delay={0.25} className="flex-1">
-                <div
-                  className="rounded-xl overflow-hidden border border-gold/15 shadow-lg cursor-pointer group relative"
-                  style={{ height: '160px', transform: 'rotate(-1deg)' }}
-                  onClick={() => setLightbox('/gallery/IMG_couple_restaurant.jpg')}
-                >
-                  <Image src="/gallery/IMG_couple_restaurant.jpg" alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="200px" quality={88} />
-                  <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/55 backdrop-blur-sm rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  </div>
-                </div>
-              </FadeIn>
-              <FadeIn delay={0.35} className="flex-1">
-                <div
-                  className="rounded-xl overflow-hidden border border-gold/20 shadow-lg cursor-pointer group relative"
-                  style={{ height: '160px', transform: 'rotate(1.5deg)' }}
-                  onClick={() => setLightbox('/gallery/IMG_indian_attire.jpg')}
-                >
-                  <Image src="/gallery/IMG_indian_attire.jpg" alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="200px" quality={88} />
-                  <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/55 backdrop-blur-sm rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  </div>
-                </div>
-              </FadeIn>
-            </div>
           </div>
 
           {/* Narrative chapters */}
