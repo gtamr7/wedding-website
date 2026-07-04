@@ -1,4 +1,5 @@
 import Nav from '@/components/Nav'
+import ScrollResetOnRefresh from '@/components/ScrollResetOnRefresh'
 import Hero from '@/components/Hero'
 import OurStory from '@/components/OurStory'
 import Schedule from '@/components/Schedule'
@@ -29,6 +30,7 @@ function FeatureLink({ href, emoji, title, desc }: { href: string; emoji: string
 export default function HomePage() {
   return (
     <>
+      <ScrollResetOnRefresh />
       <Nav />
       <main>
         <Hero />
