@@ -81,7 +81,7 @@ function buildItems(data: ChecklistData): ItemDef[] {
       label: 'Photo group',
       done: data.photoGroup !== null,
       tbd: data.photoGroup === null,
-      subtitle: photoName ?? 'Groups are being finalized. Check back closer to the wedding.',
+      subtitle: photoName ?? 'Coming soon. Groups will be assigned once the guest list is finalized.',
       href: '/photos',
       cta: 'View lineup',
       showCta: data.photoGroup !== null,
