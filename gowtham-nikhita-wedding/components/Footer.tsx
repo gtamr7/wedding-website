@@ -35,7 +35,6 @@ export default function Footer() {
         </nav>
 
         {/* Made with love */}
-        <p className="text-xs text-olive-light/40">Made with love in Atlanta 🌿</p>
         <p className="text-xs text-olive-light/30 italic">Created by yours truly, the groom</p>
       </div>
     </footer>
