@@ -97,28 +97,16 @@ export default function Travel() {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={mapInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="relative rounded-xl overflow-hidden border border-gold/15 shadow-sm aspect-video bg-black/15"
+                className="relative rounded-xl overflow-hidden border border-gold/15 shadow-sm aspect-video bg-black/20"
               >
-                <iframe
-                  title="Powel Crosley Estate Map"
-                  width="100%"
-                  height="100%"
-                  loading="lazy"
-                  allowFullScreen
-                  referrerPolicy="no-referrer-when-downgrade"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3544.3!2d-82.5259!3d27.4112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88c3410a1f2cde29%3A0x3b7d4c2c9b56a0!2sPowel%20Crosley%20Estate!5e0!3m2!1sen!2sus!4v1000000000000"
-                  className="absolute inset-0 w-full h-full pointer-events-none"
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/venue.jpg"
+                  alt="Powel Crosley Estate"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
-                <motion.div
-                  initial={{ y: -20, opacity: 0 }}
-                  animate={mapInView ? { y: 0, opacity: 1 } : {}}
-                  transition={{ delay: 0.5, type: 'spring', stiffness: 200 }}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full pointer-events-none"
-                  aria-hidden="true"
-                >
-                  <div className="w-6 h-6 bg-gold rounded-full border-2 border-white shadow-lg animate-pulse-gold" />
-                </motion.div>
-                <
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                <a
                   href="https://maps.google.com/?q=Powel+Crosley+Estate,+8374+N+Tamiami+Trl,+Sarasota,+FL+34243"
                   target="_blank"
                   rel="noopener noreferrer"
