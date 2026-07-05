@@ -132,7 +132,7 @@ function cleanFirstName(raw) {
 function buildMessage(firstName) {
   return (
     `Hey ${firstName}! Gowtham & Nikhita's wedding is Feb 17-18, 2027. ` +
-    `Please RSVP by Aug 24: ${RSVP_URL} We hope to see you there!`
+    `Please RSVP by Aug 24: ${RSVP_URL} Password: idlisambar`
   )
 }
 
