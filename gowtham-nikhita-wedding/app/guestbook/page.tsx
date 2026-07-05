@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import GuestbookWall from '@/components/Guestbook/GuestbookWall'
+import PasswordGate from '@/components/PasswordGate'
 import { createSupabaseClient } from '@/lib/supabase'
 import type { GuestbookEntry } from '@/lib/types'
 
@@ -42,7 +43,9 @@ export default async function GuestbookPage() {
             </p>
           </div>
 
-          <GuestbookWall initialEntries={entries} />
+          <PasswordGate>
+            <GuestbookWall initialEntries={entries} />
+          </PasswordGate>
         </div>
       </main>
       <Footer />
