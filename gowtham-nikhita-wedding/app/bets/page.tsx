@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import BetBoard from '@/components/Bets/BetBoard'
+import PasswordGate from '@/components/PasswordGate'
 
 export const metadata: Metadata = {
   title: 'The Bets · Gowtham & Nikhita',
@@ -25,7 +26,9 @@ export default function BetsPage() {
             </p>
           </div>
 
-          <BetBoard />
+          <PasswordGate>
+            <BetBoard />
+          </PasswordGate>
         </div>
       </main>
       <Footer />
