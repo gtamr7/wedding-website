@@ -22,7 +22,7 @@ type ExistingRsvp = {
   email: string | null
 }
 
-const MAX_PARTY = 5
+const MAX_PARTY = 5 // total guests including the primary guest
 const RSVP_DEADLINE = new Date('2026-08-25T00:00:00-05:00')
 
 const EVENTS = [
@@ -156,7 +156,7 @@ export default function RsvpForm() {
 
   // ── Party member helpers ──
   const addMember = () => {
-    if (partyMembers.length < MAX_PARTY - 1) {
+    if (1 + partyMembers.length < MAX_PARTY) {
       setPartyMembers(m => [...m, { firstName: '', lastName: '' }])
     }
   }
