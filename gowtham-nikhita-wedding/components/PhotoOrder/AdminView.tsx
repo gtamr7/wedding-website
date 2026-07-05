@@ -50,7 +50,7 @@ function PinEntry({ onUnlock }: { onUnlock: () => void }) {
           value={pin}
           onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
           placeholder="••••"
-          className="w-full text-center text-3xl tracking-widest border-2 border-olive-light rounded-xl py-4 bg-white focus:border-gold focus:outline-none transition-colors"
+          className="w-full text-center text-3xl tracking-widest text-charcoal border-2 border-olive-light rounded-xl py-4 bg-white focus:border-gold focus:outline-none transition-colors"
           autoFocus
           aria-label="PIN"
         />
