@@ -1,81 +1,69 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Countdown from './Countdown'
 import FloatingPetals from './FloatingPetals'
 
-const expandIcon = (
-  <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/55 backdrop-blur-sm rounded-lg flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-      <path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  </div>
-)
-
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] })
-  const [lightbox, setLightbox] = useState<string | null>(null)
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightbox(null) }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [])
-
-  useEffect(() => {
-    document.body.style.overflow = lightbox ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
-  }, [lightbox])
-
-  const bgGlowY     = useTransform(scrollYProgress, [0, 1], ['0%', '45%'])
-  const textY       = useTransform(scrollYProgress, [0, 1], ['0%', '-15%'])
-  const leftPhotoY  = useTransform(scrollYProgress, [0, 1], ['0%', '-28%'])
-  const rightPhotoY = useTransform(scrollYProgress, [0, 1], ['0%', '-10%'])
+  // Photo moves slower than the viewport scroll — classic parallax feel
+  const photoY  = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
+  const bgGlowY = useTransform(scrollYProgress, [0, 1], ['0%', '45%'])
+  const textY   = useTransform(scrollYProgress, [0, 1], ['0%', '-15%'])
 
   return (
     <section
       ref={containerRef}
       className="relative overflow-hidden"
-      style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(160deg, #3D4E26 0%, #4A5C2F 45%, #3A4A24 100%)',
-      }}
+      style={{ minHeight: '100vh' }}
       aria-label="Hero"
     >
+      {/* Background photo — oversized vertically so parallax travel never shows an edge */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <motion.div
+          style={{ y: photoY }}
+          className="absolute -top-[25%] -bottom-[25%] left-0 right-0"
+        >
+          <Image
+            src="/gallery/IMG_0563.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            sizes="100vw"
+            quality={90}
+            priority
+          />
+        </motion.div>
+      </div>
+
+      {/* Dark olive overlay — readable text without killing the photo */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'linear-gradient(160deg, rgba(28,36,16,0.58) 0%, rgba(22,30,12,0.50) 50%, rgba(28,36,16,0.62) 100%)' }}
+        aria-hidden="true"
+      />
+
+      {/* Parallax gold glow */}
       <motion.div
         style={{ y: bgGlowY }}
         className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
       >
-        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 50% 40% at 50% 50%, rgba(184,151,42,0.10) 0%, transparent 100%)' }} />
-        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 30% 25% at 30% 60%, rgba(184,151,42,0.05) 0%, transparent 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 50% 40% at 50% 50%, rgba(184,151,42,0.12) 0%, transparent 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 30% 25% at 30% 60%, rgba(184,151,42,0.06) 0%, transparent 100%)' }} />
       </motion.div>
 
       <FloatingPetals />
 
-      <div className="flex items-center justify-center min-h-screen sm:gap-8 lg:gap-16 px-6 sm:px-4">
-
-        {/* Left photo — desktop only */}
-        <motion.div
-          style={{ y: leftPhotoY }}
-          className="hidden sm:block shrink-0 sm:w-44 lg:w-56"
-        >
-          <div
-            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[200px] sm:[transform:rotate(-6deg)] cursor-pointer group"
-            onClick={() => setLightbox('/gallery/IMG_0400.jpg')}
-          >
-            <Image src="/gallery/IMG_0400.jpg" alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 1024px) 176px, 224px" quality={90} priority />
-            {expandIcon}
-          </div>
-        </motion.div>
-
-        {/* Center text */}
+      {/* Centered text — no side photos */}
+      <div className="flex items-center justify-center min-h-screen px-6">
         <motion.div
           style={{ y: textY }}
-          className="flex-1 max-w-sm sm:max-w-md lg:max-w-xl text-center flex flex-col items-center gap-5 sm:gap-7 py-20"
+          className="max-w-sm sm:max-w-md lg:max-w-xl text-center flex flex-col items-center gap-5 sm:gap-7 py-20"
         >
           <motion.p
             initial={{ opacity: 0, letterSpacing: '0.5em' }}
@@ -91,7 +79,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5, ease: 'easeOut' }}
             className="font-display text-5xl sm:text-7xl lg:text-9xl italic text-gold leading-none tracking-wide"
-            style={{ textShadow: '0 4px 32px rgba(184,151,42,0.3)' }}
+            style={{ textShadow: '0 4px 40px rgba(184,151,42,0.4), 0 2px 16px rgba(0,0,0,0.5)' }}
           >
             Gowtham
             <span className="block text-xl sm:text-2xl lg:text-4xl not-italic text-gold/40 my-2 sm:my-3 tracking-widest font-light">
@@ -128,45 +116,7 @@ export default function Hero() {
           >
             <Countdown />
           </motion.div>
-
-          {/* Mobile-only: two photos below countdown */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 2.1 }}
-            className="flex sm:hidden gap-4 mt-1"
-          >
-            <div
-              className="w-28 h-40 relative rounded-xl overflow-hidden border border-gold/25 shadow-xl shadow-black/40 cursor-pointer group"
-              onClick={() => setLightbox('/gallery/IMG_0400.jpg')}
-            >
-              <Image src="/gallery/IMG_0400.jpg" alt="" fill className="object-cover" sizes="112px" quality={90} priority />
-              {expandIcon}
-            </div>
-            <div
-              className="w-28 h-40 relative rounded-xl overflow-hidden border border-gold/25 shadow-xl shadow-black/40 cursor-pointer group"
-              onClick={() => setLightbox('/gallery/IMG_0563.jpg')}
-            >
-              <Image src="/gallery/IMG_0563.jpg" alt="" fill className="object-cover" sizes="112px" quality={90} priority />
-              {expandIcon}
-            </div>
-          </motion.div>
         </motion.div>
-
-        {/* Right photo — desktop only */}
-        <motion.div
-          style={{ y: rightPhotoY }}
-          className="hidden sm:block shrink-0 sm:w-44 lg:w-56"
-        >
-          <div
-            className="relative rounded-xl overflow-hidden border border-gold/25 shadow-2xl shadow-black/40 h-[200px] sm:[transform:rotate(6deg)] cursor-pointer group"
-            onClick={() => setLightbox('/gallery/IMG_0563.jpg')}
-          >
-            <Image src="/gallery/IMG_0563.jpg" alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 1024px) 176px, 224px" quality={90} priority />
-            {expandIcon}
-          </div>
-        </motion.div>
-
       </div>
 
       <motion.div
@@ -185,38 +135,6 @@ export default function Hero() {
           <path d="M2 5L8 11L14 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </motion.svg>
       </motion.div>
-
-      <AnimatePresence>
-        {lightbox && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-sm"
-            onClick={() => setLightbox(null)}
-          >
-            <button
-              onClick={() => setLightbox(null)}
-              className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white z-10"
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </button>
-            <motion.div
-              initial={{ scale: 0.92, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.92, opacity: 0 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="relative w-full h-full max-w-4xl max-h-[88vh] mx-6"
-              onClick={e => e.stopPropagation()}
-            >
-              <Image src={lightbox} alt="" fill className="object-contain" sizes="90vw" quality={95} />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   )
 }
