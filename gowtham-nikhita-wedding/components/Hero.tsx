@@ -19,7 +19,7 @@ export default function Hero() {
     <section
       ref={containerRef}
       className="relative overflow-hidden"
-      style={{ minHeight: '100vh' }}
+      style={{ minHeight: '100vh', background: '#111a0a' }}
       aria-label="Hero"
     >
       {/* Background photo — oversized vertically so parallax travel never shows an edge */}

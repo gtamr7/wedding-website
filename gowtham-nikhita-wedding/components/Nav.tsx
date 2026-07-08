@@ -65,7 +65,7 @@ export default function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              className={`text-sm tracking-widest uppercase transition-colors duration-200 hover:text-gold ${'highlight' in l && l.highlight ? 'text-gold border border-gold/40 rounded-full px-3 py-1 hover:border-gold' : 'text-ivory/80'}`}
+              className={`text-sm tracking-widest uppercase transition-colors duration-200 hover:text-gold outline-none ${'highlight' in l && l.highlight ? 'text-gold border border-gold/40 rounded-full px-3 py-1 hover:border-gold' : 'text-ivory/80'}`}
             >
               {l.label}
             </Link>
@@ -76,7 +76,7 @@ export default function Nav() {
         <div className="lg:hidden flex items-center gap-1">
           <Link
             href="/checklist"
-            className="text-[10px] tracking-widest uppercase text-gold border border-gold/40 rounded-full px-3 min-h-[44px] flex items-center hover:border-gold transition-colors"
+            className="text-[10px] tracking-widest uppercase text-gold border border-gold/40 rounded-full px-3 min-h-[44px] flex items-center hover:border-gold transition-colors outline-none"
           >
             Checklist
           </Link>
@@ -109,7 +109,7 @@ export default function Nav() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className={`text-sm tracking-widest uppercase py-4 min-h-[44px] flex items-center transition-colors ${'highlight' in l && l.highlight ? 'text-gold' : 'text-ivory/80 hover:text-gold'}`}
+                  className={`text-sm tracking-widest uppercase py-4 min-h-[44px] flex items-center transition-colors outline-none ${'highlight' in l && l.highlight ? 'text-gold' : 'text-ivory/80 hover:text-gold'}`}
                   onClick={() => setMenuOpen(false)}
                 >
                   {l.label}
