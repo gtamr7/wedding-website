@@ -58,19 +58,25 @@ export default function Hero() {
 
       <FloatingPetals />
 
-      {/* Text — no entrance animations to avoid SSR hydration flash */}
+      {/* Text — CSS animations avoid SSR hydration flash while preserving staggered reveal */}
       <div className="flex items-center justify-center min-h-screen px-6">
         <motion.div
           style={{ y: textY }}
           className="max-w-sm sm:max-w-md lg:max-w-xl text-center flex flex-col items-center gap-5 sm:gap-7 py-20"
         >
-          <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-light/60">
+          <p
+            className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-light/60"
+            style={{ animation: 'heroFadeUp 0.8s ease-out 0.1s both' }}
+          >
             together.forever.
           </p>
 
           <h1
             className="font-display text-5xl sm:text-7xl lg:text-9xl italic text-gold leading-none tracking-wide"
-            style={{ textShadow: '0 4px 40px rgba(184,151,42,0.4), 0 2px 16px rgba(0,0,0,0.5)' }}
+            style={{
+              textShadow: '0 4px 40px rgba(184,151,42,0.4), 0 2px 16px rgba(0,0,0,0.5)',
+              animation: 'heroFadeUp 1s ease-out 0.3s both',
+            }}
           >
             Gowtham
             <span className="block text-xl sm:text-2xl lg:text-4xl not-italic text-gold/40 my-2 sm:my-3 tracking-widest font-light">
@@ -79,9 +85,15 @@ export default function Hero() {
             Nikhita
           </h1>
 
-          <div className="gold-divider w-28 opacity-50" />
+          <div
+            className="gold-divider w-28"
+            style={{ animation: 'heroGrowX 0.7s ease-out 0.7s both', transformOrigin: 'center' }}
+          />
 
-          <div className="space-y-2">
+          <div
+            className="space-y-2"
+            style={{ animation: 'heroFadeUp 0.8s ease-out 0.9s both' }}
+          >
             <p className="font-display italic text-gold-light/90 text-lg sm:text-xl tracking-wide">
               February 17–18, 2027
             </p>
@@ -90,7 +102,9 @@ export default function Hero() {
             </p>
           </div>
 
-          <Countdown />
+          <div style={{ animation: 'heroFadeUp 0.8s ease-out 1.1s both' }}>
+            <Countdown />
+          </div>
         </motion.div>
       </div>
 
