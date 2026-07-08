@@ -105,9 +105,17 @@ export default function RsvpForm() {
   const [submitterName, setSubmitterName] = useState('')
 
   // ── Details state ─────────────────────────────────────────
-  const [email,      setEmail]      = useState('')
+  const [email,        setEmail]        = useState('')
+  const [emailConfirm, setEmailConfirm] = useState('')
+  const [emailTouched, setEmailTouched] = useState(false)
+  const [confirmTouched, setConfirmTouched] = useState(false)
   const [needsHotel, setNeedsHotel] = useState<boolean | null>(null)
   const [notes,      setNotes]      = useState('')
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const emailValid   = EMAIL_RE.test(email.trim())
+  const emailsMatch  = email.trim().toLowerCase() === emailConfirm.trim().toLowerCase()
+  const emailReady   = emailValid && emailsMatch
 
   // ── Existing RSVP ─────────────────────────────────────────
   const [existingRows, setExistingRows] = useState<ExistingRow[]>([])
@@ -459,13 +467,46 @@ export default function RsvpForm() {
           </div>
 
           {/* Email */}
-          <div>
-            <label htmlFor="rsvp-email" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
-              Your Email
-            </label>
-            <input id="rsvp-email" type="email" value={email} onChange={e => setEmail(e.target.value)}
-              placeholder="your@email.com" required
-              className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors" />
+          <div className="space-y-3">
+            <div>
+              <label htmlFor="rsvp-email" className="block text-xs uppercase tracking-widests text-charcoal/50 mb-2">
+                Your Email
+              </label>
+              <input
+                id="rsvp-email"
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                onBlur={() => setEmailTouched(true)}
+                placeholder="your@email.com"
+                autoComplete="email"
+                className={`w-full border-2 rounded-xl px-4 py-3 text-charcoal bg-white focus:outline-none transition-colors
+                  ${emailTouched && !emailValid ? 'border-red-300 focus:border-red-400' : 'border-olive-light focus:border-gold'}`}
+              />
+              {emailTouched && !emailValid && (
+                <p className="text-red-500 text-xs mt-1.5">Please enter a valid email address.</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="rsvp-email-confirm" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
+                Confirm Email
+              </label>
+              <input
+                id="rsvp-email-confirm"
+                type="email"
+                value={emailConfirm}
+                onChange={e => setEmailConfirm(e.target.value)}
+                onBlur={() => setConfirmTouched(true)}
+                onPaste={e => e.preventDefault()}
+                placeholder="your@email.com"
+                autoComplete="off"
+                className={`w-full border-2 rounded-xl px-4 py-3 text-charcoal bg-white focus:outline-none transition-colors
+                  ${confirmTouched && !emailsMatch ? 'border-red-300 focus:border-red-400' : 'border-olive-light focus:border-gold'}`}
+              />
+              {confirmTouched && !emailsMatch && (
+                <p className="text-red-500 text-xs mt-1.5">Emails don&apos;t match.</p>
+              )}
+            </div>
           </div>
 
           {/* Dietary — one field per attending guest */}
@@ -530,7 +571,7 @@ export default function RsvpForm() {
               ← Back
             </button>
             <button type="submit"
-              disabled={!email.trim() || needsHotel === null || submitting}
+              disabled={!emailReady || needsHotel === null || submitting}
               className="flex-1 bg-olive-dark text-white py-4 rounded-xl font-medium tracking-wider uppercase text-sm hover:bg-olive-mid transition-colors disabled:opacity-40">
               {submitting ? 'Sending…' : `Send RSVP for ${attendees.length} ${attendees.length === 1 ? 'Guest' : 'Guests'} →`}
             </button>
