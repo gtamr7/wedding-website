@@ -34,6 +34,12 @@ export default function Footer() {
           ))}
         </nav>
 
+        {/* Legal */}
+        <div className="flex justify-center gap-6 text-xs text-olive-light/40 tracking-widest uppercase">
+          <Link href="/privacy" className="hover:text-gold-light/60 transition-colors">Privacy Policy</Link>
+          <Link href="/terms" className="hover:text-gold-light/60 transition-colors">Terms</Link>
+        </div>
+
         {/* Made with love */}
         <p className="text-sm font-display italic text-gold/60">Created by yours truly, the groom</p>
       </div>
