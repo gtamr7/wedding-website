@@ -35,6 +35,7 @@ function Digit({ value }: { value: string }) {
           exit={{ y: 20, opacity: 0 }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
           className="block text-3xl sm:text-4xl lg:text-5xl font-display font-semibold text-ivory"
+          style={{ textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}
         >
           {value}
         </motion.span>
@@ -51,7 +52,7 @@ function Unit({ label, value }: { label: string; value: number }) {
       <div className="flex">
         {digits.map((d, i) => <Digit key={i} value={d} />)}
       </div>
-      <span className="text-[10px] sm:text-xs tracking-widest uppercase text-gold-light/70">{label}</span>
+      <span className="text-[10px] sm:text-xs tracking-widest uppercase text-ivory/70" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>{label}</span>
     </div>
   )
 }
