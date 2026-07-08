@@ -70,9 +70,9 @@ function initAttendee(m: PartyMember): AttendeeState {
     firstName: m.firstName,
     isSubmitter: m.isSubmitter,
     attending: true,
-    sangeet: true,
-    wedding: true,
-    reception: true,
+    sangeet: false,
+    wedding: false,
+    reception: false,
     dietary: '',
   }
 }
@@ -179,9 +179,8 @@ export default function RsvpForm() {
   const toggleAttending = (i: number, value: boolean) => {
     updateAttendee(i, {
       attending: value,
-      sangeet:   value,
-      wedding:   value,
-      reception: value,
+      // Clearing events when marking not attending; leave them untouched when re-enabling
+      ...(!value && { sangeet: false, wedding: false, reception: false }),
     })
   }
 
@@ -427,8 +426,12 @@ export default function RsvpForm() {
             ))}
           </div>
 
+          <p className="text-xs text-charcoal/40 text-center -mt-2">
+            Please select the events you plan on attending.
+          </p>
+
           {eventError && (
-            <p className="text-red-500 text-sm text-center mb-4">Please select at least one event for attending guests.</p>
+            <p className="text-red-500 text-sm text-center">Please select at least one event for attending guests.</p>
           )}
 
           <div className="flex gap-3">
