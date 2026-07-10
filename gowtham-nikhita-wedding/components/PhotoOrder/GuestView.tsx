@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Camera, Sparkles } from 'lucide-react'
 import { createSupabaseClient } from '@/lib/supabase'
 import { PHOTO_GROUPS } from '@/lib/photoGroups'
 import GroupCard from './GroupCard'
@@ -77,7 +78,7 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
   if (!isLive) {
     return (
       <div className="text-center py-16 text-charcoal/40">
-        <div className="text-5xl mb-5">📷</div>
+        <div className="flex justify-center mb-5"><Camera size={48} className="text-charcoal/30" /></div>
         <p className="font-display text-2xl italic text-charcoal mb-2">See you on February 18</p>
         <p className="text-sm leading-relaxed max-w-xs mx-auto">
           This page activates during the ceremony. Open it on the day and your group will highlight when it&apos;s your turn.
@@ -137,7 +138,7 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
             animate={{ opacity: 1, y: 0 }}
             className="mb-6 rounded-xl bg-olive-mid text-white px-5 py-4 text-center"
           >
-            <p className="font-display text-xl italic">🎉 All photos complete!</p>
+            <p className="font-display text-xl italic flex items-center justify-center gap-2"><Sparkles size={18} />All photos complete!</p>
             <p className="text-sm text-white/70 mt-1">Time to celebrate. See you on the dance floor.</p>
           </motion.div>
         )}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Trophy, Dices, Timer, Target } from 'lucide-react'
 import { createSupabaseClient } from '@/lib/supabase'
 import type { Bet, BetPick, BetWithPicks } from '@/lib/types'
 import BetCard from './BetCard'
@@ -147,7 +148,15 @@ export default function BetBoard() {
               tab === t ? 'bg-white text-charcoal shadow-sm' : 'text-charcoal/50 hover:text-charcoal'
             }`}
           >
-            {t === 'leaderboard' ? `🏆 Leaderboard${hasResults ? '' : ' (hidden)'}` : '🎲 All Bets'}
+            {t === 'leaderboard' ? (
+              <span className="flex items-center justify-center gap-1.5">
+                <Trophy size={13} />Leaderboard{!hasResults && ' (hidden)'}
+              </span>
+            ) : (
+              <span className="flex items-center justify-center gap-1.5">
+                <Dices size={13} />All Bets
+              </span>
+            )}
           </button>
         ))}
       </div>
@@ -158,7 +167,7 @@ export default function BetBoard() {
             {/* Over/Unders */}
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-4">
-                <h3 className="font-display text-2xl italic text-charcoal">⏱ Over/Unders</h3>
+                <h3 className="font-display text-2xl italic text-charcoal flex items-center gap-2"><Timer size={20} className="text-charcoal/50" />Over/Unders</h3>
                 <div className="flex-1 h-px bg-olive-light" />
               </div>
               <div className="space-y-4">
@@ -171,7 +180,7 @@ export default function BetBoard() {
             {/* Props */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <h3 className="font-display text-2xl italic text-charcoal">🎯 Prop Bets</h3>
+                <h3 className="font-display text-2xl italic text-charcoal flex items-center gap-2"><Target size={20} className="text-charcoal/50" />Prop Bets</h3>
                 <div className="flex-1 h-px bg-olive-light" />
               </div>
               <div className="space-y-4">

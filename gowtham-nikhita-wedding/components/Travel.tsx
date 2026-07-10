@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { Sun, Bell, MapPin } from 'lucide-react'
 
 const venuePhotos = [
   { src: '/venue-1.jpg', alt: 'Powel Crosley Estate — outdoor reception' },
@@ -178,7 +179,7 @@ export default function Travel() {
 
             <FadeIn delay={0.15}>
               <div className="flex items-start gap-3 bg-black/20 rounded-xl p-4 border border-gold/15">
-                <span className="text-2xl" aria-hidden="true">☀️</span>
+                <Sun size={22} className="text-gold/70 shrink-0 mt-0.5" aria-hidden="true" />
                 <div>
                   <p className="font-medium text-ivory text-sm">February in Sarasota</p>
                   <p className="text-ivory/60 text-sm mt-1">
@@ -230,7 +231,7 @@ export default function Travel() {
                 <h3 className="font-display text-2xl italic text-ivory mb-1">Where to Stay</h3>
                 <div className="gold-divider w-12 mb-5" />
                 <div className="flex items-start gap-3 bg-gold/8 rounded-xl p-4 border border-gold/25 mb-5">
-                  <span className="text-lg shrink-0" aria-hidden="true">🔔</span>
+                  <Bell size={18} className="text-gold/70 shrink-0 mt-0.5" aria-hidden="true" />
                   <p className="text-sm text-ivory/70 leading-relaxed">
                     <span className="text-gold font-medium">Hotel block & shuttle details coming soon.</span>{' '}
                     We&apos;re finalizing room blocks and transportation. Check back for updates before booking.
@@ -248,7 +249,7 @@ export default function Travel() {
                           {h.type}
                         </span>
                       </div>
-                      <p className="text-xs text-ivory/50 mt-1">📍 {h.distance}</p>
+                      <p className="flex items-center gap-1 text-xs text-ivory/50 mt-1"><MapPin size={11} className="shrink-0" />{h.distance}</p>
                       <p className="text-xs text-ivory/60 mt-1">{h.note}</p>
                     </div>
                   ))}

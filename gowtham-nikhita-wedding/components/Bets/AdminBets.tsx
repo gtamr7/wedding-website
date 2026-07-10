@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lock } from 'lucide-react'
+import { Lock, Target, Trophy } from 'lucide-react'
 import { createSupabaseClient } from '@/lib/supabase'
 import type { Bet, BetPick } from '@/lib/types'
 import { buildLeaderboardFixed } from './Leaderboard'
@@ -126,7 +126,11 @@ function AdminPanel() {
               tab === t ? 'bg-white shadow-sm text-charcoal' : 'text-charcoal/50 hover:text-charcoal'
             }`}
           >
-            {t === 'results' ? '🎯 Set Results' : '🏆 Leaderboard'}
+            {t === 'results' ? (
+              <span className="flex items-center justify-center gap-1.5"><Target size={13} />Set Results</span>
+            ) : (
+              <span className="flex items-center justify-center gap-1.5"><Trophy size={13} />Leaderboard</span>
+            )}
           </button>
         ))}
       </div>
