@@ -40,6 +40,8 @@ type ExistingRow = {
   reception: boolean
   dietary_restrictions: string | null
   contact_email: string | null
+  contact_phone: string | null
+  sms_opt_in: boolean
   needs_hotel: boolean
   notes: string | null
   submitted_by: string
@@ -115,6 +117,8 @@ export default function RsvpForm() {
   const [confirmTouched, setConfirmTouched] = useState(false)
   const [needsHotel, setNeedsHotel] = useState<boolean | null>(null)
   const [notes,      setNotes]      = useState('')
+  const [phone,      setPhone]      = useState('')
+  const [smsOptIn,   setSmsOptIn]   = useState(false)
 
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   const emailValid   = EMAIL_RE.test(email.trim())
@@ -219,6 +223,8 @@ export default function RsvpForm() {
         body: JSON.stringify({
           submittedBy:  submitterName,
           contactEmail: email.trim(),
+          contactPhone: phone.trim() || null,
+          smsOptIn:     phone.trim() ? smsOptIn : false,
           partyId,
           needsHotel,
           notes:        notes.trim(),
@@ -262,6 +268,8 @@ export default function RsvpForm() {
     const firstRow = existingRows[0]
     if (firstRow) {
       setEmail(firstRow.contact_email ?? '')
+      setPhone(firstRow.contact_phone ?? '')
+      setSmsOptIn(firstRow.sms_opt_in ?? false)
       setNeedsHotel(firstRow.needs_hotel)
       setNotes(firstRow.notes ?? '')
     }
@@ -511,6 +519,41 @@ export default function RsvpForm() {
                 <p className="text-red-500 text-xs mt-1.5">Emails don&apos;t match.</p>
               )}
             </div>
+          </div>
+
+          {/* Phone + SMS consent */}
+          <div className="space-y-3">
+            <div>
+              <label htmlFor="rsvp-phone" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
+                Mobile Number <span className="normal-case text-charcoal/30">(optional — for a text confirmation)</span>
+              </label>
+              <input
+                id="rsvp-phone"
+                type="tel"
+                value={phone}
+                onChange={e => { setPhone(e.target.value); if (!e.target.value.trim()) setSmsOptIn(false) }}
+                placeholder="(555) 123-4567"
+                autoComplete="tel"
+                className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
+              />
+            </div>
+            {phone.trim() && (
+              <label className="flex items-start gap-3 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={smsOptIn}
+                  onChange={e => setSmsOptIn(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 rounded border-olive-mid accent-olive-dark shrink-0"
+                />
+                <span className="text-xs text-charcoal/60 leading-relaxed">
+                  Send me a one-time SMS confirmation of my RSVP.{' '}
+                  <span className="text-charcoal/40">
+                    By checking this box you agree to receive a single SMS to the number above.
+                    Msg &amp; data rates may apply. Reply STOP to opt out.
+                  </span>
+                </span>
+              </label>
+            )}
           </div>
 
           {/* Dietary — one field per attending guest */}

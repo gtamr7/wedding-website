@@ -13,6 +13,8 @@ type GuestInput = {
 type SubmitBody = {
   submittedBy: string
   contactEmail: string
+  contactPhone: string | null
+  smsOptIn: boolean
   partyId: string | null
   needsHotel: boolean
   notes: string
@@ -22,7 +24,7 @@ type SubmitBody = {
 export async function POST(request: Request) {
   try {
     const body = await request.json() as SubmitBody
-    const { submittedBy, contactEmail, partyId, needsHotel, notes, guests } = body
+    const { submittedBy, contactEmail, contactPhone, smsOptIn, partyId, needsHotel, notes, guests } = body
 
     if (!submittedBy || !Array.isArray(guests) || guests.length === 0) {
       return Response.json({ error: 'Invalid payload' }, { status: 400 })
@@ -39,6 +41,8 @@ export async function POST(request: Request) {
       submission_id:        submissionId,
       submitted_by:         submittedBy.trim(),
       contact_email:        contactEmail?.trim().toLowerCase() || null,
+      contact_phone:        contactPhone?.trim() || null,
+      sms_opt_in:           smsOptIn ?? false,
       party_id:             partyId || null,
       needs_hotel:          needsHotel,
       notes:                notes?.trim() || null,
