@@ -329,6 +329,11 @@ export default function RsvpForm() {
               {looking ? 'Looking…' : 'Find My Invitation →'}
             </button>
           </form>
+
+          <p className="text-center text-xs text-charcoal/30 mt-5 leading-relaxed">
+            Guests who provide their mobile number when completing their RSVP may opt in to receive a one-time SMS confirmation.
+            Msg &amp; data rates may apply. Reply STOP to opt out.
+          </p>
         </motion.div>
       )}
 
