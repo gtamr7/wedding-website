@@ -2,14 +2,15 @@
 
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Music2, Flame, Wine, Clock, MapPin, type LucideIcon } from 'lucide-react'
+import { Clock, MapPin } from 'lucide-react'
+import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
 
 const events = [
   {
     date: 'Feb 17',
     day: 'Wednesday',
     name: 'Sangeet',
-    Icon: Music2,
+    Icon: SangeetIcon,
     time: '6:00 PM – 10:00 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
@@ -30,7 +31,7 @@ const events = [
     date: 'Feb 18',
     day: 'Thursday Morning',
     name: 'Ceremony (Kalyaanam)',
-    Icon: Flame,
+    Icon: DiyaIcon,
     time: '9:00 AM – 12:00 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
@@ -51,7 +52,7 @@ const events = [
     date: 'Feb 18',
     day: 'Thursday Evening',
     name: 'Reception',
-    Icon: Wine,
+    Icon: CheersIcon,
     time: '6:00 PM – 11:45 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:

@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lock, BarChart2, List, Mail, Inbox, Users, BedDouble, Utensils, Music2, Flame, Wine, Camera, RefreshCw } from 'lucide-react'
+import { Lock, BarChart2, List, Mail, Inbox, Users, BedDouble, Utensils, Camera, RefreshCw } from 'lucide-react'
+import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
 import type { RsvpSubmission, GuestbookEntry } from '@/lib/types'
 
 type AuthState = 'loading' | 'locked' | 'unlocked'
@@ -441,9 +442,9 @@ export default function RsvpAdmin() {
                             <span className={`font-medium ${g.attending ? 'text-charcoal' : 'text-charcoal/30 line-through'}`}>{g.name}</span>
                             {g.attending && (
                               <span className="ml-2 space-x-1">
-                                {g.sangeet && <Music2 size={11} className="text-olive-mid" />}
-                                {g.wedding && <Flame size={11} className="text-gold" />}
-                                {g.reception && <Wine size={11} className="text-charcoal/60" />}
+                                {g.sangeet && <SangeetIcon size={11} className="text-olive-mid" />}
+                                {g.wedding && <DiyaIcon size={11} className="text-gold" />}
+                                {g.reception && <CheersIcon size={11} className="text-charcoal/60" />}
                               </span>
                             )}
                             {g.dietary && <span className="ml-2 text-charcoal/40 italic">({g.dietary})</span>}

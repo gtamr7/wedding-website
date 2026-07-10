@@ -3,7 +3,10 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
-import { Lock, Music2, Flame, Wine, type LucideIcon } from 'lucide-react'
+import { Lock } from 'lucide-react'
+import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
+
+type EventIcon = (props: { size?: number; className?: string }) => React.JSX.Element
 
 // ── Types ────────────────────────────────────────────────────
 type Step = 'lookup' | 'party' | 'details' | 'already-rsvped' | 'success'
@@ -46,10 +49,10 @@ type ExistingRow = {
 // ── Constants ────────────────────────────────────────────────
 const RSVP_DEADLINE = new Date('2026-08-25T00:00:00-05:00')
 
-const EVENTS: { key: 'sangeet' | 'wedding' | 'reception'; label: string; desc: string; Icon: LucideIcon; calStart: string; calEnd: string }[] = [
-  { key: 'sangeet',   label: 'Sangeet',              desc: 'Feb 17 · Music, dancing & celebration', Icon: Music2, calStart: '20270217T180000', calEnd: '20270217T230000' },
-  { key: 'wedding',   label: 'Ceremony (Kalyaanam)', desc: 'Feb 18 · Tamil/Telugu Hindu ceremony',   Icon: Flame,  calStart: '20270218T090000', calEnd: '20270218T130000' },
-  { key: 'reception', label: 'Reception',             desc: 'Feb 18 · Dinner, toasts & party',       Icon: Wine,   calStart: '20270218T180000', calEnd: '20270218T230000' },
+const EVENTS: { key: 'sangeet' | 'wedding' | 'reception'; label: string; desc: string; Icon: EventIcon; calStart: string; calEnd: string }[] = [
+  { key: 'sangeet',   label: 'Sangeet',              desc: 'Feb 17 · Music, dancing & celebration', Icon: SangeetIcon, calStart: '20270217T180000', calEnd: '20270217T230000' },
+  { key: 'wedding',   label: 'Ceremony (Kalyaanam)', desc: 'Feb 18 · Tamil/Telugu Hindu ceremony',   Icon: DiyaIcon,    calStart: '20270218T090000', calEnd: '20270218T130000' },
+  { key: 'reception', label: 'Reception',             desc: 'Feb 18 · Dinner, toasts & party',       Icon: CheersIcon,  calStart: '20270218T180000', calEnd: '20270218T230000' },
 ]
 
 function calendarUrl(title: string, start: string, end: string) {

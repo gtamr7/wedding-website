@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Music2, Flame, Wine, RefreshCw } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
+import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
 import type { RsvpEntry } from '@/lib/types'
 
 type AuthState = 'loading' | 'locked' | 'unlocked'
@@ -103,9 +104,9 @@ function PartyCard({
         </div>
       ))}
       <div className="flex items-center gap-2 mt-1.5">
-        {party.sangeet   && <Music2 size={11} className="text-olive-mid" aria-label="Sangeet" />}
-        {party.wedding   && <Flame  size={11} className="text-gold"      aria-label="Muhurtham" />}
-        {party.reception && <Wine   size={11} className="text-charcoal/50" aria-label="Reception" />}
+        {party.sangeet   && <SangeetIcon size={11} className="text-olive-mid" aria-label="Sangeet" />}
+        {party.wedding   && <DiyaIcon   size={11} className="text-gold"      aria-label="Muhurtham" />}
+        {party.reception && <CheersIcon size={11} className="text-charcoal/50" aria-label="Reception" />}
         {party.dietary_restrictions && (
           <span
             className="text-[10px] bg-amber-50 text-amber-600 border border-amber-200 rounded px-1 py-0.5 leading-none"
