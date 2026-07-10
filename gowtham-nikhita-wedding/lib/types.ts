@@ -60,6 +60,31 @@ export interface RsvpPartyMember {
   lastName: string;
 }
 
+/** One guest within a submission (from rsvp_responses) */
+export interface RsvpGuest {
+  id: string;
+  name: string;
+  attending: boolean;
+  sangeet: boolean;
+  wedding: boolean;
+  reception: boolean;
+  dietary: string | null;
+}
+
+/** One submission (grouped by submission_id from rsvp_responses) */
+export interface RsvpSubmission {
+  id: string;            // submission_id — used as the deletion key
+  submitted_at: string;
+  submitted_by: string;
+  contact_email: string | null;
+  needs_hotel: boolean;
+  notes: string | null;
+  guests: RsvpGuest[];
+  /** Guests where attending=true */
+  attending_count: number;
+}
+
+/** @deprecated use RsvpSubmission */
 export interface RsvpEntry {
   id: string;
   guest_name: string;

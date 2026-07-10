@@ -26,14 +26,12 @@ const funds = [
     icon: '🏝️',
     title: 'Honeymoon Fund',
     description: 'Help us start our adventure together',
-    venmo: '@gowtham-ramesh',
     zelle: '(678) 499-7520',
   },
   {
     icon: '🏠',
     title: 'Down Payment Fund',
     description: 'Contribute to our first home together',
-    venmo: '@NikkiPuvvada',
     zelle: '(404) 422-5146',
   },
 ]
@@ -58,6 +56,18 @@ export default function Registry() {
             Your presence is the greatest gift of all. If you&apos;d like to give, we&apos;d love
             contributions toward our honeymoon or our first home together.
           </p>
+
+          <motion.a
+            href="https://www.zola.com/registry/gowthamandnikhita"
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 12 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full border border-gold/40 text-gold hover:bg-gold/10 transition-colors text-sm font-medium"
+          >
+            View our Zola registry →
+          </motion.a>
         </motion.div>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -66,24 +76,17 @@ export default function Registry() {
               key={fund.title}
               initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
+              transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
               className="bg-black/20 border border-gold/15 rounded-xl p-6 text-left"
             >
               <div className="text-3xl mb-3">{fund.icon}</div>
               <p className="font-display text-xl italic text-ivory">{fund.title}</p>
               <p className="text-sm text-ivory/50 mt-1 mb-5">{fund.description}</p>
 
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 bg-[#008CFF]/15 rounded-lg px-4 py-3">
-                  <span className="text-[#5BB8FF] font-bold text-sm tracking-wide shrink-0">Venmo</span>
-                  <span className="text-ivory/70 text-sm font-mono flex-1 truncate">{fund.venmo}</span>
-                  <CopyButton value={fund.venmo} />
-                </div>
-                <div className="flex items-center gap-3 bg-[#6B2D8B]/15 rounded-lg px-4 py-3">
-                  <span className="text-[#C87FFF] font-bold text-sm tracking-wide shrink-0">Zelle</span>
-                  <span className="text-ivory/70 text-sm font-mono flex-1 truncate">{fund.zelle}</span>
-                  <CopyButton value={fund.zelle} />
-                </div>
+              <div className="flex items-center gap-3 bg-[#6B2D8B]/15 rounded-lg px-4 py-3">
+                <span className="text-[#C87FFF] font-bold text-sm tracking-wide shrink-0">Zelle</span>
+                <span className="text-ivory/70 text-sm font-mono flex-1 truncate">{fund.zelle}</span>
+                <CopyButton value={fund.zelle} />
               </div>
             </motion.div>
           ))}
@@ -92,7 +95,7 @@ export default function Registry() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.6, delay: 0.45 }}
           className="mt-6 text-xs text-ivory/40 italic"
         >
           No box gifts please. We appreciate your understanding.
