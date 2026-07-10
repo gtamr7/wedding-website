@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
 const milestones = [
-  { year: '2019', label: 'They Met',      desc: "He met her at a college he didn't even go to. Best friends from day one." },
+  { year: '2019', label: 'They Met',      desc: "He met her at a university he didn't even go to. Best friends from day one." },
   { year: '2024', label: 'First Date',    desc: 'Five years of friendship later. It was always going to be this way.' },
   { year: '2025', label: 'The Proposal',  desc: 'A national garden in Japan. A picnic. A yes.' },
   { year: '2027', label: 'The Wedding',   desc: 'February 17 and 18 at Powel Crosley Estate, Sarasota, Florida.' },
