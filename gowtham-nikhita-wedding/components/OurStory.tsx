@@ -25,18 +25,18 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
 const chapters = [
   {
     num: '01',
-    heading: 'How it began',
-    body: `Gowtham and Nikhita met in college through mutual friends. One of those introductions that doesn't feel like much at the time. Nikki was driving. Gowtham was in the back seat. They laughed, they talked, and by the time they arrived, a friendship had started that neither of them knew would change everything.`,
+    heading: 'The carpool',
+    body: `They weren't set up. They were just going to pick up a friend. Nikki was driving, Gowtham was in the back seat, and they talked a little, but that little bit was enough to create a friendship that would last a lifetime.`,
   },
   {
     num: '02',
-    heading: 'Friends first',
-    body: `For five years, they were the best of friends. The kind who finish each other's sentences and never have to explain themselves. Life pulled them apart for a stretch, but like a pendulum, they were back. Something was different this time. They've been together ever since, nearly three years and counting.`,
+    heading: 'A very long detour',
+    body: `For five years they were the kind of friends who never had to explain themselves. The kind that just felt like home. Then life pulled them apart for a stretch, but like a pendulum, they swung back to each other. This time something was different.`,
   },
   {
     num: '03',
-    heading: 'The proposal',
-    body: `Japan, 2025. A national garden, a warm summer afternoon, and a ring Gowtham had been carrying for the right moment. He got down on one knee beneath the trees and asked the question he'd been holding for years. She said yes. They found a patch of grass, spread a picnic blanket, and sat in the sun while they called their families.`,
+    heading: 'Japan. A garden. A very overused bit.',
+    body: `For years, Gowtham had a move. He'd drop down to one knee out of nowhere, let the moment hang just long enough, and then start tying his shoe. Every time. Nikki stopped falling for it eventually. So when he got down on one knee in a national garden in Japan on a warm summer afternoon, she probably thought she knew what was coming. She didn't. He had a ring.\n\nShe said yes.\n\nThey found some grass, put down a picnic blanket, and spent the rest of the day in the sun calling everyone they loved and barely getting the words out.`,
   },
 ]
 
@@ -135,7 +135,11 @@ export default function OurStory() {
                   <span className="text-[10px] tracking-widest uppercase text-gold/50 font-medium">{ch.num}</span>
                   <h3 className="font-display text-3xl italic text-ivory">{ch.heading}</h3>
                 </div>
-                <p className="text-ivory/65 leading-relaxed">{ch.body}</p>
+                <div className="space-y-4">
+                  {ch.body.split('\n\n').map((para, j) => (
+                    <p key={j} className="text-ivory/65 leading-relaxed">{para}</p>
+                  ))}
+                </div>
               </FadeIn>
             ))}
 
