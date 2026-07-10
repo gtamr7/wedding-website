@@ -1,3 +1,4 @@
+import { Camera, TrendingUp, PenLine, type LucideIcon } from 'lucide-react'
 import Nav from '@/components/Nav'
 import ScrollResetOnRefresh from '@/components/ScrollResetOnRefresh'
 import Hero from '@/components/Hero'
@@ -8,13 +9,13 @@ import Registry from '@/components/Registry'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
 
-function FeatureLink({ href, emoji, title, desc }: { href: string; emoji: string; title: string; desc: string }) {
+function FeatureLink({ href, Icon, title, desc }: { href: string; Icon: LucideIcon; title: string; desc: string }) {
   return (
     <Link
       href={href}
       className="group block rounded-xl border border-gold/15 bg-olive-dark/50 p-6 hover:border-gold/40 hover:bg-olive-dark/70 hover:-translate-y-1 transition-all duration-200"
     >
-      <div className="text-3xl mb-3">{emoji}</div>
+      <Icon size={26} className="text-gold/70 mb-3" />
       <h3 className="font-display text-xl italic text-ivory group-hover:text-gold transition-colors">{title}</h3>
       <p className="text-sm text-ivory/50 mt-1">{desc}</p>
       <div className="mt-4 flex items-center gap-1 text-xs text-gold uppercase tracking-widest font-medium">
@@ -47,9 +48,9 @@ export default function HomePage() {
               <div className="gold-divider w-24 mt-5 mx-auto" />
             </div>
             <div className="grid sm:grid-cols-3 gap-5">
-              <FeatureLink href="/photos" emoji="📷" title="Photo Line-Up" desc="See exactly when your group is up for photos — live updates so you're never caught off guard." />
-              <FeatureLink href="/bets" emoji="🎰" title="The Bets" desc="Over/unders and prop bets on wedding day outcomes. Bragging rights await." />
-              <FeatureLink href="/guestbook" emoji="💌" title="Guestbook" desc="Leave us a note. We'll treasure every word." />
+              <FeatureLink href="/photos" Icon={Camera} title="Photo Line-Up" desc="See exactly when your group is up for photos — live updates so you're never caught off guard." />
+              <FeatureLink href="/bets" Icon={TrendingUp} title="The Bets" desc="Over/unders and prop bets on wedding day outcomes. Bragging rights await." />
+              <FeatureLink href="/guestbook" Icon={PenLine} title="Guestbook" desc="Leave us a note. We'll treasure every word." />
             </div>
           </div>
         </section>

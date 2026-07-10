@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
+import { ClipboardList, Dices, PenLine, Camera, Armchair, Utensils, BedDouble, type LucideIcon } from 'lucide-react'
 import { PHOTO_GROUPS } from '@/lib/photoGroups'
 
 type ChecklistData = {
@@ -18,7 +19,7 @@ type ChecklistData = {
 
 type ItemDef = {
   key: string
-  emoji: string
+  Icon: LucideIcon
   label: string
   done: boolean
   tbd: boolean
@@ -36,7 +37,7 @@ function buildItems(data: ChecklistData): ItemDef[] {
   return [
     {
       key: 'rsvp',
-      emoji: '📋',
+      Icon: ClipboardList,
       label: 'RSVP',
       done: data.rsvped,
       tbd: false,
@@ -46,7 +47,7 @@ function buildItems(data: ChecklistData): ItemDef[] {
     },
     {
       key: 'bets',
-      emoji: '🎲',
+      Icon: Dices,
       label: 'Wedding bets',
       done: data.betsPlaced > 0 && data.betsPlaced >= data.totalBets,
       tbd: false,
@@ -61,7 +62,7 @@ function buildItems(data: ChecklistData): ItemDef[] {
     },
     {
       key: 'guestbook',
-      emoji: '✍️',
+      Icon: PenLine,
       label: 'Guestbook',
       done: data.hasGuestbook,
       tbd: false,
@@ -73,7 +74,7 @@ function buildItems(data: ChecklistData): ItemDef[] {
     },
     {
       key: 'photos',
-      emoji: '📷',
+      Icon: Camera,
       label: 'Photo group',
       done: data.photoGroup !== null,
       tbd: data.photoGroup === null,
@@ -83,7 +84,7 @@ function buildItems(data: ChecklistData): ItemDef[] {
     },
     {
       key: 'seating',
-      emoji: '🪑',
+      Icon: Armchair,
       label: 'Seating chart',
       done: false,
       tbd: true,
@@ -93,7 +94,7 @@ function buildItems(data: ChecklistData): ItemDef[] {
     },
     {
       key: 'dietary',
-      emoji: '🍽️',
+      Icon: Utensils,
       label: 'Dietary restrictions',
       done: data.hasDietary || (data.rsvped && !data.hasDietary),
       tbd: !data.rsvped,
@@ -107,7 +108,7 @@ function buildItems(data: ChecklistData): ItemDef[] {
     },
     {
       key: 'hotel',
-      emoji: '🏨',
+      Icon: BedDouble,
       label: 'Hotel preference',
       done: data.hasHotel,
       tbd: !data.rsvped,
@@ -160,7 +161,7 @@ function ChecklistCard({ item, index }: { item: ItemDef; index: number }) {
       <StatusIcon done={item.done} tbd={item.tbd} />
       <div className="flex-1 min-w-0">
         <p className={`font-medium text-sm leading-snug ${item.done && !item.tbd ? 'text-charcoal/60' : 'text-charcoal'}`}>
-          <span className="mr-1.5">{item.emoji}</span>
+          <item.Icon size={13} className="inline mr-1.5 -mt-0.5 shrink-0" />
           {item.label}
         </p>
         <p className="text-xs text-charcoal/45 mt-0.5 leading-relaxed">{item.subtitle}</p>

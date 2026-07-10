@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { PalmtreeIcon, Home } from 'lucide-react'
 
 function CopyButton({ value }: { value: string }) {
   const [copied, setCopied] = useState(false)
@@ -23,13 +24,13 @@ function CopyButton({ value }: { value: string }) {
 
 const funds = [
   {
-    icon: '🏝️',
+    Icon: PalmtreeIcon,
     title: 'Honeymoon Fund',
     description: 'Help us start our adventure together',
     zelle: '(678) 499-7520',
   },
   {
-    icon: '🏠',
+    Icon: Home,
     title: 'Down Payment Fund',
     description: 'Contribute to our first home together',
     zelle: '(404) 422-5146',
@@ -79,7 +80,7 @@ export default function Registry() {
               transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
               className="bg-black/20 border border-gold/15 rounded-xl p-6 text-left"
             >
-              <div className="text-3xl mb-3">{fund.icon}</div>
+              <fund.Icon size={26} className="text-gold/70 mb-3" />
               <p className="font-display text-xl italic text-ivory">{fund.title}</p>
               <p className="text-sm text-ivory/50 mt-1 mb-5">{fund.description}</p>
 

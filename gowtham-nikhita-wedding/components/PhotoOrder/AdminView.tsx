@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Lock } from 'lucide-react'
 import { createSupabaseClient } from '@/lib/supabase'
 import { PHOTO_GROUPS } from '@/lib/photoGroups'
 import GroupCard from './GroupCard'
@@ -39,7 +40,7 @@ function PinEntry({ onUnlock }: { onUnlock: () => void }) {
 
   return (
     <div className="max-w-xs mx-auto text-center py-16">
-      <div className="text-4xl mb-4">🔒</div>
+      <div className="flex justify-center mb-4"><Lock size={36} className="text-charcoal/30" /></div>
       <h2 className="font-display text-3xl italic text-charcoal mb-2">Coordinator Access</h2>
       <p className="text-charcoal/50 text-sm mb-8">Enter your 4-digit PIN to manage photo order</p>
       <form onSubmit={submit} className="space-y-4">

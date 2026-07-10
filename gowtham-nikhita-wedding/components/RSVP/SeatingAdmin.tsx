@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Music2, Flame, Wine, RefreshCw } from 'lucide-react'
 import type { RsvpEntry } from '@/lib/types'
 
 type AuthState = 'loading' | 'locked' | 'unlocked'
@@ -102,9 +103,9 @@ function PartyCard({
         </div>
       ))}
       <div className="flex items-center gap-2 mt-1.5">
-        {party.sangeet   && <span className="text-[11px]" title="Sangeet">🎶</span>}
-        {party.wedding   && <span className="text-[11px]" title="Muhurtham">🪔</span>}
-        {party.reception && <span className="text-[11px]" title="Reception">🥂</span>}
+        {party.sangeet   && <Music2 size={11} className="text-olive-mid" aria-label="Sangeet" />}
+        {party.wedding   && <Flame  size={11} className="text-gold"      aria-label="Muhurtham" />}
+        {party.reception && <Wine   size={11} className="text-charcoal/50" aria-label="Reception" />}
         {party.dietary_restrictions && (
           <span
             className="text-[10px] bg-amber-50 text-amber-600 border border-amber-200 rounded px-1 py-0.5 leading-none"
@@ -409,7 +410,7 @@ export default function SeatingAdmin() {
             onClick={fetchParties}
             className="border-2 border-olive-light text-charcoal/50 px-3 py-2 rounded-xl text-sm hover:border-olive-mid transition-colors"
           >
-            ↻
+            <RefreshCw size={13} />
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
+import { Lock, Music2, Flame, Wine, type LucideIcon } from 'lucide-react'
 
 // ── Types ────────────────────────────────────────────────────
 type Step = 'lookup' | 'party' | 'details' | 'already-rsvped' | 'success'
@@ -45,10 +46,10 @@ type ExistingRow = {
 // ── Constants ────────────────────────────────────────────────
 const RSVP_DEADLINE = new Date('2026-08-25T00:00:00-05:00')
 
-const EVENTS = [
-  { key: 'sangeet'   as const, label: 'Sangeet',             desc: 'Feb 17 · Music, dancing & celebration',  emoji: '🎶', calStart: '20270217T180000', calEnd: '20270217T230000' },
-  { key: 'wedding'   as const, label: 'Ceremony (Kalyaanam)', desc: 'Feb 18 · Tamil/Telugu Hindu ceremony',    emoji: '🪔', calStart: '20270218T090000', calEnd: '20270218T130000' },
-  { key: 'reception' as const, label: 'Reception',            desc: 'Feb 18 · Dinner, toasts & party',        emoji: '🥂', calStart: '20270218T180000', calEnd: '20270218T230000' },
+const EVENTS: { key: 'sangeet' | 'wedding' | 'reception'; label: string; desc: string; Icon: LucideIcon; calStart: string; calEnd: string }[] = [
+  { key: 'sangeet',   label: 'Sangeet',              desc: 'Feb 17 · Music, dancing & celebration', Icon: Music2, calStart: '20270217T180000', calEnd: '20270217T230000' },
+  { key: 'wedding',   label: 'Ceremony (Kalyaanam)', desc: 'Feb 18 · Tamil/Telugu Hindu ceremony',   Icon: Flame,  calStart: '20270218T090000', calEnd: '20270218T130000' },
+  { key: 'reception', label: 'Reception',             desc: 'Feb 18 · Dinner, toasts & party',       Icon: Wine,   calStart: '20270218T180000', calEnd: '20270218T230000' },
 ]
 
 function calendarUrl(title: string, start: string, end: string) {
@@ -129,7 +130,7 @@ export default function RsvpForm() {
   if (new Date() >= RSVP_DEADLINE) {
     return (
       <div className="max-w-md mx-auto text-center py-12">
-        <div className="w-16 h-16 rounded-full bg-charcoal/8 flex items-center justify-center mx-auto mb-5 text-3xl">🔒</div>
+        <div className="w-16 h-16 rounded-full bg-charcoal/8 flex items-center justify-center mx-auto mb-5"><Lock size={28} className="text-charcoal/40" /></div>
         <h2 className="font-display text-3xl italic text-charcoal mb-2">RSVP submissions are closed</h2>
         <p className="text-charcoal/50 text-sm leading-relaxed">
           The deadline has passed. Please contact Gowtham or Nikhita directly.
@@ -421,7 +422,7 @@ export default function RsvpForm() {
                                 ${checked ? 'border-gold bg-gold/10 text-charcoal' : 'border-olive-light bg-white text-charcoal/45 hover:border-olive-mid'}`}>
                               <input type="checkbox" checked={checked} className="sr-only"
                                 onChange={e => updateAttendee(i, { [ev.key]: e.target.checked })} />
-                              <span>{ev.emoji}</span>
+                              <ev.Icon size={14} className="shrink-0" />
                               <span>{ev.label}</span>
                             </label>
                           )
@@ -615,7 +616,7 @@ export default function RsvpForm() {
                     {evs.map(ev => (
                       <div key={ev.key} className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-2 text-sm text-charcoal">
-                          <span>{ev.emoji}</span>
+                          <ev.Icon size={14} className="shrink-0" />
                           <span className="font-medium">{ev.label}</span>
                         </div>
                         <a href={calendarUrl(`Gowtham & Nikhita: ${ev.label}`, ev.calStart, ev.calEnd)}

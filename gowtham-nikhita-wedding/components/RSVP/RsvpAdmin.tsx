@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Lock, BarChart2, List, Mail, Inbox, Users, BedDouble, Utensils, Music2, Flame, Wine, Camera, RefreshCw } from 'lucide-react'
 import type { RsvpSubmission, GuestbookEntry } from '@/lib/types'
 
 type AuthState = 'loading' | 'locked' | 'unlocked'
@@ -39,7 +40,7 @@ function PinEntry({ onUnlock }: { onUnlock: (pin: string) => void }) {
 
   return (
     <div className="max-w-xs mx-auto text-center py-16">
-      <div className="text-4xl mb-4">🔒</div>
+      <div className="flex justify-center mb-4"><Lock size={36} className="text-charcoal/30" /></div>
       <h2 className="font-display text-3xl italic text-charcoal mb-6">RSVP Admin</h2>
       <form onSubmit={submit} className="space-y-4">
         <input
@@ -284,7 +285,7 @@ export default function RsvpAdmin() {
             onClick={() => setActiveTab(tab)}
             className={`px-5 py-2 rounded-lg text-sm font-medium capitalize transition-all ${activeTab === tab ? 'bg-white text-charcoal shadow-sm' : 'text-charcoal/50 hover:text-charcoal'}`}
           >
-            {tab === 'overview' ? '📊 Overview' : tab === 'table' ? '📋 Guest List' : '💌 Guestbook'}
+            {tab === 'overview' ? <><BarChart2 size={14} className="inline mr-1.5 -mt-0.5" />Overview</> : tab === 'table' ? <><List size={14} className="inline mr-1.5 -mt-0.5" />Guest List</> : <><Mail size={14} className="inline mr-1.5 -mt-0.5" />Guestbook</>}
           </button>
         ))}
       </div>
@@ -300,13 +301,13 @@ export default function RsvpAdmin() {
         <motion.div key="overview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: 'Submissions', value: stats.totalSubmissions, emoji: '📬' },
-              { label: 'Total attending', value: stats.totalGuests, emoji: '👥' },
-              { label: 'Need hotel', value: stats.hotel, emoji: '🏨' },
-              { label: 'Dietary notes', value: stats.dietary.length, emoji: '🍽️' },
+              { label: 'Submissions', value: stats.totalSubmissions, Icon: Inbox },
+              { label: 'Total attending', value: stats.totalGuests, Icon: Users },
+              { label: 'Need hotel', value: stats.hotel, Icon: BedDouble },
+              { label: 'Dietary notes', value: stats.dietary.length, Icon: Utensils },
             ].map(s => (
               <div key={s.label} className="bg-white border-2 border-olive-light rounded-xl p-5 text-center">
-                <div className="text-2xl mb-1">{s.emoji}</div>
+                <div className="flex justify-center mb-1"><s.Icon size={22} className="text-charcoal/40" /></div>
                 <div className="font-display text-4xl italic text-charcoal">{s.value}</div>
                 <div className="text-xs uppercase tracking-widest text-charcoal/40 mt-1">{s.label}</div>
               </div>
@@ -316,9 +317,9 @@ export default function RsvpAdmin() {
           <div className="bg-white border-2 border-olive-light rounded-xl p-6">
             <h2 className="font-display text-xl italic text-charcoal mb-5">Event Attendance</h2>
             <div className="space-y-4">
-              <EventBar label="🎶 Sangeet — Feb 17" count={stats.sangeet} total={stats.totalGuests} color="bg-olive-mid" />
-              <EventBar label="🪔 Ceremony (Kalyaanam) — Feb 18 Morning" count={stats.wedding} total={stats.totalGuests} color="bg-gold" />
-              <EventBar label="🥂 Reception — Feb 18 Evening" count={stats.reception} total={stats.totalGuests} color="bg-olive-dark" />
+              <EventBar label="Sangeet — Feb 17" count={stats.sangeet} total={stats.totalGuests} color="bg-olive-mid" />
+              <EventBar label="Ceremony (Kalyaanam) — Feb 18 Morning" count={stats.wedding} total={stats.totalGuests} color="bg-gold" />
+              <EventBar label="Reception — Feb 18 Evening" count={stats.reception} total={stats.totalGuests} color="bg-olive-dark" />
             </div>
           </div>
 
@@ -361,7 +362,7 @@ export default function RsvpAdmin() {
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm text-charcoal/50">{guestbook.length} entries</p>
             <button onClick={fetchGuestbook} className="text-sm text-charcoal/50 hover:text-charcoal border border-olive-light rounded-xl px-4 py-2 transition-colors">
-              ↻ Refresh
+              <RefreshCw size={13} className="inline mr-1.5" />Refresh
             </button>
           </div>
           {gbLoading ? (
@@ -380,7 +381,7 @@ export default function RsvpAdmin() {
                     </div>
                     <p className="text-sm text-charcoal/60 mt-1 leading-relaxed">{entry.message}</p>
                     {entry.photo_url && (
-                      <a href={entry.photo_url} target="_blank" rel="noopener noreferrer" className="text-xs text-gold hover:text-gold-light mt-1 inline-block">📷 View photo</a>
+                      <a href={entry.photo_url} target="_blank" rel="noopener noreferrer" className="text-xs text-gold hover:text-gold-light mt-1 inline-flex items-center gap-1"><Camera size={11} />View photo</a>
                     )}
                   </div>
                   <button
@@ -440,9 +441,9 @@ export default function RsvpAdmin() {
                             <span className={`font-medium ${g.attending ? 'text-charcoal' : 'text-charcoal/30 line-through'}`}>{g.name}</span>
                             {g.attending && (
                               <span className="ml-2 space-x-1">
-                                {g.sangeet && <span className="text-olive-mid">🎶</span>}
-                                {g.wedding && <span className="text-gold">🪔</span>}
-                                {g.reception && <span className="text-charcoal/60">🥂</span>}
+                                {g.sangeet && <Music2 size={11} className="text-olive-mid" />}
+                                {g.wedding && <Flame size={11} className="text-gold" />}
+                                {g.reception && <Wine size={11} className="text-charcoal/60" />}
                               </span>
                             )}
                             {g.dietary && <span className="ml-2 text-charcoal/40 italic">({g.dietary})</span>}
@@ -450,7 +451,7 @@ export default function RsvpAdmin() {
                         ))}
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-center">{s.needs_hotel ? '🏨 Yes' : '—'}</td>
+                    <td className="px-4 py-3 text-center">{s.needs_hotel ? <span className="inline-flex items-center gap-1"><BedDouble size={13} />Yes</span> : '—'}</td>
                     <td className="px-4 py-3 text-charcoal/30 text-xs hidden lg:table-cell">
                       {new Date(s.submitted_at).toLocaleDateString()}
                     </td>

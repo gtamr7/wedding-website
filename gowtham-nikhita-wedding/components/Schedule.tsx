@@ -2,13 +2,14 @@
 
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { Music2, Flame, Wine, Clock, MapPin, type LucideIcon } from 'lucide-react'
 
 const events = [
   {
     date: 'Feb 17',
     day: 'Wednesday',
     name: 'Sangeet',
-    emoji: '🎶',
+    Icon: Music2,
     time: '6:00 PM – 10:00 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
@@ -29,7 +30,7 @@ const events = [
     date: 'Feb 18',
     day: 'Thursday Morning',
     name: 'Ceremony (Kalyaanam)',
-    emoji: '🪔',
+    Icon: Flame,
     time: '9:00 AM – 12:00 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
@@ -50,7 +51,7 @@ const events = [
     date: 'Feb 18',
     day: 'Thursday Evening',
     name: 'Reception',
-    emoji: '🥂',
+    Icon: Wine,
     time: '6:00 PM – 11:45 PM',
     venue: 'Powel Crosley Estate, Sarasota, FL',
     description:
@@ -177,7 +178,7 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
       />
 
       <div className="flex items-start gap-4">
-        <span className="text-3xl" aria-hidden="true">{event.emoji}</span>
+        <event.Icon size={28} className="text-ivory/70 shrink-0 mt-0.5" aria-hidden="true" />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2">
             <span className={`text-xs tracking-wider uppercase font-medium rounded-full px-3 py-1 ${event.badgeColor}`}>
@@ -188,8 +189,8 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
           <h3 className="font-display text-2xl sm:text-3xl italic text-ivory">{event.name}</h3>
 
           <div className="mt-3 space-y-1 text-sm text-ivory/60">
-            <p>⏰ {event.time}</p>
-            <p>📍 {event.venue}</p>
+            <p className="flex items-center gap-1.5"><Clock size={13} className="shrink-0" />{event.time}</p>
+            <p className="flex items-center gap-1.5"><MapPin size={13} className="shrink-0" />{event.venue}</p>
           </div>
 
           <p className="mt-4 text-ivory/70 leading-relaxed text-sm sm:text-base">{event.description}</p>
