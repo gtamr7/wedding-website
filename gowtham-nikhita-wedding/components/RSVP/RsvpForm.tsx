@@ -133,7 +133,7 @@ export default function RsvpForm() {
   if (new Date() >= RSVP_DEADLINE) {
     return (
       <div className="max-w-md mx-auto text-center py-12">
-        <div className="w-16 h-16 rounded-full bg-charcoal/8 flex items-center justify-center mx-auto mb-5"><Lock size={28} className="text-charcoal/40" /></div>
+        <div className="w-16 h-16 rounded-full bg-charcoal/8 flex items-center justify-center mx-auto mb-5"><Lock size={28} strokeWidth={2.5} className="text-charcoal/40" /></div>
         <h2 className="font-display text-3xl italic text-charcoal mb-2">RSVP submissions are closed</h2>
         <p className="text-charcoal/50 text-sm leading-relaxed">
           The deadline has passed. Please contact Gowtham or Nikhita directly.

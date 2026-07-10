@@ -179,7 +179,7 @@ export default function Travel() {
 
             <FadeIn delay={0.15}>
               <div className="flex items-start gap-3 bg-black/20 rounded-xl p-4 border border-gold/15">
-                <Sun size={22} className="text-gold/70 shrink-0 mt-0.5" aria-hidden="true" />
+                <Sun size={22} strokeWidth={2.5} className="text-gold/70 shrink-0 mt-0.5" aria-hidden="true" />
                 <div>
                   <p className="font-medium text-ivory text-sm">February in Sarasota</p>
                   <p className="text-ivory/60 text-sm mt-1">
@@ -231,7 +231,7 @@ export default function Travel() {
                 <h3 className="font-display text-2xl italic text-ivory mb-1">Where to Stay</h3>
                 <div className="gold-divider w-12 mb-5" />
                 <div className="flex items-start gap-3 bg-gold/8 rounded-xl p-4 border border-gold/25 mb-5">
-                  <Bell size={18} className="text-gold/70 shrink-0 mt-0.5" aria-hidden="true" />
+                  <Bell size={18} strokeWidth={2.5} className="text-gold/70 shrink-0 mt-0.5" aria-hidden="true" />
                   <p className="text-sm text-ivory/70 leading-relaxed">
                     <span className="text-gold font-medium">Hotel block & shuttle details coming soon.</span>{' '}
                     We&apos;re finalizing room blocks and transportation. Check back for updates before booking.

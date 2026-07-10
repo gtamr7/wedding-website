@@ -93,7 +93,7 @@ export default function GuestbookForm({ onSubmit }: GuestbookFormProps) {
             exit={{ opacity: 0 }}
             className="text-center py-8"
           >
-            <div className="flex justify-center mb-3"><Heart size={32} className="text-gold/60" /></div>
+            <div className="flex justify-center mb-3"><Heart size={32} strokeWidth={2.5} className="text-gold/60" /></div>
             <p className="font-display text-2xl italic text-charcoal">Thank you!</p>
             <p className="text-charcoal/50 text-sm mt-1">Your message means the world to us.</p>
           </motion.div>

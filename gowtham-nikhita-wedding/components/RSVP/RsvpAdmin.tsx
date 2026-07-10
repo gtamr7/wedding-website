@@ -41,7 +41,7 @@ function PinEntry({ onUnlock }: { onUnlock: (pin: string) => void }) {
 
   return (
     <div className="max-w-xs mx-auto text-center py-16">
-      <div className="flex justify-center mb-4"><Lock size={36} className="text-charcoal/30" /></div>
+      <div className="flex justify-center mb-4"><Lock size={36} strokeWidth={2.5} className="text-charcoal/30" /></div>
       <h2 className="font-display text-3xl italic text-charcoal mb-6">RSVP Admin</h2>
       <form onSubmit={submit} className="space-y-4">
         <input
