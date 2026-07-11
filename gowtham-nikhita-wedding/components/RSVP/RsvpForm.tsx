@@ -49,7 +49,7 @@ type ExistingRow = {
 }
 
 // ── Constants ────────────────────────────────────────────────
-const RSVP_DEADLINE = new Date('2026-08-25T00:00:00-05:00')
+const RSVP_DEADLINE = new Date('2026-08-31T00:00:00-05:00')
 
 const EVENTS: { key: 'sangeet' | 'wedding' | 'reception'; label: string; desc: string; Icon: EventIcon; calStart: string; calEnd: string }[] = [
   { key: 'sangeet',   label: 'Sangeet',              desc: 'Feb 17 · Music, dancing & celebration', Icon: SangeetIcon, calStart: '20270217T180000', calEnd: '20270217T230000' },
