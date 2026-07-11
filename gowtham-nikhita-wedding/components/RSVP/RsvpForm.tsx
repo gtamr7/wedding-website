@@ -451,10 +451,6 @@ export default function RsvpForm() {
             ))}
           </div>
 
-          <p className="text-xs text-charcoal/40 text-center -mt-2">
-            Please select the events you plan on attending.
-          </p>
-
           {eventError && (
             <p className="text-red-500 text-sm text-center">Please select at least one event for attending guests.</p>
           )}
