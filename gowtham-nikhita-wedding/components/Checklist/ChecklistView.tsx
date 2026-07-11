@@ -41,7 +41,7 @@ function buildItems(data: ChecklistData): ItemDef[] {
       label: 'RSVP',
       done: data.rsvped,
       tbd: false,
-      subtitle: data.rsvped ? "You're on the guest list" : 'Let us know you can make it before August 24.',
+      subtitle: data.rsvped ? "You're on the guest list" : 'Let us know you can make it before August 31.',
       href: '/rsvp',
       showCta: true,
     },

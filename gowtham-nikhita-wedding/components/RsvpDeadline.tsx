@@ -1,6 +1,6 @@
 'use client'
 
-const DEADLINE = new Date('2026-08-24T23:59:59')
+const DEADLINE = new Date('2026-08-31T23:59:59')
 
 export default function RsvpDeadline() {
   const days = Math.ceil((DEADLINE.getTime() - Date.now()) / 86_400_000)
@@ -16,7 +16,7 @@ export default function RsvpDeadline() {
   return (
     <div className="flex items-center justify-center gap-2.5 mt-2">
       <p className="text-gold text-xs font-medium tracking-wide">
-        Please RSVP by August 24
+        Please RSVP by August 31
       </p>
       <span className="text-charcoal/25 text-xs">·</span>
       <span className="flex items-baseline gap-1">
