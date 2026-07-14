@@ -331,7 +331,8 @@ export default function RsvpForm() {
           </form>
 
           <p className="text-center text-xs text-charcoal/30 mt-5 leading-relaxed">
-            Guests who provide their mobile number when completing their RSVP may opt in to receive a one-time SMS confirmation.
+            Guests who provide their mobile number may opt in to receive wedding-related
+            texts (RSVP confirmation, reminders, and day-of updates — up to 3 msgs total).
             Msg &amp; data rates may apply. Reply STOP to opt out.
           </p>
         </motion.div>
@@ -547,11 +548,13 @@ export default function RsvpForm() {
                   className="mt-0.5 w-4 h-4 rounded border-olive-mid accent-olive-dark shrink-0"
                 />
                 <span className="text-xs text-charcoal/60 leading-relaxed">
-                  Send me a one-time SMS confirmation of my RSVP.{' '}
-                  <span className="text-charcoal/40">
-                    By checking this box you agree to receive a single SMS to the number above.
-                    Msg &amp; data rates may apply. Reply STOP to opt out.
-                  </span>
+                  I agree to receive wedding-related text messages from Gowtham &amp; Nikhita
+                  (invitation, RSVP reminders, and day-of updates) at the number above.
+                  Up to 3 msgs total. Msg &amp; data rates may apply. Consent is not required
+                  to RSVP. Reply STOP to opt out, HELP for help. See our{' '}
+                  <a href="/privacy" className="underline hover:text-charcoal/80 transition-colors">Privacy Policy</a>
+                  {' '}and{' '}
+                  <a href="/terms" className="underline hover:text-charcoal/80 transition-colors">Terms</a>.
                 </span>
               </label>
             )}

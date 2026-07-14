@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import RsvpForm from '@/components/RSVP/RsvpForm'
-import PasswordGate from '@/components/PasswordGate'
-
 export const metadata: Metadata = {
   title: 'RSVP · Gowtham & Nikhita',
   description: 'Let us know you\'re coming to our wedding celebration.',
@@ -27,17 +25,15 @@ export default function RsvpPage() {
             </p>
           </div>
 
-          <PasswordGate>
-            <RsvpForm />
+          <RsvpForm />
 
-            <p className="text-[11px] text-charcoal/45 text-center mt-8 max-w-sm mx-auto leading-relaxed">
-              By submitting this form, you agree to receive text message updates about the wedding
-              from Gowtham &amp; Nikhita. Message &amp; data rates may apply. Reply STOP to opt out.
-              <a href="/privacy" className="underline ml-1 hover:text-charcoal/60 transition-colors">Privacy Policy</a>
-              {' '}·{' '}
-              <a href="/terms" className="underline hover:text-charcoal/60 transition-colors">Terms</a>
-            </p>
-          </PasswordGate>
+          <p className="text-[11px] text-charcoal/45 text-center mt-8 max-w-sm mx-auto leading-relaxed">
+            By submitting this form, you agree to receive text message updates about the wedding
+            from Gowtham &amp; Nikhita. Message &amp; data rates may apply. Reply STOP to opt out.
+            <a href="/privacy" className="underline ml-1 hover:text-charcoal/60 transition-colors">Privacy Policy</a>
+            {' '}·{' '}
+            <a href="/terms" className="underline hover:text-charcoal/60 transition-colors">Terms</a>
+          </p>
         </div>
       </main>
       <Footer />
