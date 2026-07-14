@@ -28,8 +28,8 @@ export default function RsvpPage() {
           <RsvpForm />
 
           <p className="text-[11px] text-charcoal/45 text-center mt-8 max-w-sm mx-auto leading-relaxed">
-            By submitting this form, you agree to receive text message updates about the wedding
-            from Gowtham &amp; Nikhita. Message &amp; data rates may apply. Reply STOP to opt out.
+            SMS updates are optional and sent only to guests who opt in via the checkbox
+            above. Msg &amp; data rates may apply. Reply STOP to opt out.
             <a href="/privacy" className="underline ml-1 hover:text-charcoal/60 transition-colors">Privacy Policy</a>
             {' '}·{' '}
             <a href="/terms" className="underline hover:text-charcoal/60 transition-colors">Terms</a>
