@@ -541,25 +541,23 @@ export default function RsvpForm() {
                 className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
               />
             </div>
-            {phone.trim() && (
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <input
-                  type="checkbox"
-                  checked={smsOptIn}
-                  onChange={e => setSmsOptIn(e.target.checked)}
-                  className="mt-0.5 w-4 h-4 rounded border-olive-mid accent-olive-dark shrink-0"
-                />
-                <span className="text-xs text-charcoal/60 leading-relaxed">
-                  I agree to receive wedding-related text messages from Gowtham &amp; Nikhita
-                  (invitation, RSVP reminders, and day-of updates) at the number above.
-                  Up to 3 msgs total. Msg &amp; data rates may apply. Consent is not required
-                  to RSVP. Reply STOP to opt out, HELP for help. See our{' '}
-                  <a href="/privacy" className="underline hover:text-charcoal/80 transition-colors">Privacy Policy</a>
-                  {' '}and{' '}
-                  <a href="/terms" className="underline hover:text-charcoal/80 transition-colors">Terms</a>.
-                </span>
-              </label>
-            )}
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={smsOptIn}
+                onChange={e => setSmsOptIn(e.target.checked)}
+                className="mt-0.5 w-4 h-4 rounded border-olive-mid accent-olive-dark shrink-0"
+              />
+              <span className="text-xs text-charcoal/60 leading-relaxed">
+                I agree to receive wedding-related text messages from Gowtham &amp; Nikhita
+                (invitation, RSVP reminders, and day-of updates) at the number above.
+                Up to 3 msgs total. Msg &amp; data rates may apply. Consent is not required
+                to RSVP. Reply STOP to opt out, HELP for help. See our{' '}
+                <a href="/privacy" className="underline hover:text-charcoal/80 transition-colors">Privacy Policy</a>
+                {' '}and{' '}
+                <a href="/terms" className="underline hover:text-charcoal/80 transition-colors">Terms</a>.
+              </span>
+            </label>
           </div>
 
           {/* Dietary — one field per attending guest */}
