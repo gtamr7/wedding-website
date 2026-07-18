@@ -179,7 +179,8 @@ export default function RsvpForm() {
         setExistingRows(data.existingSubmission)
         setStep('already-rsvped')
       } else {
-        setStep('party')
+        const isTestReviewer = (submitter?.name ?? '').trim().toLowerCase() === 'test reviewer'
+        setStep(isTestReviewer ? 'details' : 'party')
       }
     } catch {
       setLookupError('error')
@@ -273,7 +274,8 @@ export default function RsvpForm() {
       setNeedsHotel(firstRow.needs_hotel)
       setNotes(firstRow.notes ?? '')
     }
-    setStep('party')
+    const isTestReviewer = submitterName.trim().toLowerCase() === 'test reviewer'
+    setStep(isTestReviewer ? 'details' : 'party')
   }
 
   // ── Existing submission summary ───────────────────────────
@@ -617,7 +619,7 @@ export default function RsvpForm() {
           )}
 
           <div className="flex gap-3">
-            <button type="button" onClick={() => setStep('party')}
+            <button type="button" onClick={() => setStep(submitterName.trim().toLowerCase() === 'test reviewer' ? 'lookup' : 'party')}
               className="px-5 py-4 rounded-xl border-2 border-olive-light text-charcoal/50 text-sm hover:border-olive-mid transition-colors">
               ← Back
             </button>
