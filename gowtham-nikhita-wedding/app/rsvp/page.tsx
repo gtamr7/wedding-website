@@ -29,7 +29,7 @@ export default function RsvpPage() {
 
           <p className="text-[11px] text-charcoal/45 text-center mt-8 max-w-sm mx-auto leading-relaxed">
             SMS updates are optional and sent only to guests who opt in via the checkbox
-            above. Msg &amp; data rates may apply. Reply STOP to opt out.
+            on the next page. Msg &amp; data rates may apply. Reply STOP to opt out.
             <a href="/privacy" className="underline ml-1 hover:text-charcoal/60 transition-colors">Privacy Policy</a>
             {' '}·{' '}
             <a href="/terms" className="underline hover:text-charcoal/60 transition-colors">Terms</a>
