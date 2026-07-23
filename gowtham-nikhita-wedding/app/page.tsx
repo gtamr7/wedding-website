@@ -1,6 +1,5 @@
 import { Camera, TrendingUp, PenLine, type LucideIcon } from 'lucide-react'
 import Nav from '@/components/Nav'
-import ScrollResetOnRefresh from '@/components/ScrollResetOnRefresh'
 import Hero from '@/components/Hero'
 import OurStory from '@/components/OurStory'
 import Schedule from '@/components/Schedule'
@@ -31,7 +30,6 @@ function FeatureLink({ href, Icon, title, desc }: { href: string; Icon: LucideIc
 export default function HomePage() {
   return (
     <>
-      <ScrollResetOnRefresh />
       <Nav />
       <main>
         <Hero />

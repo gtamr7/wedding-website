@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import ScrollResetOnRefresh from '@/components/ScrollResetOnRefresh'
 import './globals.css'
 
 export const viewport: Viewport = {
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
       <body className="min-h-screen bg-ivory text-charcoal font-sans antialiased">
+        <ScrollResetOnRefresh />
         {children}
         <Analytics />
         <SpeedInsights />
