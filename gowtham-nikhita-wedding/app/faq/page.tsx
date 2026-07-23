@@ -23,9 +23,9 @@ const faqs = [
       <>
         See the{' '}
         <Link href="/#schedule" className="underline text-gold hover:text-gold-light transition-colors">
-          Schedule section
+          Schedule
         </Link>{' '}
-        on the home page for the full weekend lineup.
+        section on the home page for the full weekend lineup.
       </>
     ),
   },
