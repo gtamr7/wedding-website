@@ -37,6 +37,15 @@ export async function POST(request: Request) {
     const supabase = createClient(url, key)
     const submissionId = crypto.randomUUID()
 
+    // Replace any prior submission for this party (or this submitter, if no
+    // party is assigned) so a second party member re-submitting updates the
+    // party's RSVP instead of creating a redundant duplicate.
+    if (partyId) {
+      await supabase.from('rsvp_responses').delete().eq('party_id', partyId)
+    } else {
+      await supabase.from('rsvp_responses').delete().ilike('submitted_by', submittedBy.trim())
+    }
+
     const rows = guests.map((g: GuestInput) => ({
       submission_id:        submissionId,
       submitted_by:         submittedBy.trim(),
