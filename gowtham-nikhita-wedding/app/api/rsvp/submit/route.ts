@@ -37,15 +37,6 @@ export async function POST(request: Request) {
     const supabase = createClient(url, key)
     const submissionId = crypto.randomUUID()
 
-    // Replace any prior submission for this party (or this submitter, if no
-    // party is assigned) so a second party member re-submitting updates the
-    // party's RSVP instead of creating a redundant duplicate.
-    if (partyId) {
-      await supabase.from('rsvp_responses').delete().eq('party_id', partyId)
-    } else {
-      await supabase.from('rsvp_responses').delete().ilike('submitted_by', submittedBy.trim())
-    }
-
     const rows = guests.map((g: GuestInput) => ({
       submission_id:        submissionId,
       submitted_by:         submittedBy.trim(),
@@ -66,6 +57,19 @@ export async function POST(request: Request) {
 
     const { error } = await supabase.from('rsvp_responses').insert(rows)
     if (error) throw error
+
+    // Only after the new submission is safely written, clear out any prior
+    // submission(s) for this party (or this submitter, if no party is
+    // assigned) so a second party member updating the RSVP replaces the old
+    // one instead of leaving a redundant duplicate. Doing this after the
+    // insert means a failed insert never leaves the party with no RSVP at
+    // all — worst case on a cleanup failure is a leftover duplicate, which
+    // self-heals on the next submission.
+    if (partyId) {
+      await supabase.from('rsvp_responses').delete().eq('party_id', partyId).neq('submission_id', submissionId)
+    } else {
+      await supabase.from('rsvp_responses').delete().ilike('submitted_by', submittedBy.trim()).neq('submission_id', submissionId)
+    }
 
     return Response.json({ success: true, submissionId })
   } catch (err) {
