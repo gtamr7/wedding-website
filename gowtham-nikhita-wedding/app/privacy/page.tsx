@@ -26,7 +26,7 @@ export default function PrivacyPolicy() {
       <p style={{ marginTop: 12 }}>We do not collect information through cookies, tracking pixels, or any automated data collection beyond standard server logs.</p>
 
       <h2 style={{ fontSize: '1.05rem', fontWeight: 600, marginTop: 36, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>SMS Messaging Program</h2>
-      <p>By providing your phone number, you consent to receive SMS text messages from Gowtham Ramesh regarding our wedding event. Messages may include:</p>
+      <p>Guests who opt in via the consent checkbox on our RSVP form agree to receive SMS text messages from Gowtham Ramesh regarding our wedding event. Messages may include:</p>
       <ul style={{ paddingLeft: 24, marginTop: 8 }}>
         <li>Initial wedding invitation with RSVP link</li>
         <li>RSVP deadline reminders</li>
