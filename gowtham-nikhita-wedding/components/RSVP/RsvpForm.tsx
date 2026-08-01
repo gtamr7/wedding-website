@@ -267,10 +267,13 @@ export default function RsvpForm() {
     }
   }
 
-  // ── Enter edit from already-rsvped ────────────────────────
-  const enterEditMode = () => {
-    // Pre-populate attendees from existing rows
-    const updated = attendees.map(a => {
+  // ── From already-rsvped ───────────────────────────────────
+  // Attendees start from initAttendee defaults, which have every event set to
+  // false. Both exits from the already-rsvped screen need the saved answers
+  // loaded first — the edit form to show them, and the success screen to know
+  // which calendar links to offer.
+  const attendeesFromExisting = () =>
+    attendees.map(a => {
       const row = existingRows.find(r => r.guest_name.toLowerCase() === a.name.toLowerCase())
       if (!row) return a
       return {
@@ -282,7 +285,14 @@ export default function RsvpForm() {
         dietary:    row.dietary_restrictions ?? '',
       }
     })
-    setAttendees(updated)
+
+  const confirmExisting = () => {
+    setAttendees(attendeesFromExisting())
+    setStep('success')
+  }
+
+  const enterEditMode = () => {
+    setAttendees(attendeesFromExisting())
     const firstRow = existingRows[0]
     if (firstRow) {
       setEmail(firstRow.contact_email ?? '')
@@ -433,7 +443,7 @@ export default function RsvpForm() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <button onClick={() => setStep('success')}
+            <button onClick={confirmExisting}
               className="w-full bg-olive-dark text-white py-4 rounded-xl font-medium tracking-wider uppercase text-sm hover:bg-olive-mid transition-colors">
               Looks right — see calendar links
             </button>
