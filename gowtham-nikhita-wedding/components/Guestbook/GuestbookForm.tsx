@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { Heart } from 'lucide-react'
 import { createSupabaseClient } from '@/lib/supabase'
+import { compressImage } from '@/lib/compressImage'
 
 interface GuestbookFormProps {
   onSubmit: (name: string, message: string, photoUrl?: string) => void
@@ -25,7 +26,9 @@ export default function GuestbookForm({ onSubmit }: GuestbookFormProps) {
     const file = e.target.files?.[0]
     if (!file) return
     if (!file.type.startsWith('image/')) { setPhotoError('Please select an image file.'); return }
-    if (file.size > 5 * 1024 * 1024) { setPhotoError('Photo must be under 5 MB.'); return }
+    // Photos are compressed before upload, so the old 5 MB cut-off would have
+    // turned away ordinary phone photos. This only guards against absurd files.
+    if (file.size > 40 * 1024 * 1024) { setPhotoError('That photo is too large. Please pick another.'); return }
     setPhotoError('')
     setPhotoFile(file)
     if (photoPreview) URL.revokeObjectURL(photoPreview)
@@ -50,8 +53,17 @@ export default function GuestbookForm({ onSubmit }: GuestbookFormProps) {
       let photoUrl: string | undefined
 
       if (photoFile) {
+        const upload = await compressImage(photoFile)
+        // compressImage returns the original if it cannot decode the file (HEIC,
+        // for one). Say so rather than posting the message without the photo,
+        // which would look like it worked.
+        if (upload.size > 5 * 1024 * 1024) {
+          setPhotoError('We could not shrink that photo enough to upload it. Please try a different one.')
+          setState('idle')
+          return
+        }
         const fd = new FormData()
-        fd.append('file', photoFile)
+        fd.append('file', upload)
         const res = await fetch('/api/guestbook/upload', { method: 'POST', body: fd })
         if (res.ok) {
           const json = await res.json()
@@ -187,7 +199,7 @@ export default function GuestbookForm({ onSubmit }: GuestbookFormProps) {
                       <path d="M4 16l4-4 4 4 4-6 4 6M4 20h16M8 8a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <span className="text-sm">Click to attach a photo</span>
-                    <span className="text-xs opacity-60">JPG, PNG, HEIC · up to 5 MB</span>
+                    <span className="text-xs opacity-60">JPG, PNG, HEIC · straight from your camera roll is fine</span>
                   </motion.button>
                 )}
               </AnimatePresence>
