@@ -19,6 +19,12 @@ type PartyMember = {
   isSubmitter: boolean
 }
 
+type GuestChoice = {
+  guestId: string
+  name: string
+  partyMembers: string[]
+}
+
 type AttendeeState = {
   guestListId: string | null
   name: string
@@ -103,6 +109,7 @@ export default function RsvpForm() {
   const [lookupLast,  setLookupLast]  = useState('')
   const [looking,     setLooking]     = useState(false)
   const [lookupError, setLookupError] = useState<'not-found' | 'error' | ''>('')
+  const [choices,     setChoices]     = useState<GuestChoice[]>([])
 
   // ── Party / submission state ──────────────────────────────
   const [party,       setParty]       = useState<PartyMember[]>([])
@@ -147,28 +154,31 @@ export default function RsvpForm() {
   }
 
   // ── Lookup submit ─────────────────────────────────────────
-  const handleLookup = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!lookupFirst.trim() || !lookupLast.trim()) return
+  const runLookup = async (payload: { firstName: string; lastName: string } | { guestId: string }) => {
     setLooking(true)
     setLookupError('')
     try {
       const res = await fetch('/api/rsvp/check-guest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName: lookupFirst.trim(), lastName: lookupLast.trim() }),
+        body: JSON.stringify(payload),
       })
       if (!res.ok) throw new Error()
       const data = await res.json() as {
         found: boolean
+        ambiguous?: boolean
+        choices?: GuestChoice[]
         party: PartyMember[]
         partyId: string | null
         alreadyRsvped: boolean
         existingSubmission: ExistingRow[] | null
       }
 
+      // Two guests share this name — ask which one before going any further
+      if (data.ambiguous && data.choices?.length) { setChoices(data.choices); return }
       if (!data.found) { setLookupError('not-found'); return }
 
+      setChoices([])
       const submitter = data.party.find(m => m.isSubmitter) ?? data.party[0]
       setParty(data.party)
       setPartyId(data.partyId)
@@ -187,6 +197,12 @@ export default function RsvpForm() {
     } finally {
       setLooking(false)
     }
+  }
+
+  const handleLookup = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!lookupFirst.trim()) return
+    void runLookup({ firstName: lookupFirst.trim(), lastName: lookupLast.trim() })
   }
 
   // ── Attendee helpers ──────────────────────────────────────
@@ -299,20 +315,47 @@ export default function RsvpForm() {
               <div>
                 <label htmlFor="lk-first" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">First Name</label>
                 <input id="lk-first" type="text" value={lookupFirst}
-                  onChange={e => { setLookupFirst(e.target.value); setLookupError('') }}
+                  onChange={e => { setLookupFirst(e.target.value); setLookupError(''); setChoices([]) }}
                   placeholder="First" autoComplete="given-name" required
                   className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors text-base" />
               </div>
               <div>
-                <label htmlFor="lk-last" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">Last Name</label>
+                <label htmlFor="lk-last" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
+                  Last Name <span className="lowercase tracking-normal text-charcoal/30">(if you use one)</span>
+                </label>
                 <input id="lk-last" type="text" value={lookupLast}
-                  onChange={e => { setLookupLast(e.target.value); setLookupError('') }}
-                  placeholder="Last" autoComplete="family-name" required
+                  onChange={e => { setLookupLast(e.target.value); setLookupError(''); setChoices([]) }}
+                  placeholder="Last" autoComplete="family-name"
                   className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors text-base" />
               </div>
             </div>
 
             <AnimatePresence>
+              {choices.length > 0 && (
+                <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                  className="bg-olive-light/20 border border-olive-light rounded-xl px-4 py-4 text-sm leading-relaxed">
+                  <p className="font-medium text-charcoal mb-3">
+                    We have more than one guest by that name — which one are you?
+                  </p>
+                  <div className="space-y-2">
+                    {choices.map(c => (
+                      <button key={c.guestId} type="button" disabled={looking}
+                        onClick={() => void runLookup({ guestId: c.guestId })}
+                        className="w-full text-left bg-white border-2 border-olive-light rounded-xl px-4 py-3 hover:border-gold transition-colors disabled:opacity-40">
+                        <span className="block text-charcoal font-medium">{c.name}</span>
+                        <span className="block text-xs text-charcoal/50 mt-0.5">
+                          {c.partyMembers.length > 0
+                            ? `Invited with ${c.partyMembers.join(', ')}`
+                            : 'Individual invitation'}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-xs text-charcoal/40 mt-3">
+                    Not sure? Reach out to Gowtham or Nikhita and we&apos;ll sort it out.
+                  </p>
+                </motion.div>
+              )}
               {lookupError === 'not-found' && (
                 <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                   className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-4 text-sm leading-relaxed">
@@ -326,7 +369,7 @@ export default function RsvpForm() {
               )}
             </AnimatePresence>
 
-            <button type="submit" disabled={!lookupFirst.trim() || !lookupLast.trim() || looking}
+            <button type="submit" disabled={!lookupFirst.trim() || looking}
               className="w-full bg-olive-dark text-white py-4 rounded-xl font-medium tracking-wider uppercase text-sm hover:bg-olive-mid transition-colors disabled:opacity-40">
               {looking ? 'Looking…' : 'Find My Invitation →'}
             </button>

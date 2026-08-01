@@ -1,11 +1,21 @@
 import { createClient } from '@supabase/supabase-js'
 
+type GuestRow = {
+  id: string
+  name: string
+  first_name: string | null
+  last_name: string | null
+  party_id: string | null
+}
+
 export async function POST(request: Request) {
   try {
-    const body = await request.json() as { firstName?: string; lastName?: string }
+    const body = await request.json() as { firstName?: string; lastName?: string; guestId?: string }
     const firstName = (body.firstName ?? '').trim()
     const lastName  = (body.lastName  ?? '').trim()
-    if (!firstName) return Response.json({ found: false })
+    const guestId   = (body.guestId   ?? '').trim()
+    // Last name is optional — some guests go by a single name.
+    if (!firstName && !guestId) return Response.json({ found: false })
 
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -23,61 +33,75 @@ export async function POST(request: Request) {
     const supabase = createClient(url, key)
 
     // Fetch entire guest list for matching
-    const { data: guestList, error } = await supabase
+    const { data, error } = await supabase
       .from('guest_list')
       .select('id, name, first_name, last_name, party_id')
-    if (error || !guestList || guestList.length === 0) {
+    if (error || !data || data.length === 0) {
       return Response.json({ found: false })
     }
+    const guestList = data as GuestRow[]
 
-    const fullQuery = [firstName, lastName].filter(Boolean).join(' ').toLowerCase()
-    function words(s: string) { return s.toLowerCase().split(/\s+/).filter(Boolean) }
+    const rowFirstOf = (row: GuestRow) =>
+      (row.first_name ?? row.name.split(' ')[0] ?? '').trim().toLowerCase()
+    const rowLastOf = (row: GuestRow) =>
+      (row.last_name ?? row.name.split(' ').slice(1).join(' ') ?? '').trim().toLowerCase()
 
-    const matched = guestList.find(row => {
-      const rowNorm = (row.name as string).toLowerCase()
-      const rowWords = words(rowNorm)
-      const queryWords = words(fullQuery)
-      return (
-        rowNorm === fullQuery ||
-        queryWords.every((w: string) => rowNorm.includes(w)) ||
-        rowWords.every((w: string) => fullQuery.includes(w))
+    let matched: GuestRow | undefined
+
+    if (guestId) {
+      // Follow-up request: the guest already picked their row from a disambiguation prompt
+      matched = guestList.find(row => row.id === guestId)
+    } else {
+      const normFirst = firstName.toLowerCase()
+      const normLast  = lastName.toLowerCase()
+
+      // With a last name, require an exact first + last match. Without one, match on
+      // first name alone but only against guests who have no last name of their own,
+      // so a blank field can never surface someone who does have one.
+      const candidates = guestList.filter(row =>
+        normLast
+          ? rowFirstOf(row) === normFirst && rowLastOf(row) === normLast
+          : rowFirstOf(row) === normFirst && rowLastOf(row) === ''
       )
-    }) ?? (
-      lastName === ''
-        ? guestList.find(row => {
-            const rowNorm = (row.name as string).toLowerCase()
-            return rowNorm === firstName.toLowerCase() || rowNorm.startsWith(firstName.toLowerCase() + ' ')
-          })
-        : undefined
-    )
+
+      if (candidates.length > 1) {
+        // Two guests share this name — ask which one rather than silently picking the first.
+        const choices = candidates.map(row => ({
+          guestId: row.id,
+          name: row.name,
+          partyMembers: row.party_id
+            ? guestList
+                .filter(g => g.party_id === row.party_id && g.id !== row.id)
+                .map(g => g.name)
+            : [],
+        }))
+        return Response.json({ found: false, ambiguous: true, choices })
+      }
+
+      matched = candidates[0]
+    }
 
     if (!matched) return Response.json({ found: false })
 
-    const matchedFirst = (matched.first_name as string | null) ?? firstName
-    const matchedLast  = (matched.last_name  as string | null) ?? lastName
-    const partyId      = (matched.party_id   as string | null) ?? null
+    const partyId = matched.party_id ?? null
 
     // Build the party list
-    let partyRows: typeof guestList = []
+    let partyRows: GuestRow[] = [matched]
 
     if (partyId) {
-      // Fetch all guests in this party, submitter first
       const { data: members } = await supabase
         .from('guest_list')
         .select('id, name, first_name, last_name, party_id')
         .eq('party_id', partyId)
-      partyRows = members ?? [matched]
-    } else {
-      // No party assigned yet — single-person party
-      partyRows = [matched]
+      partyRows = (members as GuestRow[] | null) ?? [matched]
     }
 
     const party = partyRows.map(row => ({
-      id:          row.id as string,
-      name:        row.name as string,
-      firstName:   (row.first_name as string | null) ?? (row.name as string).split(' ')[0],
-      lastName:    (row.last_name  as string | null) ?? '',
-      isSubmitter: (row.id as string) === (matched.id as string),
+      id:          row.id,
+      name:        row.name,
+      firstName:   row.first_name ?? row.name.split(' ')[0],
+      lastName:    row.last_name ?? '',
+      isSubmitter: row.id === matched.id,
     }))
 
     // Check for an existing RSVP v2 submission for this party/guest
@@ -97,11 +121,10 @@ export async function POST(request: Request) {
       }
     } else {
       // Fall back to name match on submitted_by
-      const fullName = [matchedFirst, matchedLast].filter(Boolean).join(' ')
       const { data: existing } = await supabase
         .from('rsvp_responses')
         .select('*')
-        .ilike('submitted_by', fullName)
+        .ilike('submitted_by', matched.name)
         .order('submitted_at', { ascending: false })
         .limit(10)
       if (existing && existing.length > 0) {
