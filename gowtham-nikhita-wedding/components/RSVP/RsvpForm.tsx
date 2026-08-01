@@ -304,6 +304,26 @@ export default function RsvpForm() {
 
   // ── Render ────────────────────────────────────────────────
   return (
+    <>
+    {/* Header. Hidden entirely on success — the confirmation is its own moment.
+        The prompt and date only apply while the guest is still looking up. */}
+    {step !== 'success' && (
+      <div className="text-center mb-14">
+        <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">RSVP</h1>
+        <div className="gold-divider w-24 mt-4 mx-auto" />
+        {step === 'lookup' && (
+          <>
+            <p className="text-charcoal/50 text-sm mt-4 max-w-md mx-auto">
+              We&apos;d love to have you celebrate with us. Please type your full name below.
+            </p>
+            <p className="text-gold text-xs mt-2 font-medium tracking-wide">
+              Please RSVP by September 30
+            </p>
+          </>
+        )}
+      </div>
+    )}
+
     <AnimatePresence mode="wait">
 
       {/* ── Step: Lookup ── */}
@@ -590,7 +610,7 @@ export default function RsvpForm() {
                   if (!a.attending) return null
                   return (
                     <div key={a.name}>
-                      <label htmlFor={`dietary-${i}`} className="block text-xs text-charcoal/50 mb-1.5">
+                      <label htmlFor={`dietary-${i}`} className="block text-sm font-semibold text-charcoal/80 mb-1.5">
                         {a.firstName}
                       </label>
                       <input id={`dietary-${i}`} type="text" value={a.dietary}
@@ -712,5 +732,6 @@ export default function RsvpForm() {
       )}
 
     </AnimatePresence>
+    </>
   )
 }

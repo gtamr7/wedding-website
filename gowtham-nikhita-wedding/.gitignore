@@ -33,6 +33,9 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# guest PII — send logs contain names and phone numbers. This repo is public.
+/scripts/send-results-*.json
+
 # vercel
 .vercel
 
