@@ -21,16 +21,14 @@ export default function RsvpPage() {
               We&apos;d love to have you celebrate with us. Please type your full name below.
             </p>
             <p className="text-gold text-xs mt-2 font-medium tracking-wide">
-              Please RSVP by August 31
+              Please RSVP by September 30
             </p>
           </div>
 
           <RsvpForm />
 
           <p className="text-[11px] text-charcoal/45 text-center mt-8 max-w-sm mx-auto leading-relaxed">
-            SMS updates are optional and sent only to guests who opt in via the checkbox
-            on the next page. Msg &amp; data rates may apply. Reply STOP to opt out.
-            <a href="/privacy" className="underline ml-1 hover:text-charcoal/60 transition-colors">Privacy Policy</a>
+            <a href="/privacy" className="underline hover:text-charcoal/60 transition-colors">Privacy Policy</a>
             {' '}·{' '}
             <a href="/terms" className="underline hover:text-charcoal/60 transition-colors">Terms</a>
           </p>

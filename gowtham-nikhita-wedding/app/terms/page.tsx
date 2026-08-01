@@ -4,18 +4,6 @@ export default function TermsAndConditions() {
       <h1 style={{ fontSize: '2rem', marginBottom: 8 }}>Terms &amp; Conditions</h1>
       <p style={{ color: '#666', marginBottom: 32 }}>Gowtham &amp; Nikhita Wedding — Effective June 2026</p>
 
-      <h2 style={{ fontSize: '1.1rem', marginTop: 32 }}>SMS Communications</h2>
-      <p>By providing your phone number to Gowtham Ramesh or Nikhita, you agree to receive SMS messages related to our wedding event on February 17, 2027 in Sarasota, FL. These messages may include invitations, RSVP reminders, and event updates.</p>
-
-      <h2 style={{ fontSize: '1.1rem', marginTop: 32 }}>Message Frequency</h2>
-      <p>Message frequency is low — typically 1 to 3 messages total surrounding the wedding event. This is not a recurring subscription.</p>
-
-      <h2 style={{ fontSize: '1.1rem', marginTop: 32 }}>Opt-Out</h2>
-      <p>You may opt out of SMS communications at any time by replying <strong>STOP</strong> to any message. After opting out, you will receive no further messages. For help, reply <strong>HELP</strong>.</p>
-
-      <h2 style={{ fontSize: '1.1rem', marginTop: 32 }}>Rates</h2>
-      <p>Message and data rates may apply depending on your mobile carrier and plan.</p>
-
       <h2 style={{ fontSize: '1.1rem', marginTop: 32 }}>Website Use</h2>
       <p>This website (<a href="https://gowthamandnikhita.com" style={{ color: '#8B6838' }}>gowthamandnikhita.com</a>) is a personal wedding website for the sole purpose of sharing event information and collecting RSVPs from invited guests. Unauthorized use of this site is prohibited.</p>
 

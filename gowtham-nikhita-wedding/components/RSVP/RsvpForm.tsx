@@ -47,7 +47,6 @@ type ExistingRow = {
   dietary_restrictions: string | null
   contact_email: string | null
   contact_phone: string | null
-  sms_opt_in: boolean
   needs_hotel: boolean
   notes: string | null
   submitted_by: string
@@ -55,7 +54,11 @@ type ExistingRow = {
 }
 
 // ── Constants ────────────────────────────────────────────────
-const RSVP_DEADLINE = new Date('2026-08-31T00:00:00-05:00')
+// The date shown to guests ("please RSVP by September 30") is a request, not a
+// cutoff — it lives in app/rsvp/page.tsx and passing it changes nothing here.
+// This is the hard close: once it passes, the form stops accepting submissions.
+// Placeholder until the real December date is confirmed.
+const RSVP_CLOSE_DATE = new Date('2026-12-31T23:59:59-05:00')
 
 const EVENTS: { key: 'sangeet' | 'wedding' | 'reception'; label: string; desc: string; Icon: EventIcon; calStart: string; calEnd: string }[] = [
   { key: 'sangeet',   label: 'Sangeet',              desc: 'Feb 17 · Music, dancing & celebration', Icon: SangeetIcon, calStart: '20270217T180000', calEnd: '20270217T230000' },
@@ -125,7 +128,6 @@ export default function RsvpForm() {
   const [needsHotel, setNeedsHotel] = useState<boolean | null>(null)
   const [notes,      setNotes]      = useState('')
   const [phone,      setPhone]      = useState('')
-  const [smsOptIn,   setSmsOptIn]   = useState(false)
 
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   const emailValid   = EMAIL_RE.test(email.trim())
@@ -141,7 +143,7 @@ export default function RsvpForm() {
   const [eventError, setEventError] = useState(false)
 
   // ── Deadline guard ────────────────────────────────────────
-  if (new Date() >= RSVP_DEADLINE) {
+  if (new Date() >= RSVP_CLOSE_DATE) {
     return (
       <div className="max-w-md mx-auto text-center py-12">
         <div className="w-16 h-16 rounded-full bg-charcoal/8 flex items-center justify-center mx-auto mb-5"><Lock size={28} strokeWidth={2.5} className="text-charcoal/40" /></div>
@@ -241,7 +243,6 @@ export default function RsvpForm() {
           submittedBy:  submitterName,
           contactEmail: email.trim(),
           contactPhone: phone.trim() || null,
-          smsOptIn:     phone.trim() ? smsOptIn : false,
           partyId,
           needsHotel,
           notes:        notes.trim(),
@@ -286,7 +287,6 @@ export default function RsvpForm() {
     if (firstRow) {
       setEmail(firstRow.contact_email ?? '')
       setPhone(firstRow.contact_phone ?? '')
-      setSmsOptIn(firstRow.sms_opt_in ?? false)
       setNeedsHotel(firstRow.needs_hotel)
       setNotes(firstRow.notes ?? '')
     }
@@ -375,11 +375,6 @@ export default function RsvpForm() {
             </button>
           </form>
 
-          <p className="text-center text-xs text-charcoal/30 mt-5 leading-relaxed">
-            Guests who provide their mobile number may opt in to receive wedding-related
-            texts (RSVP confirmation, reminders, and day-of updates — up to 3 msgs total).
-            Msg &amp; data rates may apply. Reply STOP to opt out.
-          </p>
         </motion.div>
       )}
 
@@ -568,39 +563,20 @@ export default function RsvpForm() {
             </div>
           </div>
 
-          {/* Phone + SMS consent */}
-          <div className="space-y-3">
-            <div>
-              <label htmlFor="rsvp-phone" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
-                Mobile Number <span className="normal-case text-charcoal/30">(optional — for a text confirmation)</span>
-              </label>
-              <input
-                id="rsvp-phone"
-                type="tel"
-                value={phone}
-                onChange={e => { setPhone(e.target.value); if (!e.target.value.trim()) setSmsOptIn(false) }}
-                placeholder="(555) 123-4567"
-                autoComplete="tel"
-                className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
-              />
-            </div>
-            <label className="flex items-start gap-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={smsOptIn}
-                onChange={e => setSmsOptIn(e.target.checked)}
-                className="mt-0.5 w-4 h-4 rounded border-olive-mid accent-olive-dark shrink-0"
-              />
-              <span className="text-xs text-charcoal/60 leading-relaxed">
-                I agree to receive wedding-related text messages from Gowtham &amp; Nikhita
-                (invitation, RSVP reminders, and day-of updates) at the number above.
-                Up to 3 msgs total. Msg &amp; data rates may apply. Consent is not required
-                to RSVP. Reply STOP to opt out, HELP for help. See our{' '}
-                <a href="/privacy" className="underline hover:text-charcoal/80 transition-colors">Privacy Policy</a>
-                {' '}and{' '}
-                <a href="/terms" className="underline hover:text-charcoal/80 transition-colors">Terms</a>.
-              </span>
+          {/* Phone — day-of contact only */}
+          <div>
+            <label htmlFor="rsvp-phone" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
+              Mobile Number <span className="normal-case text-charcoal/30">(optional — in case we need to reach you)</span>
             </label>
+            <input
+              id="rsvp-phone"
+              type="tel"
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+              placeholder="(555) 123-4567"
+              autoComplete="tel"
+              className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
+            />
           </div>
 
           {/* Dietary — one field per attending guest */}
