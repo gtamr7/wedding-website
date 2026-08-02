@@ -114,6 +114,7 @@ export default function RsvpAdmin() {
   const [adminPin, setAdminPin] = useState('')
   const [submissions, setSubmissions] = useState<RsvpSubmission[]>([])
   const [search, setSearch] = useState('')
+  const [hotelOnly, setHotelOnly] = useState(false)
   const [sortKey, setSortKey] = useState<SortKey>('submitted_at')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
   const [loading, setLoading] = useState(true)
@@ -334,6 +335,7 @@ export default function RsvpAdmin() {
 
   const filtered = useMemo(() => {
     let list = submissions
+    if (hotelOnly) list = list.filter(s => s.needs_hotel)
     if (search.trim()) {
       const q = search.toLowerCase()
       list = list.filter(s =>
@@ -349,7 +351,7 @@ export default function RsvpAdmin() {
       else cmp = new Date(a.submitted_at).getTime() - new Date(b.submitted_at).getTime()
       return sortDir === 'asc' ? cmp : -cmp
     })
-  }, [submissions, search, sortKey, sortDir])
+  }, [submissions, search, sortKey, sortDir, hotelOnly])
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
@@ -499,13 +501,33 @@ export default function RsvpAdmin() {
         </motion.div>
       ) : (
         <motion.div key="table" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <input
-            type="text"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Search by name or email…"
-            className="w-full border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors mb-4"
-          />
+          <div className="flex flex-col sm:flex-row gap-3 mb-4">
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search by name or email…"
+              className="flex-1 border-2 border-olive-light rounded-xl px-4 py-3 text-charcoal bg-white focus:border-gold focus:outline-none transition-colors"
+            />
+            <button
+              type="button"
+              onClick={() => setHotelOnly(v => !v)}
+              aria-pressed={hotelOnly}
+              className={`shrink-0 px-4 py-3 rounded-xl border-2 text-sm font-medium transition-colors inline-flex items-center gap-2
+                ${hotelOnly
+                  ? 'border-olive-dark bg-olive-dark text-white'
+                  : 'border-olive-light bg-white text-charcoal/60 hover:border-olive-mid'}`}
+            >
+              <BedDouble size={15} />
+              Needs hotel ({stats.hotel})
+            </button>
+          </div>
+
+          {hotelOnly && (
+            <p className="text-xs text-charcoal/50 mb-3">
+              Showing only parties that need a room — {filtered.length} of {submissions.length}.
+            </p>
+          )}
 
           <div className="overflow-x-auto rounded-xl border-2 border-olive-light">
             <table className="w-full text-sm">
@@ -554,7 +576,13 @@ export default function RsvpAdmin() {
                         ))}
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-center">{s.needs_hotel ? <span className="inline-flex items-center gap-1"><BedDouble size={13} />Yes</span> : '—'}</td>
+                    {/* Needs an explicit colour: the inherited one is ivory, which
+                        is the page background, so this column rendered invisible. */}
+                    <td className="px-4 py-3 text-center">
+                      {s.needs_hotel
+                        ? <span className="inline-flex items-center gap-1 text-charcoal font-medium"><BedDouble size={13} className="text-gold" />Yes</span>
+                        : <span className="text-charcoal/25">—</span>}
+                    </td>
                     <td className="px-4 py-3 text-charcoal/30 text-xs hidden lg:table-cell">
                       {new Date(s.submitted_at).toLocaleDateString()}
                     </td>
