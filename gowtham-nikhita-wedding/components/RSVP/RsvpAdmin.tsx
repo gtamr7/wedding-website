@@ -181,64 +181,127 @@ export default function RsvpAdmin() {
     } catch { /* silent */ }
   }
 
-  // CSV export — one row per guest, grouped into parties. The five party-level
-  // columns are written only on a party's first row so the same household name
-  // and phone number do not repeat down the page, and a blank line separates
-  // each party. Sorted by party name for scanning rather than by arrival.
-  const exportCsv = () => {
-    // Notes sits last because it is long free text and would otherwise push the
-    // scannable Yes/No grid off to the right.
-    const headers = [
-      'Party', 'Party Size', 'Hotel', 'Phone',
-      'Guest', 'Attending', 'Sangeet (Feb 17)', 'Ceremony (Feb 18)', 'Reception (Feb 18)', 'Dietary',
-      'Notes',
-    ]
-    const blank = new Array(headers.length).fill('')
+  // Excel export. A CSV cannot carry column widths, borders or fills, so this
+  // builds a real workbook. ExcelJS is imported on click rather than at module
+  // scope — it is large and nobody should download it just to open this page.
+  const [exporting, setExporting] = useState(false)
 
-    const ordered = [...submissions].sort((a, b) =>
-      a.submitted_by.localeCompare(b.submitted_by)
-    )
-
-    const rows: string[][] = []
-    ordered.forEach((s, partyIdx) => {
-      if (partyIdx > 0) rows.push(blank)
-
-      // Whoever submitted leads the household, then everyone else by name, so
-      // the first row lines up with the party name beside it.
-      const guests = [...s.guests].sort((a, b) => {
-        if (a.name === s.submitted_by) return -1
-        if (b.name === s.submitted_by) return 1
-        return a.name.localeCompare(b.name)
+  const exportXlsx = async () => {
+    setExporting(true)
+    try {
+      const ExcelJS = (await import('exceljs')).default
+      const wb = new ExcelJS.Workbook()
+      const ws = wb.addWorksheet('RSVPs', {
+        views: [{ state: 'frozen', ySplit: 1 }],
       })
 
-      guests.forEach((g, i) => {
-        const first = i === 0
-        rows.push([
-          first ? s.submitted_by : '',
-          first ? `${s.guests.filter(x => x.attending).length} of ${s.guests.length}` : '',
-          first ? (s.needs_hotel ? 'Yes' : 'No') : '',
-          first ? (s.contact_phone ?? '') : '',
-          g.name,
-          g.attending ? 'Yes' : 'No',
-          // Events are meaningless for someone not coming — leave them empty
-          // rather than printing a row of No's.
-          g.attending ? (g.sangeet ? 'Yes' : '') : '',
-          g.attending ? (g.wedding ? 'Yes' : '') : '',
-          g.attending ? (g.reception ? 'Yes' : '') : '',
-          g.attending ? (g.dietary ?? '') : '',
-          first ? (s.notes ?? '') : '',
-        ])
-      })
-    })
+      const OLIVE = 'FF4A5C2F'
+      const OLIVE_LIGHT = 'FFE6EBD8'
+      const IVORY = 'FFFDFCF8'
+      const CHARCOAL = 'FF1C1C1A'
 
-    const csv = [headers, ...rows]
-      .map(row => row.map(c => `"${String(c).replace(/"/g, '""')}"`).join(','))
-      .join('\n')
-    const a = Object.assign(document.createElement('a'), {
-      href: URL.createObjectURL(new Blob([csv], { type: 'text/csv' })),
-      download: `rsvps-${new Date().toISOString().slice(0, 10)}.csv`,
-    })
-    a.click()
+      ws.columns = [
+        { header: 'Party',              key: 'party',     width: 26 },
+        { header: 'Size',               key: 'size',      width: 9 },
+        { header: 'Hotel',              key: 'hotel',     width: 8 },
+        { header: 'Phone',              key: 'phone',     width: 16 },
+        { header: 'Guest',              key: 'guest',     width: 30 },
+        { header: 'Coming',             key: 'coming',    width: 9 },
+        { header: 'Sangeet\nFeb 17',    key: 'sangeet',   width: 11 },
+        { header: 'Ceremony\nFeb 18',   key: 'ceremony',  width: 11 },
+        { header: 'Reception\nFeb 18',  key: 'reception', width: 11 },
+        { header: 'Dietary',            key: 'dietary',   width: 30 },
+        { header: 'Notes',              key: 'notes',     width: 50 },
+      ]
+
+      const head = ws.getRow(1)
+      head.height = 32
+      head.font = { bold: true, color: { argb: IVORY }, size: 11 }
+      head.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true }
+      head.eachCell(c => {
+        c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: OLIVE } }
+      })
+      ws.getCell('A1').alignment = { vertical: 'middle', horizontal: 'left' }
+      ws.getCell('E1').alignment = { vertical: 'middle', horizontal: 'left' }
+
+      const ordered = [...submissions].sort((a, b) =>
+        a.submitted_by.localeCompare(b.submitted_by)
+      )
+
+      let banded = false
+      for (const s of ordered) {
+        // Whoever submitted leads the household, then everyone else by name.
+        const guests = [...s.guests].sort((a, b) => {
+          if (a.name === s.submitted_by) return -1
+          if (b.name === s.submitted_by) return 1
+          return a.name.localeCompare(b.name)
+        })
+
+        const startRow = ws.rowCount + 1
+
+        guests.forEach((g, i) => {
+          const first = i === 0
+          const row = ws.addRow({
+            party:     first ? s.submitted_by : '',
+            size:      first ? `${s.guests.filter(x => x.attending).length} of ${s.guests.length}` : '',
+            hotel:     first ? (s.needs_hotel ? 'Yes' : 'No') : '',
+            phone:     first ? (s.contact_phone ?? '') : '',
+            guest:     g.name,
+            coming:    g.attending ? 'Yes' : 'No',
+            sangeet:   g.attending && g.sangeet ? '●' : '',
+            ceremony:  g.attending && g.wedding ? '●' : '',
+            reception: g.attending && g.reception ? '●' : '',
+            dietary:   g.attending ? (g.dietary ?? '') : '',
+            notes:     first ? (s.notes ?? '') : '',
+          })
+          row.height = 20
+          row.alignment = { vertical: 'middle' }
+          if (banded) {
+            row.eachCell({ includeEmpty: true }, c => {
+              c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: OLIVE_LIGHT } }
+            })
+          }
+          // Party name and the event dots read better centred / emphasised
+          row.getCell('party').font = { bold: true, color: { argb: CHARCOAL } }
+          for (const k of ['size', 'hotel', 'coming', 'sangeet', 'ceremony', 'reception']) {
+            row.getCell(k).alignment = { vertical: 'middle', horizontal: 'center' }
+          }
+          for (const k of ['sangeet', 'ceremony', 'reception']) {
+            row.getCell(k).font = { color: { argb: OLIVE }, size: 12 }
+          }
+          if (!g.attending) {
+            row.getCell('guest').font = { color: { argb: 'FF999999' }, strike: true }
+            row.getCell('coming').font = { color: { argb: 'FFB00020' }, bold: true }
+          }
+          row.getCell('notes').alignment = { vertical: 'top', wrapText: true }
+          row.getCell('dietary').alignment = { vertical: 'middle', wrapText: true }
+        })
+
+        // A line above each household instead of a blank spacer row, so the
+        // sheet stays filterable and sortable.
+        for (let c = 1; c <= 11; c++) {
+          ws.getRow(startRow).getCell(c).border = {
+            top: { style: 'thin', color: { argb: 'FF9AA97B' } },
+          }
+        }
+        banded = !banded
+      }
+
+      ws.autoFilter = { from: 'A1', to: { row: 1, column: 11 } }
+
+      const buf = await wb.xlsx.writeBuffer()
+      const url = URL.createObjectURL(
+        new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+      )
+      const a = Object.assign(document.createElement('a'), {
+        href: url,
+        download: `rsvps-${new Date().toISOString().slice(0, 10)}.xlsx`,
+      })
+      a.click()
+      URL.revokeObjectURL(url)
+    } finally {
+      setExporting(false)
+    }
   }
 
   const stats = useMemo(() => {
@@ -298,8 +361,8 @@ export default function RsvpAdmin() {
           <button onClick={fetchRsvps} className="text-sm text-charcoal/50 hover:text-charcoal border border-olive-light rounded-xl px-4 py-2 transition-colors">
             ↻ Refresh
           </button>
-          <button onClick={exportCsv} disabled={!submissions.length} className="bg-gold text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-40">
-            Export CSV
+          <button onClick={() => void exportXlsx()} disabled={!submissions.length || exporting} className="bg-gold text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-40">
+            {exporting ? 'Building…' : 'Export Excel'}
           </button>
         </div>
       </div>
