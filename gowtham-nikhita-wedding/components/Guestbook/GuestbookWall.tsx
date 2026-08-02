@@ -28,23 +28,14 @@ export default function GuestbookWall({ initialEntries }: { initialEntries: Gues
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  const handleNewEntry = (name: string, message: string, photoUrl?: string) => {
-    const newEntry: GuestbookEntry = {
-      id:         crypto.randomUUID(),
-      name,
-      message,
-      photo_url:  photoUrl ?? null,
-      visible:    true,
-      created_at: new Date().toISOString(),
-    }
-    setEntries((prev) => [newEntry, ...prev])
-  }
+  // New entries are held for approval, so nothing is added to the wall here —
+  // showing the author their own post would imply it was already published.
 
   return (
     <div className="max-w-5xl mx-auto">
       {/* Submit form */}
       <div className="max-w-lg mx-auto mb-16">
-        <GuestbookForm onSubmit={handleNewEntry} />
+        <GuestbookForm />
       </div>
 
       {/* Gold divider */}

@@ -1,11 +1,13 @@
 export async function POST(request: Request) {
-  const { pin, type } = await request.json() as { pin: string; type: 'photo' | 'bets' | 'rsvp' }
+  const { pin, type } = await request.json() as { pin: string; type: 'photo' | 'bets' | 'rsvp' | 'guestbook' }
 
   const expected =
     type === 'photo'
       ? process.env.PHOTO_ADMIN_PIN
       : type === 'rsvp'
       ? process.env.RSVP_ADMIN_PIN
+      : type === 'guestbook'
+      ? process.env.GUESTBOOK_ADMIN_PIN
       : process.env.BETS_ADMIN_PIN
 
   if (!expected) {

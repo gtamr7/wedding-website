@@ -4,14 +4,9 @@ import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { Heart } from 'lucide-react'
-import { createSupabaseClient } from '@/lib/supabase'
 import { compressImage } from '@/lib/compressImage'
 
-interface GuestbookFormProps {
-  onSubmit: (name: string, message: string, photoUrl?: string) => void
-}
-
-export default function GuestbookForm({ onSubmit }: GuestbookFormProps) {
+export default function GuestbookForm() {
   const [name, setName]       = useState('')
   const [message, setMessage] = useState('')
   const [state, setState]     = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
@@ -72,16 +67,19 @@ export default function GuestbookForm({ onSubmit }: GuestbookFormProps) {
         // If upload fails, continue without photo — don't block the message
       }
 
-      const supabase = createSupabaseClient()
-      const { error } = await supabase.from('guestbook').insert({
-        name:      name.trim(),
-        message:   message.trim(),
-        photo_url: photoUrl ?? null,
-        visible:   true,
+      // Posted through the API so the entry is created unapproved; the browser
+      // is not allowed to publish straight to the wall.
+      const res = await fetch('/api/guestbook/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.trim(),
+          message: message.trim(),
+          photoUrl: photoUrl ?? null,
+        }),
       })
-      if (error) throw error
+      if (!res.ok) throw new Error()
 
-      onSubmit(name.trim(), message.trim(), photoUrl)
       setState('success')
       setName('')
       setMessage('')
@@ -108,6 +106,9 @@ export default function GuestbookForm({ onSubmit }: GuestbookFormProps) {
             <div className="flex justify-center mb-3"><Heart size={32} strokeWidth={2.5} className="text-gold/60" /></div>
             <p className="font-display text-2xl italic text-charcoal">Thank you!</p>
             <p className="text-charcoal/50 text-sm mt-1">Your message means the world to us.</p>
+            <p className="text-charcoal/40 text-xs mt-3 leading-relaxed">
+              It will appear on the wall once Gowtham &amp; Nikhita have had a chance to read it.
+            </p>
           </motion.div>
         ) : (
           <motion.form
