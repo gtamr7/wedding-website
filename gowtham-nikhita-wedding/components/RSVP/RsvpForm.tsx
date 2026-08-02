@@ -501,6 +501,20 @@ export default function RsvpForm() {
                       className="border-t border-olive-light/60 px-4 pb-4 pt-3 overflow-hidden">
                       <p className="text-[10px] uppercase tracking-widest text-charcoal/35 mb-2.5">Events</p>
                       <div className="flex flex-wrap gap-2">
+                        {/* Shortcut so a guest coming to everything taps once
+                            instead of three times per person. */}
+                        {(() => {
+                          const allOn = a.sangeet && a.wedding && a.reception
+                          return (
+                            <button type="button"
+                              onClick={() => updateAttendee(i, { sangeet: !allOn, wedding: !allOn, reception: !allOn })}
+                              aria-pressed={allOn}
+                              className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-all select-none
+                                ${allOn ? 'border-olive-dark bg-olive-dark text-white' : 'border-olive-light bg-white text-charcoal/45 hover:border-olive-mid'}`}>
+                              All events
+                            </button>
+                          )
+                        })()}
                         {EVENTS.map(ev => {
                           const checked = ev.key === 'sangeet' ? a.sangeet : ev.key === 'wedding' ? a.wedding : a.reception
                           return (
