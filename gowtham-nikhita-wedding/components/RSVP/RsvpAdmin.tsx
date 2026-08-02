@@ -196,13 +196,13 @@ export default function RsvpAdmin() {
       })
 
       const OLIVE = 'FF4A5C2F'
-      const OLIVE_LIGHT = 'FFE6EBD8'
       const IVORY = 'FFFDFCF8'
       const CHARCOAL = 'FF1C1C1A'
+      const GRID = 'FFDDDDD5'
 
       ws.columns = [
         { header: 'Party',              key: 'party',     width: 26 },
-        { header: 'Size',               key: 'size',      width: 9 },
+        { header: 'Total',              key: 'total',     width: 8 },
         { header: 'Hotel',              key: 'hotel',     width: 8 },
         { header: 'Phone',              key: 'phone',     width: 16 },
         { header: 'Guest',              key: 'guest',     width: 30 },
@@ -215,7 +215,7 @@ export default function RsvpAdmin() {
       ]
 
       const head = ws.getRow(1)
-      head.height = 32
+      head.height = 34
       head.font = { bold: true, color: { argb: IVORY }, size: 11 }
       head.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true }
       head.eachCell(c => {
@@ -228,9 +228,12 @@ export default function RsvpAdmin() {
         a.submitted_by.localeCompare(b.submitted_by)
       )
 
-      let banded = false
+      // Party-level columns are merged down the household's rows. Grouping is
+      // shown by structure rather than a fill, since a coloured row reads as
+      // though the colour means something.
+      const MERGED = ['party', 'total', 'hotel', 'phone', 'notes'] as const
+
       for (const s of ordered) {
-        // Whoever submitted leads the household, then everyone else by name.
         const guests = [...s.guests].sort((a, b) => {
           if (a.name === s.submitted_by) return -1
           if (b.name === s.submitted_by) return 1
@@ -243,7 +246,7 @@ export default function RsvpAdmin() {
           const first = i === 0
           const row = ws.addRow({
             party:     first ? s.submitted_by : '',
-            size:      first ? `${s.guests.filter(x => x.attending).length} of ${s.guests.length}` : '',
+            total:     first ? s.guests.filter(x => x.attending).length : '',
             hotel:     first ? (s.needs_hotel ? 'Yes' : 'No') : '',
             phone:     first ? (s.contact_phone ?? '') : '',
             guest:     g.name,
@@ -256,14 +259,17 @@ export default function RsvpAdmin() {
           })
           row.height = 20
           row.alignment = { vertical: 'middle' }
-          if (banded) {
-            row.eachCell({ includeEmpty: true }, c => {
-              c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: OLIVE_LIGHT } }
-            })
-          }
-          // Party name and the event dots read better centred / emphasised
-          row.getCell('party').font = { bold: true, color: { argb: CHARCOAL } }
-          for (const k of ['size', 'hotel', 'coming', 'sangeet', 'ceremony', 'reception']) {
+
+          row.eachCell({ includeEmpty: true }, c => {
+            c.border = {
+              top:    { style: 'hair', color: { argb: GRID } },
+              bottom: { style: 'hair', color: { argb: GRID } },
+              left:   { style: 'hair', color: { argb: GRID } },
+              right:  { style: 'hair', color: { argb: GRID } },
+            }
+          })
+
+          for (const k of ['total', 'hotel', 'coming', 'sangeet', 'ceremony', 'reception']) {
             row.getCell(k).alignment = { vertical: 'middle', horizontal: 'center' }
           }
           for (const k of ['sangeet', 'ceremony', 'reception']) {
@@ -277,17 +283,24 @@ export default function RsvpAdmin() {
           row.getCell('dietary').alignment = { vertical: 'middle', wrapText: true }
         })
 
-        // A line above each household instead of a blank spacer row, so the
-        // sheet stays filterable and sortable.
-        for (let c = 1; c <= 11; c++) {
-          ws.getRow(startRow).getCell(c).border = {
-            top: { style: 'thin', color: { argb: 'FF9AA97B' } },
-          }
-        }
-        banded = !banded
-      }
+        const endRow = ws.rowCount
 
-      ws.autoFilter = { from: 'A1', to: { row: 1, column: 11 } }
+        for (const key of MERGED) {
+          const col = ws.getColumn(key).number
+          if (endRow > startRow) ws.mergeCells(startRow, col, endRow, col)
+          const cell = ws.getCell(startRow, col)
+          cell.alignment = key === 'notes'
+            ? { vertical: 'middle', horizontal: 'left', wrapText: true }
+            : { vertical: 'middle', horizontal: key === 'party' ? 'left' : 'center' }
+        }
+        ws.getCell(startRow, 1).font = { bold: true, color: { argb: CHARCOAL }, size: 11 }
+
+        // Olive rule separating one household from the next
+        for (let c = 1; c <= 11; c++) {
+          const cell = ws.getRow(startRow).getCell(c)
+          cell.border = { ...cell.border, top: { style: 'medium', color: { argb: OLIVE } } }
+        }
+      }
 
       const buf = await wb.xlsx.writeBuffer()
       const url = URL.createObjectURL(
