@@ -47,6 +47,7 @@ export async function GET(request: Request) {
       submitted_at: first.submitted_at,
       submitted_by: first.submitted_by,
       contact_email: first.contact_email ?? null,
+      contact_phone: first.contact_phone ?? null,
       needs_hotel: first.needs_hotel,
       notes: first.notes ?? null,
       guests,

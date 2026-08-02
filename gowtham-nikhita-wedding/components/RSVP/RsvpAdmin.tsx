@@ -181,30 +181,56 @@ export default function RsvpAdmin() {
     } catch { /* silent */ }
   }
 
-  // CSV export — one row per guest (most useful for catering / seating)
+  // CSV export — one row per guest, grouped into parties. The five party-level
+  // columns are written only on a party's first row so the same household name
+  // and phone number do not repeat down the page, and a blank line separates
+  // each party. Sorted by party name for scanning rather than by arrival.
   const exportCsv = () => {
+    // Notes sits last because it is long free text and would otherwise push the
+    // scannable Yes/No grid off to the right.
     const headers = [
-      'Submitted By', 'Email', 'Hotel Needed', 'Notes', 'Submitted',
-      'Guest Name', 'Attending', 'Sangeet (Feb 17)', 'Ceremony (Feb 18)', 'Reception (Feb 18)', 'Dietary Restrictions',
+      'Party', 'Party Size', 'Hotel', 'Phone',
+      'Guest', 'Attending', 'Sangeet (Feb 17)', 'Ceremony (Feb 18)', 'Reception (Feb 18)', 'Dietary',
+      'Notes',
     ]
+    const blank = new Array(headers.length).fill('')
+
+    const ordered = [...submissions].sort((a, b) =>
+      a.submitted_by.localeCompare(b.submitted_by)
+    )
+
     const rows: string[][] = []
-    for (const s of submissions) {
-      for (const g of s.guests) {
+    ordered.forEach((s, partyIdx) => {
+      if (partyIdx > 0) rows.push(blank)
+
+      // Whoever submitted leads the household, then everyone else by name, so
+      // the first row lines up with the party name beside it.
+      const guests = [...s.guests].sort((a, b) => {
+        if (a.name === s.submitted_by) return -1
+        if (b.name === s.submitted_by) return 1
+        return a.name.localeCompare(b.name)
+      })
+
+      guests.forEach((g, i) => {
+        const first = i === 0
         rows.push([
-          s.submitted_by,
-          s.contact_email ?? '',
-          s.needs_hotel ? 'Yes' : 'No',
-          s.notes ?? '',
-          new Date(s.submitted_at).toLocaleDateString(),
+          first ? s.submitted_by : '',
+          first ? `${s.guests.filter(x => x.attending).length} of ${s.guests.length}` : '',
+          first ? (s.needs_hotel ? 'Yes' : 'No') : '',
+          first ? (s.contact_phone ?? '') : '',
           g.name,
           g.attending ? 'Yes' : 'No',
-          g.sangeet ? 'Yes' : 'No',
-          g.wedding ? 'Yes' : 'No',
-          g.reception ? 'Yes' : 'No',
-          g.dietary ?? '',
+          // Events are meaningless for someone not coming — leave them empty
+          // rather than printing a row of No's.
+          g.attending ? (g.sangeet ? 'Yes' : '') : '',
+          g.attending ? (g.wedding ? 'Yes' : '') : '',
+          g.attending ? (g.reception ? 'Yes' : '') : '',
+          g.attending ? (g.dietary ?? '') : '',
+          first ? (s.notes ?? '') : '',
         ])
-      }
-    }
+      })
+    })
+
     const csv = [headers, ...rows]
       .map(row => row.map(c => `"${String(c).replace(/"/g, '""')}"`).join(','))
       .join('\n')

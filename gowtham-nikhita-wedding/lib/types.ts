@@ -77,6 +77,7 @@ export interface RsvpSubmission {
   submitted_at: string;
   submitted_by: string;
   contact_email: string | null;
+  contact_phone: string | null;
   needs_hotel: boolean;
   notes: string | null;
   guests: RsvpGuest[];
