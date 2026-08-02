@@ -17,8 +17,11 @@ export async function GET(request: NextRequest) {
   const supabase = getSupabase()
 
   const [rsvpResult, betsResult, guestbookResult, photoGroupResult, totalBetsResult] = await Promise.all([
+    // rsvp_responses, not the legacy rsvps table — nothing has written to that
+    // one since the party-based RSVP flow shipped, so every guest looked as
+    // though they had never replied.
     supabase
-      .from('rsvps')
+      .from('rsvp_responses')
       .select('dietary_restrictions, needs_hotel')
       .ilike('guest_name', name)
       .limit(1)
