@@ -85,6 +85,20 @@ export interface RsvpSubmission {
   attending_count: number;
 }
 
+/** One household as the seating chart sees it, from /api/admin/seating */
+export interface SeatingParty {
+  /** guest_parties.id — stable across RSVP edits, unlike submission_id */
+  id: string;
+  guest_name: string;
+  party_size: number;
+  party_members: RsvpPartyMember[];
+  sangeet: boolean;
+  wedding: boolean;
+  reception: boolean;
+  dietary_restrictions: string | null;
+  table_number: number | null;
+}
+
 /** @deprecated use RsvpSubmission */
 export interface RsvpEntry {
   id: string;

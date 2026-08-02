@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { RefreshCw, Armchair } from 'lucide-react'
 import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
-import type { RsvpEntry } from '@/lib/types'
+import type { SeatingParty } from '@/lib/types'
 
 type AuthState = 'loading' | 'locked' | 'unlocked'
 
@@ -73,7 +73,7 @@ function PartyCard({
   onDragStart,
   dimmed,
 }: {
-  party: RsvpEntry
+  party: SeatingParty
   onDragStart: () => void
   dimmed?: boolean
 }) {
@@ -133,7 +133,7 @@ function TableSlot({
   onDragLeave,
 }: {
   tableNum: number
-  parties: RsvpEntry[]
+  parties: SeatingParty[]
   capacity: number
   onDrop: (rsvpId: string, tableNum: number) => void
   onDragStart: (id: string) => void
@@ -201,7 +201,7 @@ function TableSlot({
 export default function SeatingAdmin() {
   const [auth, setAuth] = useState<AuthState>('loading')
   const [adminPin, setAdminPin] = useState('')
-  const [parties, setParties] = useState<RsvpEntry[]>([])
+  const [parties, setParties] = useState<SeatingParty[]>([])
   const [loading, setLoading] = useState(true)
   const [tableCount, setTableCount] = useState(10)
   const [seatsPerTable, setSeatsPerTable] = useState(8)
@@ -224,12 +224,13 @@ export default function SeatingAdmin() {
   const fetchParties = async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/admin/rsvps', { headers: { 'x-admin-pin': adminPin } })
+      // /api/admin/seating, not /api/admin/rsvps — it returns one entry per
+      // party keyed on party_id, which survives a household editing its RSVP.
+      const res = await fetch('/api/admin/seating', { headers: { 'x-admin-pin': adminPin } })
       if (!res.ok) throw new Error('Failed')
-      const data: RsvpEntry[] = await res.json()
-      setParties(data)
-      // Detect if table_number column exists (will be absent from all rows if not migrated)
-      if (data.length > 0 && !('table_number' in data[0])) setMigrationNeeded(true)
+      const data = await res.json() as { parties: SeatingParty[]; migrationNeeded: boolean }
+      setParties(data.parties)
+      setMigrationNeeded(data.migrationNeeded)
     } catch {
       console.error('Failed to fetch parties')
     } finally {
