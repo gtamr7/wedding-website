@@ -29,11 +29,12 @@ export function SangeetIcon({ size = 24, className = '' }: IconProps) {
 export function DiyaIcon({ size = 24, className = '' }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" className={className} aria-hidden="true">
-      {/* Flame: a single teardrop, no inner glow */}
-      <path d="M12 4.4c1.9 2.2 2.9 3.7 2.9 5.1a2.9 2.9 0 0 1-5.8 0c0-1.4 1-2.9 2.9-5.1Z" {...base} />
-      {/* Bowl: one shallow vessel with a lipped spout on the right */}
-      <path d="M3.6 14.6h16.8c0 3.3-3.8 5.4-8.4 5.4s-8.4-2.1-8.4-5.4Z" {...base} />
-      <path d="M20.4 14.6 22.6 13" {...base} />
+      {/* The flame sits over the spout, not the centre of the bowl. That
+          off-centre placement is what distinguishes a diya from a generic
+          lamp — the wick rests in the pinched lip at one end. */}
+      <path d="M18.6 3.4c1.6 2.7 2.4 4.2 2.4 5.5a2.4 2.4 0 0 1-4.8 0c0-1.3.8-2.8 2.4-5.5Z" {...base} />
+      {/* Shallow clay vessel, rim rising to a point at the spout */}
+      <path d="M2.4 15 19.8 12.4c-.6 5-4.6 7.8-9 7.8-4.8 0-8.4-2-8.4-5.2Z" {...base} />
     </svg>
   )
 }
