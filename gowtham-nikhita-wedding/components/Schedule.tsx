@@ -206,12 +206,12 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
             <p className="flex items-center gap-1.5"><MapPin size={13} className="shrink-0" />{event.venue}</p>
           </div>
 
-          <p className="mt-4 font-display text-lg sm:text-xl leading-relaxed text-ivory/90">{event.description}</p>
+          <p className="mt-4 text-ivory/85 leading-relaxed text-sm sm:text-base">{event.description}</p>
 
           <div className="mt-4 pt-4 border-t border-white/15 flex items-end justify-between gap-4 flex-wrap">
             <div>
               <p className="text-xs text-ivory/55 uppercase tracking-wider">Dress Code</p>
-              <p className="font-display text-base sm:text-lg text-ivory/95 mt-1 leading-snug">{event.dresscode}</p>
+              <p className="text-sm text-ivory/90 mt-1">{event.dresscode}</p>
             </div>
             <AddToCalendar cal={event.calendar} />
           </div>

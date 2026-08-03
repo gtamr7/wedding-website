@@ -29,12 +29,13 @@ export function SangeetIcon({ size = 24, className = '' }: IconProps) {
 export function DiyaIcon({ size = 24, className = '' }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" className={className} aria-hidden="true">
-      {/* The flame sits over the spout, not the centre of the bowl. That
-          off-centre placement is what distinguishes a diya from a generic
-          lamp — the wick rests in the pinched lip at one end. */}
-      <path d="M18.6 3.4c1.6 2.7 2.4 4.2 2.4 5.5a2.4 2.4 0 0 1-4.8 0c0-1.3.8-2.8 2.4-5.5Z" {...base} />
-      {/* Shallow clay vessel, rim rising to a point at the spout */}
-      <path d="M2.4 15 19.8 12.4c-.6 5-4.6 7.8-9 7.8-4.8 0-8.4-2-8.4-5.2Z" {...base} />
+      {/* The flame carries the icon and has to be the taller of the two
+          shapes. Drawn small it reads as a droplet sitting in a bowl, and
+          pushed off to one side to imply a spout it just looks lopsided. */}
+      <path d="M12 2.6c2.9 4.6 4 7.2 4 9.1a4 4 0 0 1-8 0c0-1.9 1.1-4.5 4-9.1Z" {...base} />
+      {/* Shallow vessel, with a short foot to sit it on the ground */}
+      <path d="M4 15h16c0 3.2-3.6 5.2-8 5.2S4 18.2 4 15Z" {...base} />
+      <path d="M9.5 21.6h5" {...base} />
     </svg>
   )
 }
