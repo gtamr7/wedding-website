@@ -16,9 +16,12 @@ const events = [
     description:
       'An evening of music, dance, and joyful celebration as both families come together for the first time. Performances, food, and the energy of two worlds colliding in the best way.',
     dresscode: 'Festive Indian attire: lehengas, sarees, sherwanis, kurtas',
-    color: 'from-black/20 to-black/10',
-    borderColor: 'border-gold/15',
-    badgeColor: 'bg-olive-mid/50 text-ivory',
+    // Marigold — the sangeet is the loud, celebratory night.
+    color: 'from-amber-500/22 to-amber-700/8',
+    borderColor: 'border-amber-300/35',
+    badgeColor: 'bg-amber-400/25 text-amber-50',
+    accent: 'bg-amber-300/70',
+    iconColor: 'text-amber-200',
     calendar: {
       title: 'Sangeet | Gowtham & Nikhita',
       date: '20270217T180000',
@@ -37,9 +40,12 @@ const events = [
     description:
       'The sacred Tamil/Telugu Hindu Kalyaanam conducted according to ancient tradition. A profoundly moving ceremony rich with ritual, meaning, and family.',
     dresscode: 'Traditional Indian attire or formal Western',
-    color: 'from-black/20 to-black/10',
-    borderColor: 'border-gold/15',
-    badgeColor: 'bg-olive-mid/50 text-ivory',
+    // Kumkum red — the traditional colour of the ceremony itself.
+    color: 'from-red-700/25 to-red-900/10',
+    borderColor: 'border-red-300/30',
+    badgeColor: 'bg-red-500/25 text-red-50',
+    accent: 'bg-red-300/70',
+    iconColor: 'text-red-200',
     calendar: {
       title: 'Ceremony (Kalyaanam) | Gowtham & Nikhita Wedding',
       date: '20270218T090000',
@@ -58,9 +64,12 @@ const events = [
     description:
       'Dinner, dancing, speeches, and celebration under the night sky. The waterfront setting of Powel Crosley Estate provides a breathtaking backdrop for an evening to remember.',
     dresscode: 'Black tie optional / Cocktail attire',
-    color: 'from-black/20 to-black/10',
-    borderColor: 'border-gold/15',
-    badgeColor: 'bg-olive-mid/40 text-ivory',
+    // Champagne gold for the black-tie evening.
+    color: 'from-gold/22 to-gold/6',
+    borderColor: 'border-gold/40',
+    badgeColor: 'bg-gold/30 text-ivory',
+    accent: 'bg-gold/80',
+    iconColor: 'text-gold-light',
     calendar: {
       title: 'Reception | Gowtham & Nikhita Wedding',
       date: '20270218T180000',
@@ -105,7 +114,7 @@ function AddToCalendar({ cal }: { cal: typeof events[0]['calendar'] }) {
     <div className="relative">
       <button
         onClick={() => setOpen(v => !v)}
-        className="flex items-center gap-1.5 text-xs text-ivory/50 hover:text-gold transition-colors border border-white/15 hover:border-gold/40 rounded-full px-3 py-1.5"
+        className="flex items-center gap-1.5 text-xs text-ivory/75 hover:text-gold transition-colors border border-white/25 hover:border-gold/50 rounded-full px-3 py-1.5"
       >
         <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
           <rect x="1" y="3" width="14" height="12" rx="1.5" />
@@ -169,17 +178,19 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
       transition={{ duration: 0.6, delay: index * 0.15, ease: 'easeOut' }}
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
       whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
-      className={`relative rounded-xl border bg-gradient-to-br backdrop-blur-sm ${event.color} ${event.borderColor} p-7 sm:p-9 overflow-hidden group`}
+      className={`relative rounded-xl border bg-gradient-to-br backdrop-blur-sm ${event.color} ${event.borderColor} p-7 sm:p-9 overflow-hidden group shadow-lg shadow-black/20`}
     >
+      {/* Accent bar in the event's own colour, so the three read as distinct
+          occasions rather than three copies of the same card. */}
       <motion.div
         initial={{ scaleX: 0 }}
         animate={inView ? { scaleX: 1 } : {}}
         transition={{ duration: 0.7, delay: index * 0.15 + 0.3 }}
-        className="absolute top-0 left-0 right-0 h-0.5 origin-left bg-white/30"
+        className={`absolute top-0 left-0 right-0 h-1 origin-left ${event.accent}`}
       />
 
       <div className="flex items-start gap-4">
-        <event.Icon size={28} className="text-ivory/70 shrink-0 mt-0.5" aria-hidden="true" />
+        <event.Icon size={30} className={`${event.iconColor} shrink-0 mt-0.5`} aria-hidden="true" />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2">
             <span className={`text-xs tracking-wider uppercase font-medium rounded-full px-3 py-1 ${event.badgeColor}`}>
@@ -189,17 +200,17 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
 
           <h3 className="font-display text-2xl sm:text-3xl italic text-ivory">{event.name}</h3>
 
-          <div className="mt-3 space-y-1 text-sm text-ivory/60">
+          <div className="mt-3 space-y-1 text-sm text-ivory/75">
             <p className="flex items-center gap-1.5"><Clock size={13} className="shrink-0" />{event.time}</p>
             <p className="flex items-center gap-1.5"><MapPin size={13} className="shrink-0" />{event.venue}</p>
           </div>
 
-          <p className="mt-4 text-ivory/70 leading-relaxed text-sm sm:text-base">{event.description}</p>
+          <p className="mt-4 text-ivory/85 leading-relaxed text-sm sm:text-base">{event.description}</p>
 
-          <div className="mt-4 pt-4 border-t border-white/10 flex items-end justify-between gap-4 flex-wrap">
+          <div className="mt-4 pt-4 border-t border-white/15 flex items-end justify-between gap-4 flex-wrap">
             <div>
-              <p className="text-xs text-ivory/40 uppercase tracking-wider">Dress Code</p>
-              <p className="text-sm text-ivory/70 mt-1">{event.dresscode}</p>
+              <p className="text-xs text-ivory/55 uppercase tracking-wider">Dress Code</p>
+              <p className="text-sm text-ivory/90 mt-1">{event.dresscode}</p>
             </div>
             <AddToCalendar cal={event.calendar} />
           </div>
