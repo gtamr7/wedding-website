@@ -85,6 +85,19 @@ export async function POST(request: Request) {
 
     const partyId = matched.party_id ?? null
 
+    // A held party is recognised but cannot submit yet. Reported separately
+    // from "not found" so the guest is not told they are missing from the list.
+    if (partyId) {
+      const { data: partyRow } = await supabase
+        .from('guest_parties')
+        .select('on_hold')
+        .eq('id', partyId)
+        .maybeSingle()
+      if (partyRow && (partyRow as { on_hold?: boolean }).on_hold) {
+        return Response.json({ found: false, onHold: true })
+      }
+    }
+
     // Build the party list
     let partyRows: GuestRow[] = [matched]
 

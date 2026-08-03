@@ -111,7 +111,7 @@ export default function RsvpForm() {
   const [lookupFirst, setLookupFirst] = useState('')
   const [lookupLast,  setLookupLast]  = useState('')
   const [looking,     setLooking]     = useState(false)
-  const [lookupError, setLookupError] = useState<'not-found' | 'error' | ''>('')
+  const [lookupError, setLookupError] = useState<'not-found' | 'on-hold' | 'error' | ''>('')
   const [choices,     setChoices]     = useState<GuestChoice[]>([])
 
   // ── Party / submission state ──────────────────────────────
@@ -169,6 +169,7 @@ export default function RsvpForm() {
       const data = await res.json() as {
         found: boolean
         ambiguous?: boolean
+        onHold?: boolean
         choices?: GuestChoice[]
         party: PartyMember[]
         partyId: string | null
@@ -178,6 +179,8 @@ export default function RsvpForm() {
 
       // Two guests share this name — ask which one before going any further
       if (data.ambiguous && data.choices?.length) { setChoices(data.choices); return }
+      // Recognised, but their invitation is still being finalised
+      if (data.onHold) { setLookupError('on-hold'); return }
       if (!data.found) { setLookupError('not-found'); return }
 
       setChoices([])
@@ -383,6 +386,16 @@ export default function RsvpForm() {
                   </div>
                   <p className="text-xs text-charcoal/40 mt-3">
                     Not sure? Reach out to Gowtham or Nikhita and we&apos;ll sort it out.
+                  </p>
+                </motion.div>
+              )}
+              {lookupError === 'on-hold' && (
+                <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                  className="bg-olive-light/25 border border-olive-light rounded-xl px-4 py-4 text-sm leading-relaxed">
+                  <p className="font-medium text-charcoal mb-1">We found you — hang tight!</p>
+                  <p className="text-charcoal/60">
+                    We&apos;re still finalising a few details for your invitation. Please check
+                    back soon, or reach out to Gowtham or Nikhita directly.
                   </p>
                 </motion.div>
               )}
