@@ -390,12 +390,15 @@ export default function RsvpForm() {
                 </motion.div>
               )}
               {lookupError === 'on-hold' && (
+                /* Deliberately says nothing about whether this guest is on the
+                   list. It reads as a general status on RSVPs, not a response
+                   about them, so it neither confirms nor denies an invitation. */
                 <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                   className="bg-olive-light/25 border border-olive-light rounded-xl px-4 py-4 text-sm leading-relaxed">
-                  <p className="font-medium text-charcoal mb-1">We found you — hang tight!</p>
+                  <p className="font-medium text-charcoal mb-1">RSVPs are still being finalised</p>
                   <p className="text-charcoal/60">
-                    We&apos;re still finalising a few details for your invitation. Please check
-                    back soon, or reach out to Gowtham or Nikhita directly.
+                    We&apos;re ironing out a few details on our end. We&apos;ll reach out as soon
+                    as everything is ready — thanks so much for your patience!
                   </p>
                 </motion.div>
               )}
