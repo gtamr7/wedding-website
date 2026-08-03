@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const faqs = [
   {
     q: 'Is there parking at the venue?',
-    a: 'Parking is limited, so please carpool if at all possible. Shuttle information will be released soon — check back here for updates.',
+    a: 'Parking is limited, so please carpool if at all possible. There are also hotels within walking distance of the venue, which makes getting there and back much easier. Shuttle information will be released soon — check back here for updates.',
   },
   {
     q: 'Is there a hotel block?',

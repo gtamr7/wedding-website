@@ -9,7 +9,7 @@ import GroupCard from './GroupCard'
 
 type AuthState = 'loading' | 'locked' | 'unlocked'
 
-function PinEntry({ onUnlock }: { onUnlock: () => void }) {
+function PinEntry({ onUnlock }: { onUnlock: (pin: string) => void }) {
   const [pin, setPin] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -25,8 +25,9 @@ function PinEntry({ onUnlock }: { onUnlock: () => void }) {
         body: JSON.stringify({ pin, type: 'photo' }),
       })
       if (res.ok) {
-        sessionStorage.setItem('photoAdminAuth', 'true')
-        onUnlock()
+        // Keep the PIN itself: every write is now authorised server-side.
+        sessionStorage.setItem('photoAdminAuth', pin)
+        onUnlock(pin)
       } else {
         setError('Incorrect PIN. Try again.')
         setPin('')
@@ -76,11 +77,12 @@ function PinEntry({ onUnlock }: { onUnlock: () => void }) {
   )
 }
 
-function AdminPanel() {
+function AdminPanel({ adminPin }: { adminPin: string }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [completedGroups, setCompletedGroups] = useState<number[]>([])
   const [saving, setSaving] = useState(false)
   const [resetConfirm, setResetConfirm] = useState(false)
+  const [saveError, setSaveError] = useState('')
 
   useEffect(() => {
     const supabase = createSupabaseClient()
@@ -97,17 +99,33 @@ function AdminPanel() {
       })
   }, [])
 
+  // Writes go through the admin API, which checks the PIN server-side. The
+  // browser no longer has permission to change the running order directly.
   const persist = async (newIndex: number, newCompleted: number[]) => {
     setSaving(true)
-    const supabase = createSupabaseClient()
-    await supabase
-      .from('photo_order')
-      .update({ current_index: newIndex, completed_groups: newCompleted, updated_at: new Date().toISOString() })
-      .eq('id', 'wedding')
+    setSaveError('')
+    const prevIndex = currentIndex
+    const prevCompleted = completedGroups
+    // Optimistic: the coordinator is mid-ceremony and should not wait on a
+    // round trip to see the card move.
     setCurrentIndex(newIndex)
     setCompletedGroups(newCompleted)
-    setSaving(false)
-    setResetConfirm(false)
+    try {
+      const res = await fetch('/api/admin/photo-order', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'x-admin-pin': adminPin },
+        body: JSON.stringify({ current_index: newIndex, completed_groups: newCompleted }),
+      })
+      if (!res.ok) throw new Error()
+    } catch {
+      // Roll back so the screen never disagrees with what guests are seeing.
+      setCurrentIndex(prevIndex)
+      setCompletedGroups(prevCompleted)
+      setSaveError('That did not save. Check your connection and try again.')
+    } finally {
+      setSaving(false)
+      setResetConfirm(false)
+    }
   }
 
   // Advance current, mark current as done, skip already-done groups
@@ -221,6 +239,12 @@ function AdminPanel() {
         </button>
       </div>
 
+      {saveError && (
+        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-6">
+          {saveError}
+        </p>
+      )}
+
       {/* Group list — tap to set current, checkmark to toggle done */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
@@ -317,10 +341,14 @@ function AdminPanel() {
 
 export default function AdminView() {
   const [auth, setAuth] = useState<AuthState>('loading')
+  const [adminPin, setAdminPin] = useState('')
 
   useEffect(() => {
     const stored = sessionStorage.getItem('photoAdminAuth')
-    setAuth(stored === 'true' ? 'unlocked' : 'locked')
+    // 'true' is the old flag-only value from before writes were authorised
+    // server-side; treat it as no credential and ask for the PIN again.
+    if (stored && stored !== 'true') { setAdminPin(stored); setAuth('unlocked') }
+    else setAuth('locked')
   }, [])
 
   if (auth === 'loading') {
@@ -331,11 +359,11 @@ export default function AdminView() {
     <AnimatePresence mode="wait">
       {auth === 'locked' ? (
         <motion.div key="locked" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <PinEntry onUnlock={() => setAuth('unlocked')} />
+          <PinEntry onUnlock={(pin) => { setAdminPin(pin); setAuth('unlocked') }} />
         </motion.div>
       ) : (
         <motion.div key="unlocked" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <AdminPanel />
+          <AdminPanel adminPin={adminPin} />
         </motion.div>
       )}
     </AnimatePresence>
