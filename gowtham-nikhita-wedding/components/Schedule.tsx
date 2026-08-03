@@ -16,12 +16,12 @@ const events = [
     description:
       'An evening of music, dance, and joyful celebration as both families come together for the first time. Performances, food, and the energy of two worlds colliding in the best way.',
     dresscode: 'Festive Indian attire: lehengas, sarees, sherwanis, kurtas',
-    // Marigold — the sangeet is the loud, celebratory night.
-    color: 'from-amber-500/22 to-amber-700/8',
-    borderColor: 'border-amber-300/35',
-    badgeColor: 'bg-amber-400/25 text-amber-50',
-    accent: 'bg-amber-300/70',
-    iconColor: 'text-amber-200',
+    // Warm amber for the evening celebration.
+    color: 'from-amber-400/16 to-amber-600/5',
+    borderColor: 'border-amber-200/30',
+    badgeColor: 'bg-amber-300/20 text-amber-50',
+    accent: 'bg-amber-200/65',
+    iconColor: 'text-amber-100',
     calendar: {
       title: 'Sangeet | Gowtham & Nikhita',
       date: '20270217T180000',
@@ -40,12 +40,13 @@ const events = [
     description:
       'The sacred Tamil/Telugu Hindu Kalyaanam conducted according to ancient tradition. A profoundly moving ceremony rich with ritual, meaning, and family.',
     dresscode: 'Traditional Indian attire or formal Western',
-    // Kumkum red — the traditional colour of the ceremony itself.
-    color: 'from-red-700/25 to-red-900/10',
-    borderColor: 'border-red-300/30',
-    badgeColor: 'bg-red-500/25 text-red-50',
-    accent: 'bg-red-300/70',
-    iconColor: 'text-red-200',
+    // Morning light — pale and unadorned. The ceremony is the still point of
+    // the weekend and does not want the loudest card on the page.
+    color: 'from-ivory/14 to-ivory/4',
+    borderColor: 'border-ivory/28',
+    badgeColor: 'bg-ivory/18 text-ivory',
+    accent: 'bg-ivory/60',
+    iconColor: 'text-ivory',
     calendar: {
       title: 'Ceremony (Kalyaanam) | Gowtham & Nikhita Wedding',
       date: '20270218T090000',
@@ -65,10 +66,10 @@ const events = [
       'Dinner, dancing, speeches, and celebration under the night sky. The waterfront setting of Powel Crosley Estate provides a breathtaking backdrop for an evening to remember.',
     dresscode: 'Black tie optional / Cocktail attire',
     // Champagne gold for the black-tie evening.
-    color: 'from-gold/22 to-gold/6',
-    borderColor: 'border-gold/40',
-    badgeColor: 'bg-gold/30 text-ivory',
-    accent: 'bg-gold/80',
+    color: 'from-gold/18 to-gold/5',
+    borderColor: 'border-gold/35',
+    badgeColor: 'bg-gold/25 text-ivory',
+    accent: 'bg-gold/75',
     iconColor: 'text-gold-light',
     calendar: {
       title: 'Reception | Gowtham & Nikhita Wedding',
