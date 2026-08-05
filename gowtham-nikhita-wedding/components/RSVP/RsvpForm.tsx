@@ -359,7 +359,7 @@ export default function RsvpForm() {
               </div>
               <div>
                 <label htmlFor="lk-last" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
-                  Last Name <span className="lowercase tracking-normal text-charcoal/30">(if you use one)</span>
+                  Last Name
                 </label>
                 <input id="lk-last" type="text" value={lookupLast}
                   onChange={e => { setLookupLast(e.target.value); setLookupError(''); setChoices([]) }}
