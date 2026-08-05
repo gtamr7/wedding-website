@@ -58,7 +58,9 @@ type ExistingRow = {
 // cutoff — it lives in app/rsvp/page.tsx and passing it changes nothing here.
 // This is the hard close: once it passes, the form stops accepting submissions.
 // Placeholder until the real December date is confirmed.
-const RSVP_CLOSE_DATE = new Date('2026-12-31T23:59:59-05:00')
+// Guests are asked to reply by October 5th; the form stays open through the
+// 6th so anyone answering late in their own timezone is not shut out.
+const RSVP_CLOSE_DATE = new Date('2026-10-06T23:59:59-04:00')
 
 const EVENTS: { key: 'sangeet' | 'wedding' | 'reception'; label: string; desc: string; Icon: EventIcon; calStart: string; calEnd: string }[] = [
   { key: 'sangeet',   label: 'Sangeet',              desc: 'Feb 17 · Music, dancing & celebration', Icon: SangeetIcon, calStart: '20270217T180000', calEnd: '20270217T230000' },
@@ -329,8 +331,11 @@ export default function RsvpForm() {
             <p className="text-charcoal/50 text-sm mt-4 max-w-md mx-auto">
               We&apos;d love to have you celebrate with us. Please type your full name below.
             </p>
-            <p className="text-gold text-xs mt-2 font-medium tracking-wide">
-              Please RSVP by September 30
+            <p className="text-gold text-xs mt-3 font-medium tracking-wide">
+              Please RSVP by October 5th
+            </p>
+            <p className="text-charcoal/45 text-xs mt-1.5 max-w-sm mx-auto leading-relaxed">
+              Contact the Bride or Groom directly for any questions or exceptions. Thank you!
             </p>
           </>
         )}
