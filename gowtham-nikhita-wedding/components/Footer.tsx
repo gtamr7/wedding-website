@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { venueShort, DATES } from '@/lib/wedding'
 
 export default function Footer() {
   return (
@@ -8,7 +9,7 @@ export default function Footer() {
         <div>
           <p className="font-display text-3xl italic text-gold-light">Gowtham &amp; Nikhita</p>
           <p className="text-olive-light/70 mt-1 text-sm tracking-widest uppercase">
-            February 17–18, 2027 · Powel Crosley Estate · Sarasota, FL
+            {DATES.range} · {venueShort()}
           </p>
         </div>
 

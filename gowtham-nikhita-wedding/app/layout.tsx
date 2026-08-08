@@ -29,11 +29,11 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://gowthamandnikhita.com'),
   title: 'Gowtham & Nikhita · February 17–18, 2027',
   description:
-    'Join us for our wedding celebration at Powel Crosley Estate, Sarasota, FL — A Tamil/Telugu Hindu celebration of love.',
+    'Join us for our wedding celebration — a Tamil/Telugu Hindu celebration of love.',
   robots: 'noindex, nofollow',
   openGraph: {
     title: 'Gowtham & Nikhita · February 17–18, 2027',
-    description: 'A Tamil/Telugu Hindu celebration of love at Powel Crosley Estate, Sarasota, FL.',
+    description: 'A Tamil/Telugu Hindu celebration of love.',
     type: 'website',
     images: [{ url: '/gallery/IMG_0314.jpg', width: 1200, height: 800, alt: 'Gowtham & Nikhita' }],
   },

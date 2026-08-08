@@ -24,11 +24,11 @@ function FaqLink({ href, children }: { href: string; children: React.ReactNode }
 const faqs = [
   {
     q: 'Is there parking at the venue?',
-    a: 'Parking is limited, so please carpool if at all possible. There are also hotels within walking distance of the venue, which makes getting there and back much easier. Shuttle information will be released soon — check back here for updates.',
+    a: 'We’re finalising the venue, so parking and shuttle details will follow once it’s set — we’ll post them here.',
   },
   {
     q: 'Is there a hotel block?',
-    a: 'Hotel block information is coming soon.',
+    a: 'Hotel information will come together with the venue announcement.',
   },
   {
     q: 'Where can I get outfits for the events?',

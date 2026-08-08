@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Sun, Bell, MapPin } from 'lucide-react'
+import { VENUE } from '@/lib/wedding'
 
 const venuePhotos = [
   { src: '/venue-1.jpg', alt: 'Powel Crosley Estate — outdoor reception' },
@@ -82,6 +83,31 @@ export default function Travel() {
     document.body.style.overflow = lightboxIndex !== null ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [lightboxIndex])
+
+  // Everything below — the venue photos, the nearest airports, the hotel list —
+  // is specific to a city. While the venue is unsettled none of it is true, so
+  // the section holds a placeholder rather than showing the old location. The
+  // full implementation is left in place to be restored once VENUE.announced
+  // flips and the three data arrays at the top are rewritten.
+  if (!VENUE.announced) {
+    return (
+      <section id="travel" className="section-py px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-xs tracking-widest uppercase text-gold mb-3">Getting There</p>
+          <h2 className="font-display text-5xl sm:text-6xl italic text-ivory">Travel &amp; Stay</h2>
+          <div className="gold-divider w-24 mt-5 mx-auto" />
+          <p className="text-ivory/70 mt-8 leading-relaxed">
+            We&apos;re finalising the venue and will share it here shortly, along with the
+            nearest airports, hotel options and everything else you&apos;ll need to plan
+            the trip.
+          </p>
+          <p className="text-ivory/45 text-sm mt-4">
+            Nothing about the dates has changed — February 17–18, 2027.
+          </p>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section id="travel" className="section-py px-6">

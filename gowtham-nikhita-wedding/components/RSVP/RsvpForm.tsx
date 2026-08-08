@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { Lock } from 'lucide-react'
 import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
+import { venueAddress } from '@/lib/wedding'
 
 type EventIcon = (props: { size?: number; className?: string }) => React.JSX.Element
 
@@ -54,12 +55,10 @@ type ExistingRow = {
 }
 
 // ── Constants ────────────────────────────────────────────────
-// The date shown to guests ("please RSVP by September 30") is a request, not a
-// cutoff — it lives in app/rsvp/page.tsx and passing it changes nothing here.
-// This is the hard close: once it passes, the form stops accepting submissions.
-// Placeholder until the real December date is confirmed.
-// Guests are asked to reply by October 5th; the form stays open through the
-// 6th so anyone answering late in their own timezone is not shut out.
+// Guests are asked to reply by October 5th — that request is displayed below
+// and passing it changes nothing. This is the hard close: the form stops
+// accepting submissions afterwards. It runs through the end of the 6th so
+// nobody answering late in their own timezone is shut out.
 const RSVP_CLOSE_DATE = new Date('2026-10-06T23:59:59-04:00')
 
 const EVENTS: { key: 'sangeet' | 'wedding' | 'reception'; label: string; desc: string; Icon: EventIcon; calStart: string; calEnd: string }[] = [
@@ -74,7 +73,7 @@ function calendarUrl(title: string, start: string, end: string) {
     new URLSearchParams({
       action: 'TEMPLATE', text: title,
       dates: `${start}/${end}`,
-      location: 'Powel Crosley Estate, 8374 N Tamiami Trl, Sarasota, FL 34243',
+      location: venueAddress(),
       details: 'Celebrating the wedding of Gowtham & Nikhita!',
     }).toString()
   )
@@ -733,7 +732,7 @@ export default function RsvpForm() {
           <p className="text-charcoal/50 text-sm max-w-sm mx-auto mb-8">
             Your RSVP for <span className="text-charcoal/70 font-medium">{submitterName}</span>
             {attendees.length > 1 && <> + {attendees.length - 1} more</>}{' '}
-            has been received. So excited to celebrate with you in Sarasota!
+            has been received. So excited to celebrate with you!
           </p>
 
           {/* Attending + events summary */}

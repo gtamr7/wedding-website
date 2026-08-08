@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Countdown from './Countdown'
 import FloatingPetals from './FloatingPetals'
+import { venueShort } from '@/lib/wedding'
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null)
@@ -98,7 +99,7 @@ export default function Hero() {
               February 17–18, 2027
             </p>
             <p className="text-ivory/60 text-xs sm:text-sm tracking-widest uppercase">
-              Powel Crosley Estate · Sarasota, Florida
+              {venueShort()}
             </p>
           </div>
 

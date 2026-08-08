@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Clock, MapPin } from 'lucide-react'
 import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
+import { venueShort, venueAddress } from '@/lib/wedding'
 
 const events = [
   {
@@ -12,7 +13,7 @@ const events = [
     name: 'Sangeet',
     Icon: SangeetIcon,
     time: '6:00 PM – 10:00 PM',
-    venue: 'Powel Crosley Estate, Sarasota, FL',
+    venue: venueShort(),
     description:
       'An evening of music, dance, and joyful celebration as both families come together for the first time. Performances, food, and the energy of two worlds colliding in the best way.',
     dresscode: 'Festive Indian attire: lehengas, sarees, sherwanis, kurtas',
@@ -26,7 +27,7 @@ const events = [
       title: 'Sangeet | Gowtham & Nikhita',
       date: '20270217T180000',
       endDate: '20270217T220000',
-      location: 'Powel Crosley Estate, 8374 N Tamiami Trl, Sarasota, FL 34243',
+      location: venueAddress(),
       description: 'An evening of music, dance, and joyful celebration. Festive Indian attire.',
     },
   },
@@ -36,7 +37,7 @@ const events = [
     name: 'Ceremony (Kalyaanam)',
     Icon: DiyaIcon,
     time: '9:00 AM – 12:00 PM',
-    venue: 'Powel Crosley Estate, Sarasota, FL',
+    venue: venueShort(),
     description:
       'The sacred Tamil/Telugu Hindu Kalyaanam conducted according to ancient tradition. A moving ceremony rich with ritual, meaning, and family.',
     dresscode: 'Traditional Indian attire or formal Western',
@@ -51,7 +52,7 @@ const events = [
       title: 'Ceremony (Kalyaanam) | Gowtham & Nikhita Wedding',
       date: '20270218T090000',
       endDate: '20270218T120000',
-      location: 'Powel Crosley Estate, 8374 N Tamiami Trl, Sarasota, FL 34243',
+      location: venueAddress(),
       description: 'Tamil/Telugu Hindu Kalyaanam. Traditional Indian attire or formal Western.',
     },
   },
@@ -61,9 +62,9 @@ const events = [
     name: 'Reception',
     Icon: CheersIcon,
     time: '6:00 PM – 11:45 PM',
-    venue: 'Powel Crosley Estate, Sarasota, FL',
+    venue: venueShort(),
     description:
-      'Dinner, dancing, speeches, and celebration under the night sky. The waterfront setting of Powel Crosley Estate provides a breathtaking backdrop for an evening to remember.',
+      'Dinner, dancing, speeches, and celebration to close out the weekend.',
     dresscode: 'Black tie optional / Cocktail attire',
     // Champagne gold for the black-tie evening.
     color: 'from-gold/18 to-gold/5',
@@ -75,7 +76,7 @@ const events = [
       title: 'Reception | Gowtham & Nikhita Wedding',
       date: '20270218T180000',
       endDate: '20270218T235500',
-      location: 'Powel Crosley Estate, 8374 N Tamiami Trl, Sarasota, FL 34243',
+      location: venueAddress(),
       description: 'Wedding reception: dinner, dancing, and celebration. Black tie optional / cocktail attire.',
     },
   },
