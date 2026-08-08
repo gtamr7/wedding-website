@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { Lock } from 'lucide-react'
 import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
-import { venueAddress } from '@/lib/wedding'
+import { venueAddress, RSVP_PAUSED } from '@/lib/wedding'
 
 type EventIcon = (props: { size?: number; className?: string }) => React.JSX.Element
 
@@ -142,6 +142,30 @@ export default function RsvpForm() {
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   const [eventError, setEventError] = useState(false)
+
+  // ── Paused while the venue is unsettled ───────────────────
+  // Sits before the deadline guard: there is no point showing a deadline for
+  // a form nobody can submit, and no point asking for a name first.
+  if (RSVP_PAUSED) {
+    return (
+      <div className="max-w-md mx-auto text-center py-6">
+        <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">RSVP</h1>
+        <div className="gold-divider w-24 mt-4 mx-auto" />
+        <p className="text-charcoal/60 text-sm mt-8 leading-relaxed">
+          We&apos;re putting the finishing touches on our venue and will announce it here
+          very soon. RSVPs will open right after — we&apos;ll let you know as soon as
+          they do.
+        </p>
+        <p className="text-gold text-xs mt-6 font-medium tracking-wide">
+          The dates haven&apos;t changed — February 17–18, 2027
+        </p>
+        <p className="text-charcoal/40 text-xs mt-5 leading-relaxed">
+          Questions in the meantime? Reach out to Gowtham or Nikhita directly.
+          Thank you for bearing with us!
+        </p>
+      </div>
+    )
+  }
 
   // ── Deadline guard ────────────────────────────────────────
   if (new Date() >= RSVP_CLOSE_DATE) {

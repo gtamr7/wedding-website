@@ -25,6 +25,18 @@ export const VENUE = {
 /** Shown wherever a venue would normally appear, while it is still unknown */
 export const VENUE_TBA = 'Venue to be announced'
 
+/**
+ * Closes the RSVP form entirely while the venue is unsettled.
+ *
+ * Every party is also flagged `on_hold` in the database, which stops the API
+ * accepting a submission. This flag is the front of that: it replaces the
+ * lookup form with a notice, so nobody types their name only to be told to
+ * come back later. Set to false to reopen — and remember the database flags
+ * have to be cleared too, leaving Meera Ramesh, Dhruv Patel and Sharrief
+ * Muhammed held, since those three were on hold for their own reasons.
+ */
+export const RSVP_PAUSED = true
+
 /** "Powel Crosley Estate, Sarasota, FL" — or the TBA text */
 export function venueShort(): string {
   if (!VENUE.announced) return VENUE_TBA
