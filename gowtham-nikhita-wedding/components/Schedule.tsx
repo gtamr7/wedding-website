@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Clock, MapPin } from 'lucide-react'
 import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
-import { venueShort, venueAddress } from '@/lib/wedding'
+import { venueLine, venueAddress } from '@/lib/wedding'
 
 const events = [
   {
@@ -13,7 +13,7 @@ const events = [
     name: 'Sangeet',
     Icon: SangeetIcon,
     time: '6:00 PM – 10:00 PM',
-    venue: venueShort(),
+    venue: venueLine(),
     description:
       'An evening of music, dance, and joyful celebration as both families come together for the first time. Performances, food, and the energy of two worlds colliding in the best way.',
     dresscode: 'Festive Indian attire: lehengas, sarees, sherwanis, kurtas',
@@ -37,7 +37,7 @@ const events = [
     name: 'Ceremony (Kalyaanam)',
     Icon: DiyaIcon,
     time: '9:00 AM – 12:00 PM',
-    venue: venueShort(),
+    venue: venueLine(),
     description:
       'The sacred Tamil/Telugu Hindu Kalyaanam conducted according to ancient tradition. A moving ceremony rich with ritual, meaning, and family.',
     dresscode: 'Traditional Indian attire or formal Western',
@@ -62,7 +62,7 @@ const events = [
     name: 'Reception',
     Icon: CheersIcon,
     time: '6:00 PM – 11:45 PM',
-    venue: venueShort(),
+    venue: venueLine(),
     description:
       'Dinner, dancing, speeches, and celebration to close out the weekend.',
     dresscode: 'Black tie optional / Cocktail attire',

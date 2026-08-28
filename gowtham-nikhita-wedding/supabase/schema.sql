@@ -68,7 +68,7 @@ insert into bets (category, question, option_a, option_b, option_a_line, option_
 ('prop', 'What color is Nikhita''s ceremony outfit?',                            'Red',   'Other color', -180, +160, 14),
 ('prop', 'Who gives the longest speech?',                                    'Father of bride', 'Anyone else', +120, -140, 15),
 ('prop', 'Does Gowtham tie the thali on first try?',                         'Yes',   'No', -200, +170, 16),
-('prop', 'Will it rain in Sarasota on February 17?',                         'Yes',   'No', +300, -375, 17),
+('prop', 'Will it rain in Miami on February 17?',                            'Yes',   'No', +300, -375, 17),
 ('prop', 'How many times does the MC mispronounce "Muhurtham"?',             '0',     '1 or more', -130, +110, 18),
 ('prop', 'Bonus: Will Gowtham cry before Nikhita?',                         'Yes',   'No', +200, -240, 19)
 on conflict do nothing;

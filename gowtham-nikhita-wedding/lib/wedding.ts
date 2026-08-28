@@ -1,24 +1,28 @@
 // Single source of truth for where and when the wedding is.
 //
-// The venue moved away from Powel Crosley Estate in August 2026 and the
-// replacement is undecided. Before this file existed the old venue was
-// hardcoded in 28 places across 7 files and the dates in 27 more, so changing
-// either meant hunting through the whole codebase. Everything that names the
-// venue or the dates should read from here.
+// The venue moved away from Powel Crosley Estate in August 2026. Before this
+// file existed the old venue was hardcoded in 28 places across 7 files and the
+// dates in 27 more, so changing either meant hunting through the whole
+// codebase. Everything that names the venue or the dates should read from here.
 //
-// To announce a new venue: fill in VENUE and set `announced` to true. Nothing
-// else needs editing except the Travel page, which carries city-specific
-// content that has to be rewritten by hand.
+// The location settles in two stages, because the city was decided before the
+// venue inside it. `cityAnnounced` covers the first stage — the site can say
+// Miami without claiming a venue it does not have. `announced` covers the
+// second: fill in the rest of VENUE and flip it. Nothing else needs editing
+// then except the Travel page, whose airport and hotel content has to be
+// rewritten by hand.
 
 export const VENUE = {
-  /** Flip to true once the venue is public. While false the site says TBA. */
+  /** Flip to true once the venue itself is public — its name and address. */
   announced: false,
+  /** True once the city is settled, even while the venue inside it is not. */
+  cityAnnounced: true,
 
   name: '',
   /** Street address — used for calendar invites and map links */
   street: '',
-  city: '',
-  state: '',
+  city: 'Miami',
+  state: 'FL',
   postalCode: '',
 } as const
 
@@ -37,10 +41,26 @@ export const VENUE_TBA = 'Venue to be announced'
  */
 export const RSVP_PAUSED = true
 
-/** "Powel Crosley Estate, Sarasota, FL" — or the TBA text */
+/** "Miami, FL" — the city alone. Empty until the city is settled. */
+export function cityShort(): string {
+  if (!VENUE.cityAnnounced) return ''
+  return [VENUE.city, VENUE.state].filter(Boolean).join(', ')
+}
+
+/** The location line for decorative use — hero, footer, timeline. Falls back
+ *  to the city while the venue is unknown, and to the TBA text before that. */
 export function venueShort(): string {
-  if (!VENUE.announced) return VENUE_TBA
-  return [VENUE.name, VENUE.city, VENUE.state].filter(Boolean).join(', ')
+  if (VENUE.announced) return [VENUE.name, VENUE.city, VENUE.state].filter(Boolean).join(', ')
+  return cityShort() || VENUE_TBA
+}
+
+/** The location line for the schedule cards, where a guest is actually looking
+ *  for the venue. Names the city but stays explicit that the venue is still
+ *  coming, so "Miami, FL" alone is never mistaken for the full answer. */
+export function venueLine(): string {
+  if (VENUE.announced) return venueShort()
+  if (VENUE.cityAnnounced) return `${cityShort()} · ${VENUE_TBA}`
+  return VENUE_TBA
 }
 
 /** Full postal address for calendar invites. Empty while unannounced, which

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { Lock } from 'lucide-react'
 import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
-import { venueAddress, RSVP_PAUSED } from '@/lib/wedding'
+import { venueAddress, cityShort, RSVP_PAUSED } from '@/lib/wedding'
 
 type EventIcon = (props: { size?: number; className?: string }) => React.JSX.Element
 
@@ -152,9 +152,9 @@ export default function RsvpForm() {
         <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">RSVP</h1>
         <div className="gold-divider w-24 mt-4 mx-auto" />
         <p className="text-charcoal/60 text-sm mt-8 leading-relaxed">
-          We&apos;re putting the finishing touches on our venue and will announce it here
-          very soon. RSVPs will open right after — we&apos;ll let you know as soon as
-          they do.
+          We&apos;re getting married in {cityShort()}! We&apos;re putting the finishing
+          touches on the venue and will announce it here very soon. RSVPs will open
+          right after — we&apos;ll let you know as soon as they do.
         </p>
         <p className="text-gold text-xs mt-6 font-medium tracking-wide">
           The dates haven&apos;t changed — February 17–18, 2027
