@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { Lock } from 'lucide-react'
 import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
-import { venueAddress, cityShort, RSVP_PAUSED } from '@/lib/wedding'
+import { venueAddress, cityShort, RSVP_PAUSED, type VenueKey } from '@/lib/wedding'
 
 type EventIcon = (props: { size?: number; className?: string }) => React.JSX.Element
 
@@ -55,25 +55,28 @@ type ExistingRow = {
 }
 
 // ── Constants ────────────────────────────────────────────────
-// Guests are asked to reply by October 5th — that request is displayed below
+// Guests are asked to reply by November 17th — that request is displayed below
 // and passing it changes nothing. This is the hard close: the form stops
-// accepting submissions afterwards. It runs through the end of the 6th so
+// accepting submissions afterwards. It runs through the end of the 18th so
 // nobody answering late in their own timezone is shut out.
-const RSVP_CLOSE_DATE = new Date('2026-10-06T23:59:59-04:00')
+const RSVP_CLOSE_DATE = new Date('2026-11-18T23:59:59-05:00')
 
-const EVENTS: { key: 'sangeet' | 'wedding' | 'reception'; label: string; desc: string; Icon: EventIcon; calStart: string; calEnd: string }[] = [
-  { key: 'sangeet',   label: 'Sangeet',              desc: 'Feb 17 · Music, dancing & celebration', Icon: SangeetIcon, calStart: '20270217T180000', calEnd: '20270217T230000' },
-  { key: 'wedding',   label: 'Ceremony (Kalyaanam)', desc: 'Feb 18 · Tamil/Telugu Hindu ceremony',   Icon: DiyaIcon,    calStart: '20270218T090000', calEnd: '20270218T130000' },
-  { key: 'reception', label: 'Reception',             desc: 'Feb 18 · Dinner, toasts & party',       Icon: CheersIcon,  calStart: '20270218T180000', calEnd: '20270218T230000' },
+// calStart/calEnd must match the times on the schedule cards — these drifted
+// apart once already. `venue` picks which of the two sites the calendar entry
+// points at: the sangeet is at the monastery, the other two at the garden.
+const EVENTS: { key: 'sangeet' | 'wedding' | 'reception'; label: string; desc: string; Icon: EventIcon; venue: VenueKey; calStart: string; calEnd: string }[] = [
+  { key: 'sangeet',   label: 'Sangeet',              desc: 'Feb 17 · Music, dancing & celebration', Icon: SangeetIcon, venue: 'monastery', calStart: '20270217T180000', calEnd: '20270217T220000' },
+  { key: 'wedding',   label: 'Ceremony (Kalyaanam)', desc: 'Feb 18 · Tamil/Telugu Hindu ceremony',   Icon: DiyaIcon,    venue: 'garden',    calStart: '20270218T090000', calEnd: '20270218T140000' },
+  { key: 'reception', label: 'Reception',             desc: 'Feb 18 · Dinner, toasts & party',       Icon: CheersIcon,  venue: 'garden',    calStart: '20270218T180000', calEnd: '20270218T230000' },
 ]
 
-function calendarUrl(title: string, start: string, end: string) {
+function calendarUrl(title: string, start: string, end: string, venue: VenueKey) {
   return (
     'https://www.google.com/calendar/render?' +
     new URLSearchParams({
       action: 'TEMPLATE', text: title,
       dates: `${start}/${end}`,
-      location: venueAddress(),
+      location: venueAddress(venue),
       details: 'Celebrating the wedding of Gowtham & Nikhita!',
     }).toString()
   )
@@ -143,7 +146,7 @@ export default function RsvpForm() {
   const [submitError, setSubmitError] = useState(false)
   const [eventError, setEventError] = useState(false)
 
-  // ── Paused while the venue is unsettled ───────────────────
+  // ── Paused until the fresh invitations go out ─────────────
   // Sits before the deadline guard: there is no point showing a deadline for
   // a form nobody can submit, and no point asking for a name first.
   if (RSVP_PAUSED) {
@@ -152,9 +155,9 @@ export default function RsvpForm() {
         <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">RSVP</h1>
         <div className="gold-divider w-24 mt-4 mx-auto" />
         <p className="text-charcoal/60 text-sm mt-8 leading-relaxed">
-          We&apos;re getting married in {cityShort()}! We&apos;re putting the finishing
-          touches on the venue and will announce it here very soon. RSVPs will open
-          right after — we&apos;ll let you know as soon as they do.
+          The venues are set — see the schedule for where each event is happening.
+          We&apos;re sending out a fresh round of invitations shortly, and RSVPs
+          will open at the same time. Watch for yours.
         </p>
         <p className="text-gold text-xs mt-6 font-medium tracking-wide">
           The dates haven&apos;t changed — February 17–18, 2027
@@ -355,7 +358,7 @@ export default function RsvpForm() {
               We&apos;d love to have you celebrate with us. Please type your full name below.
             </p>
             <p className="text-gold text-xs mt-3 font-medium tracking-wide">
-              Please RSVP by October 5th
+              Please RSVP by November 17th
             </p>
             <p className="text-charcoal/45 text-xs mt-1.5 max-w-sm mx-auto leading-relaxed">
               Contact the Bride or Groom directly for any questions or exceptions. Thank you!
@@ -776,7 +779,7 @@ export default function RsvpForm() {
                           <ev.Icon size={14} className="shrink-0" />
                           <span className="font-medium">{ev.label}</span>
                         </div>
-                        <a href={calendarUrl(`Gowtham & Nikhita: ${ev.label}`, ev.calStart, ev.calEnd)}
+                        <a href={calendarUrl(`Gowtham & Nikhita: ${ev.label}`, ev.calStart, ev.calEnd, ev.venue)}
                           target="_blank" rel="noopener noreferrer"
                           className="text-xs text-gold hover:text-gold-light transition-colors whitespace-nowrap shrink-0">
                           + Calendar

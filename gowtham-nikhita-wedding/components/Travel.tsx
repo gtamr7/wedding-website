@@ -3,46 +3,20 @@
 import { useRef, useState, useEffect } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Sun, Bell, MapPin } from 'lucide-react'
-import { VENUE, cityShort } from '@/lib/wedding'
+import { VENUES, venueMapUrl } from '@/lib/wedding'
 
-const venuePhotos = [
-  { src: '/venue-1.jpg', alt: 'Powel Crosley Estate — outdoor reception' },
-  { src: '/venue-2.jpg', alt: 'Powel Crosley Estate — entrance' },
-  { src: '/venue-3.webp', alt: 'Powel Crosley Estate — evening lights' },
-]
+// The photos that used to live here were all of the old Sarasota estate and
+// have been removed rather than left behind a flag — the files in /public are
+// still that estate, so nothing may point at them. Drop new venue photos in
+// and list them here; the collage renders itself once this is non-empty.
+const venuePhotos: { src: string; alt: string }[] = []
 
+// Distances are to Miami Beach, where two of the three events are. FLL is
+// often the cheaper fare and is worth the extra fifteen minutes.
 const airports = [
-  { code: 'SRQ', name: 'Sarasota-Bradenton International', distance: '~15 min', recommended: true },
-  { code: 'TPA', name: 'Tampa International Airport', distance: '~1 hour' },
-  { code: 'RSW', name: 'Fort Myers / Southwest Florida Intl', distance: '~1 hour' },
-  { code: 'MCO', name: 'Orlando International Airport', distance: '~2 hours' },
-]
-
-const hotels = [
-  {
-    name: 'The Ritz-Carlton, Sarasota',
-    type: 'Luxury',
-    distance: '~10 min to venue',
-    note: 'Waterfront property, exceptional service',
-  },
-  {
-    name: 'Hyatt Regency Sarasota',
-    type: 'Upscale',
-    distance: '~12 min to venue',
-    note: 'Great pool, central location on the Bay',
-  },
-  {
-    name: 'Hampton Inn & Suites Sarasota/Bradenton Airport',
-    type: 'Mid-range',
-    distance: '~10 min to venue',
-    note: 'Close to the airport and venue, free hot breakfast',
-  },
-  {
-    name: 'Holiday Inn Express & Suites Sarasota',
-    type: 'Budget-friendly',
-    distance: '~12 min to venue',
-    note: 'Good rates, includes breakfast',
-  },
+  { code: 'MIA', name: 'Miami International Airport', distance: '~30 min', recommended: true },
+  { code: 'FLL', name: 'Fort Lauderdale–Hollywood International', distance: '~45 min' },
+  { code: 'PBI', name: 'Palm Beach International Airport', distance: '~1.5 hours' },
 ]
 
 function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -84,32 +58,6 @@ export default function Travel() {
     return () => { document.body.style.overflow = '' }
   }, [lightboxIndex])
 
-  // Everything below — the venue photos, the nearest airports, the hotel list —
-  // is specific to a venue, and all of it still describes Sarasota, which is no
-  // longer where the wedding is. The city is now Miami but the venue within it
-  // is not settled, so the section holds a placeholder. Before VENUE.announced
-  // is flipped, the three data arrays at the top MUST be rewritten for Miami —
-  // as they stand they would put Powel Crosley and SRQ back on the site.
-  if (!VENUE.announced) {
-    return (
-      <section id="travel" className="section-py px-6">
-        <div className="max-w-2xl mx-auto text-center">
-          <p className="text-xs tracking-widest uppercase text-gold mb-3">Getting There</p>
-          <h2 className="font-display text-5xl sm:text-6xl italic text-ivory">Travel &amp; Stay</h2>
-          <div className="gold-divider w-24 mt-5 mx-auto" />
-          <p className="text-ivory/70 mt-8 leading-relaxed">
-            We&apos;re getting married in {cityShort()}. We&apos;re finalising the venue and
-            will share it here shortly, along with the nearest airports, hotel options
-            and everything else you&apos;ll need to plan the trip.
-          </p>
-          <p className="text-ivory/45 text-sm mt-4">
-            Nothing about the dates has changed — February 17–18, 2027.
-          </p>
-        </div>
-      </section>
-    )
-  }
-
   return (
     <section id="travel" className="section-py px-6">
       <div className="max-w-6xl mx-auto">
@@ -130,20 +78,52 @@ export default function Travel() {
           <div className="space-y-10 min-w-0">
             <FadeIn>
               <div>
-                <h3 className="font-display text-2xl italic text-ivory mb-1">The Venue</h3>
+                <h3 className="font-display text-2xl italic text-ivory mb-1">The Venues</h3>
                 <div className="gold-divider w-12 mb-4" />
-                <p className="text-ivory font-medium">Powel Crosley Estate</p>
-                <p className="text-ivory/60 text-sm mt-1">8374 N Tamiami Trail, Sarasota, FL 34243</p>
-                <p className="text-ivory/60 text-sm mt-3 leading-relaxed">
-                  A stunning waterfront estate on Sarasota Bay, surrounded by manicured gardens and
-                  century-old oaks draped in Spanish moss. The perfect backdrop for a celebration of
-                  this magnitude.
+
+                <div className="space-y-5">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider text-gold/80 mb-1">Feb 17 · Sangeet</p>
+                    <p className="text-ivory font-medium">{VENUES.monastery.name}</p>
+                    <p className="text-ivory/60 text-sm mt-1">
+                      {VENUES.monastery.street}, {VENUES.monastery.city}, {VENUES.monastery.state} {VENUES.monastery.postalCode}
+                    </p>
+                    <a
+                      href={venueMapUrl('monastery')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-ivory/50 hover:text-gold transition-colors mt-1"
+                    >
+                      <MapPin size={11} className="shrink-0" />Open in Maps
+                    </a>
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider text-gold/80 mb-1">Feb 18 · Ceremony &amp; Reception</p>
+                    <p className="text-ivory font-medium">{VENUES.garden.name}</p>
+                    <p className="text-ivory/60 text-sm mt-1">
+                      {VENUES.garden.street}, {VENUES.garden.city}, {VENUES.garden.state} {VENUES.garden.postalCode}
+                    </p>
+                    <a
+                      href={venueMapUrl('garden')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-ivory/50 hover:text-gold transition-colors mt-1"
+                    >
+                      <MapPin size={11} className="shrink-0" />Open in Maps
+                    </a>
+                  </div>
+                </div>
+
+                <p className="text-xs text-ivory/40 mt-4 leading-relaxed">
+                  The two sites are about 25 minutes apart. Shuttle service between the
+                  hotel and the venues is being looked into — we&apos;ll confirm here.
                 </p>
-                <p className="text-xs text-ivory/40 mt-2">Parking is limited · Shuttle service may be used</p>
               </div>
             </FadeIn>
 
-            {/* Venue photo collage */}
+            {/* Venue photo collage — renders only once venuePhotos is filled in */}
+            {venuePhotos.length > 0 && (
             <div ref={collageRef}>
               {/* Mobile: snap-scroll row. Desktop: side-by-side with float offsets */}
               <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden pb-1 -mx-6 px-6 sm:mx-0 sm:px-0 sm:overflow-visible sm:pb-10 sm:items-start">
@@ -182,36 +162,17 @@ export default function Travel() {
               {/* Swipe hint — mobile only */}
               <p className="mt-2 text-center text-[11px] text-ivory/30 tracking-wide sm:hidden">Swipe to see more</p>
 
-              {/* Open in Maps */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={collageInView ? { opacity: 1 } : {}}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="mt-4 flex justify-end"
-              >
-                <a
-                  href="https://maps.google.com/?q=Powel+Crosley+Estate,+8374+N+Tamiami+Trl,+Sarasota,+FL+34243"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-black/40 backdrop-blur-sm border border-gold/30 text-ivory/80 hover:text-gold hover:border-gold/60 text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-200"
-                >
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M8 2C5.79 2 4 3.79 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.21-1.79-4-4-4z" />
-                    <circle cx="8" cy="6" r="1.5" />
-                  </svg>
-                  Open in Maps
-                </a>
-              </motion.div>
             </div>
+            )}
 
             <FadeIn delay={0.15}>
               <div className="flex items-start gap-3 bg-black/20 rounded-xl p-4 border border-gold/15">
                 <Sun size={22} strokeWidth={2.5} className="text-gold/70 shrink-0 mt-0.5" aria-hidden="true" />
                 <div>
-                  <p className="font-medium text-ivory text-sm">February in Sarasota</p>
+                  <p className="font-medium text-ivory text-sm">February in Miami</p>
                   <p className="text-ivory/60 text-sm mt-1">
-                    Expect ~75°F, low humidity, and sunny skies. Sarasota in February is paradise.
-                    Light layers for the evening reception.
+                    Expect ~76°F, sea breeze, and sunny skies — February is the best month
+                    South Florida has. Light layers for the evening events.
                   </p>
                 </div>
               </div>
@@ -248,7 +209,7 @@ export default function Travel() {
                   ))}
                 </div>
                 <p className="text-xs text-ivory/40 mt-2">
-                  Driving from Atlanta: ~8.5 hours via I-75 South. A beautiful drive!
+                  Driving from Atlanta: ~10 hours via I-75 and the Florida Turnpike.
                 </p>
               </div>
             </FadeIn>
@@ -260,27 +221,19 @@ export default function Travel() {
                 <div className="flex items-start gap-3 bg-gold/8 rounded-xl p-4 border border-gold/25 mb-5">
                   <Bell size={18} strokeWidth={2.5} className="text-gold/70 shrink-0 mt-0.5" aria-hidden="true" />
                   <p className="text-sm text-ivory/70 leading-relaxed">
-                    <span className="text-gold font-medium">Hotel block & shuttle details coming soon.</span>{' '}
-                    We&apos;re finalizing room blocks and transportation. Check back for updates before booking.
+                    <span className="text-gold font-medium">Hotel block coming soon.</span>{' '}
+                    Our planners are putting together a room block near {VENUES.garden.name} in
+                    Miami Beach, so you&apos;ll be a short trip from both days. We&apos;ll post it
+                    here with booking details — please hold off until then.
                   </p>
                 </div>
-                <div className="space-y-3">
-                  {hotels.map((h) => (
-                    <div
-                      key={h.name}
-                      className="p-4 rounded-lg border border-gold/12 bg-black/15 hover:border-gold/35 hover:shadow-sm transition-all duration-200"
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <p className="font-medium text-ivory text-sm leading-snug">{h.name}</p>
-                        <span className="text-[10px] uppercase tracking-wider text-gold/80 whitespace-nowrap shrink-0 border border-gold/30 rounded-full px-2 py-0.5">
-                          {h.type}
-                        </span>
-                      </div>
-                      <p className="flex items-center gap-1 text-xs text-ivory/50 mt-1"><MapPin size={11} className="shrink-0" />{h.distance}</p>
-                      <p className="text-xs text-ivory/60 mt-1">{h.note}</p>
-                    </div>
-                  ))}
-                </div>
+
+                <p className="text-sm text-ivory/60 leading-relaxed">
+                  Plan to arrive on <span className="text-ivory">Tuesday, February 16th</span> so
+                  you&apos;re settled before the sangeet the following evening. There is a gap
+                  between the ceremony and the reception on the 18th — that time is yours to head
+                  back and change.
+                </p>
               </div>
             </FadeIn>
           </div>

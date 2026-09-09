@@ -23,12 +23,12 @@ function FaqLink({ href, children }: { href: string; children: React.ReactNode }
 
 const faqs = [
   {
-    q: 'Is there parking at the venue?',
-    a: 'We’re finalising the venue, so parking and shuttle details will follow once it’s set — we’ll post them here.',
+    q: 'Is there parking at the venues?',
+    a: 'Parking and shuttle details are still being worked out with our planners — we’ll post them here once they’re confirmed.',
   },
   {
     q: 'Is there a hotel block?',
-    a: 'Hotel information will come together with the venue announcement.',
+    a: 'Our planners are arranging a room block near Miami Beach Botanical Garden, where the ceremony and reception are. We’ll post booking details here — please hold off on booking until then.',
   },
   {
     q: 'Where can I get outfits for the events?',
