@@ -24,7 +24,11 @@ function FaqLink({ href, children }: { href: string; children: React.ReactNode }
 const faqs = [
   {
     q: 'Is there parking at the venues?',
-    a: 'Parking and shuttle details are still being worked out with our planners — we’ll post them here once they’re confirmed.',
+    a: 'Yes, at both. The Ancient Spanish Monastery has its own lot, and Miami Beach Botanical Garden has a parking garage alongside street parking. Shuttle service is still being looked into — we’ll post it here if it happens.',
+  },
+  {
+    q: 'When should I arrive?',
+    a: 'We’d suggest flying in on Tuesday, February 16th so you have time to settle before the sangeet on Wednesday evening. Both MIA and FLL work — fly into whichever suits you.',
   },
   {
     q: 'Is there a hotel block?',

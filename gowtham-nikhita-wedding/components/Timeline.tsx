@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion'
 import { venueShort } from '@/lib/wedding'
 
 const milestones = [
+  { year: 'Years Earlier', label: 'Next Door', desc: 'Same Balavihar, adjoining rooms, every Sunday. They never met.' },
   { year: '2019', label: 'They Met',      desc: "He met her at a university he didn't even go to. Best friends from day one." },
   { year: '2024', label: 'First Date',    desc: 'Five years of friendship later. It was always going to be this way.' },
   { year: '2025', label: 'The Proposal',  desc: 'A national garden in Japan. A picnic. A yes.' },

@@ -5,16 +5,23 @@ import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Sun, Bell, MapPin } from 'lucide-react'
 import { VENUES, venueMapUrl } from '@/lib/wedding'
 
-// The photos that used to live here were all of the old Sarasota estate and
-// have been removed rather than left behind a flag — the files in /public are
-// still that estate, so nothing may point at them. Drop new venue photos in
-// and list them here; the collage renders itself once this is non-empty.
-const venuePhotos: { src: string; alt: string }[] = []
+// Photographs of the two real venues, from Wikimedia Commons and all either
+// public domain or CC0 — no licence obliges us, but they are credited below the
+// collage anyway. These replace the old Sarasota estate photos entirely; the
+// files that held those were deleted rather than overwritten, so no stale image
+// can come back by way of a cached filename. Swap in the photographer's own
+// shots when they exist and drop the credit line with them.
+const venuePhotos: { src: string; alt: string }[] = [
+  { src: '/venue-monastery-1.jpg', alt: 'Carved Romanesque capitals in the cloister at the Ancient Spanish Monastery' },
+  { src: '/venue-garden-2.jpg', alt: 'The Japanese garden and red bridge at Miami Beach Botanical Garden' },
+  { src: '/venue-garden-1.jpg', alt: 'Royal palms and flowering beds at Miami Beach Botanical Garden' },
+]
 
-// Distances are to Miami Beach, where two of the three events are. FLL is
-// often the cheaper fare and is worth the extra fifteen minutes.
+// Distances are to Miami Beach, where two of the three events are. MIA and FLL
+// are both fine — guests are told to take whichever fare suits them, so no one
+// airport is flagged as the house recommendation.
 const airports = [
-  { code: 'MIA', name: 'Miami International Airport', distance: '~30 min', recommended: true },
+  { code: 'MIA', name: 'Miami International Airport', distance: '~30 min' },
   { code: 'FLL', name: 'Fort Lauderdale–Hollywood International', distance: '~45 min' },
   { code: 'PBI', name: 'Palm Beach International Airport', distance: '~1.5 hours' },
 ]
@@ -116,8 +123,9 @@ export default function Travel() {
                 </div>
 
                 <p className="text-xs text-ivory/40 mt-4 leading-relaxed">
-                  The two sites are about 25 minutes apart. Shuttle service between the
-                  hotel and the venues is being looked into — we&apos;ll confirm here.
+                  The two sites are about 25 minutes apart. There is parking at both — a lot
+                  at the monastery, a garage and street parking at the garden. Shuttle
+                  service is being looked into and we&apos;ll confirm here.
                 </p>
               </div>
             </FadeIn>
@@ -162,6 +170,12 @@ export default function Travel() {
               {/* Swipe hint — mobile only */}
               <p className="mt-2 text-center text-[11px] text-ivory/30 tracking-wide sm:hidden">Swipe to see more</p>
 
+              {/* Courtesy credit. Both sources are public domain, so this is
+                  not a licence obligation — remove it with the photos. */}
+              <p className="mt-2 text-center text-[10px] text-ivory/25 tracking-wide">
+                Venue photographs via Wikimedia Commons
+              </p>
+
             </div>
             )}
 
@@ -189,19 +203,12 @@ export default function Travel() {
                   {airports.map((a) => (
                     <div
                       key={a.code}
-                      className={`flex items-center justify-between p-3 rounded-lg border ${
-                        a.recommended
-                          ? 'bg-gold/12 border-gold/40'
-                          : 'bg-black/15 border-gold/12'
-                      }`}
+                      className="flex items-center justify-between p-3 rounded-lg border bg-black/15 border-gold/12"
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <span className="font-display text-xl font-semibold text-gold w-12 shrink-0">{a.code}</span>
                         <div className="min-w-0">
                           <p className="text-sm text-ivory leading-snug">{a.name}</p>
-                          {a.recommended && (
-                            <p className="text-[10px] uppercase tracking-wider text-gold mt-0.5">Recommended</p>
-                          )}
                         </div>
                       </div>
                       <span className="text-sm text-ivory/50 ml-2 text-right">{a.distance}</span>
@@ -209,7 +216,8 @@ export default function Travel() {
                   ))}
                 </div>
                 <p className="text-xs text-ivory/40 mt-2">
-                  Driving from Atlanta: ~10 hours via I-75 and the Florida Turnpike.
+                  MIA and FLL are both easy — take whichever fare works out better.
+                  Driving from Atlanta is ~10 hours via I-75 and the Florida Turnpike.
                 </p>
               </div>
             </FadeIn>
@@ -229,10 +237,8 @@ export default function Travel() {
                 </div>
 
                 <p className="text-sm text-ivory/60 leading-relaxed">
-                  Plan to arrive on <span className="text-ivory">Tuesday, February 16th</span> so
-                  you&apos;re settled before the sangeet the following evening. There is a gap
-                  between the ceremony and the reception on the 18th — that time is yours to head
-                  back and change.
+                  There is a gap between the ceremony and the reception on the 18th — that
+                  time is yours to head back and change.
                 </p>
               </div>
             </FadeIn>
