@@ -3,18 +3,25 @@
 import { useRef, useState, useEffect } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Sun, Bell, MapPin } from 'lucide-react'
-import { VENUES, venueMapUrl } from '@/lib/wedding'
+import { VENUES, venueMapUrl, type VenueKey } from '@/lib/wedding'
 
-// Photographs of the two real venues, from Wikimedia Commons and all either
-// public domain or CC0 — no licence obliges us, but they are credited below the
-// collage anyway. These replace the old Sarasota estate photos entirely; the
-// files that held those were deleted rather than overwritten, so no stale image
-// can come back by way of a cached filename. Swap in the photographer's own
-// shots when they exist and drop the credit line with them.
-const venuePhotos: { src: string; alt: string }[] = [
-  { src: '/venue-monastery-1.jpg', alt: 'Carved Romanesque capitals in the cloister at the Ancient Spanish Monastery' },
-  { src: '/venue-garden-2.jpg', alt: 'The Japanese garden and red bridge at Miami Beach Botanical Garden' },
-  { src: '/venue-garden-1.jpg', alt: 'Royal palms and flowering beds at Miami Beach Botanical Garden' },
+// Photographs of the two venues, chosen by the couple. Each is tagged with the
+// venue it belongs to and rendered beneath that venue's address rather than in
+// one pooled collage — with two sites in two different cities, an unlabelled
+// grid leaves a guest unable to tell which place they are looking at.
+//
+// Order within a venue is deliberate: the strongest shot leads, since it is the
+// one that sets the tone at a glance.
+//
+// The lightbox indexes into this flat array, so the arrow keys walk all six in
+// order and the strips stay in sync with it. Keep the venues grouped.
+const venuePhotos: { src: string; alt: string; venue: VenueKey }[] = [
+  { venue: 'monastery', src: '/venue/monastery-cloister.webp', alt: 'The vaulted cloister walk at the Ancient Spanish Monastery' },
+  { venue: 'monastery', src: '/venue/monastery-exterior.webp', alt: 'The monastery chapel and its formal gardens from the lawn' },
+  { venue: 'monastery', src: '/venue/monastery-courtyard.webp', alt: 'The fountain courtyard under the monastery’s timbered arcade' },
+  { venue: 'garden', src: '/venue/garden-reception.jpeg', alt: 'Reception tables set under string lights at Miami Beach Botanical Garden' },
+  { venue: 'garden', src: '/venue/garden-pond.webp', alt: 'The lily pond at the botanical garden lit at dusk' },
+  { venue: 'garden', src: '/venue/garden-bridge.webp', alt: 'The red arched bridge in the botanical garden’s Japanese garden' },
 ]
 
 // Distances are to Miami Beach, where two of the three events are. MIA and FLL
@@ -25,6 +32,55 @@ const airports = [
   { code: 'FLL', name: 'Fort Lauderdale–Hollywood International', distance: '~45 min' },
   { code: 'PBI', name: 'Palm Beach International Airport', distance: '~1.5 hours' },
 ]
+
+/** The three photos belonging to one venue, laid out beneath its address.
+ *  Mobile gets a snap-scrolling row; desktop fans them out slightly so the
+ *  strip reads as a set of prints rather than a grid. */
+function PhotoStrip({ venue, onOpen }: { venue: VenueKey; onOpen: (flatIndex: number) => void }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
+  // Index into the flat array, not into the filtered one — the lightbox walks
+  // all six photos in order.
+  const photos = venuePhotos
+    .map((p, flatIndex) => ({ ...p, flatIndex }))
+    .filter(p => p.venue === venue)
+
+  return (
+    <div ref={ref} className="mt-4">
+      <div className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden -mx-6 px-6 pb-1 sm:mx-0 sm:px-0 sm:overflow-visible sm:pb-6 sm:items-start">
+        {photos.map((photo, i) => (
+          <motion.button
+            key={photo.src}
+            initial={{ opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.08 + i * 0.1 }}
+            onClick={() => onOpen(photo.flatIndex)}
+            className={`snap-center shrink-0 w-[70vw] sm:w-auto sm:flex-1 rounded-lg overflow-hidden border shadow-lg cursor-zoom-in group relative
+              ${i === 0 ? 'border-gold/25 sm:-rotate-[1deg]' : ''}
+              ${i === 1 ? 'border-gold/20 sm:rotate-[0.8deg] sm:translate-y-3' : ''}
+              ${i === 2 ? 'border-gold/30 sm:-rotate-[0.5deg] sm:translate-y-1' : ''}
+            `}
+            aria-label={`View ${photo.alt}`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              loading="lazy"
+              className="w-full h-40 sm:h-32 object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute bottom-1.5 right-1.5 w-7 h-7 bg-black/55 backdrop-blur-sm rounded-md flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" />
+              </svg>
+            </div>
+          </motion.button>
+        ))}
+      </div>
+      <p className="mt-1.5 text-center text-[11px] text-ivory/30 tracking-wide sm:hidden">Swipe to see more</p>
+    </div>
+  )
+}
 
 function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -44,8 +100,6 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 export default function Travel() {
   const headerRef = useRef<HTMLDivElement>(null)
   const headerInView = useInView(headerRef, { once: true, margin: '-80px' })
-  const collageRef = useRef<HTMLDivElement>(null)
-  const collageInView = useInView(collageRef, { once: true, margin: '-60px' })
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   useEffect(() => {
@@ -88,7 +142,7 @@ export default function Travel() {
                 <h3 className="font-display text-2xl italic text-ivory mb-1">The Venues</h3>
                 <div className="gold-divider w-12 mb-4" />
 
-                <div className="space-y-5">
+                <div className="space-y-8">
                   <div>
                     <p className="text-[10px] uppercase tracking-wider text-gold/80 mb-1">Feb 17 · Sangeet</p>
                     <p className="text-ivory font-medium">{VENUES.monastery.name}</p>
@@ -103,6 +157,7 @@ export default function Travel() {
                     >
                       <MapPin size={11} className="shrink-0" />Open in Maps
                     </a>
+                    <PhotoStrip venue="monastery" onOpen={setLightboxIndex} />
                   </div>
 
                   <div>
@@ -119,6 +174,7 @@ export default function Travel() {
                     >
                       <MapPin size={11} className="shrink-0" />Open in Maps
                     </a>
+                    <PhotoStrip venue="garden" onOpen={setLightboxIndex} />
                   </div>
                 </div>
 
@@ -129,55 +185,6 @@ export default function Travel() {
                 </p>
               </div>
             </FadeIn>
-
-            {/* Venue photo collage — renders only once venuePhotos is filled in */}
-            {venuePhotos.length > 0 && (
-            <div ref={collageRef}>
-              {/* Mobile: snap-scroll row. Desktop: side-by-side with float offsets */}
-              <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden pb-1 -mx-6 px-6 sm:mx-0 sm:px-0 sm:overflow-visible sm:pb-10 sm:items-start">
-
-                {venuePhotos.map((photo, i) => (
-                  <motion.button
-                    key={photo.src}
-                    initial={{ opacity: 0, y: 18 }}
-                    animate={collageInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.55, delay: 0.1 + i * 0.12 }}
-                    onClick={() => setLightboxIndex(i)}
-                    className={`snap-center shrink-0 w-[78vw] sm:w-auto sm:flex-1 rounded-xl overflow-hidden border shadow-xl cursor-zoom-in group relative
-                      ${i === 0 ? 'border-gold/25 sm:-rotate-[1deg] sm:translate-y-0' : ''}
-                      ${i === 1 ? 'border-gold/20 sm:rotate-[0.8deg] sm:translate-y-6' : ''}
-                      ${i === 2 ? 'border-gold/30 sm:-rotate-[0.5deg] sm:translate-y-3' : ''}
-                    `}
-                    aria-label={`View ${photo.alt}`}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={photo.src}
-                      alt={photo.alt}
-                      className={`w-full object-cover transition-transform duration-500 group-hover:scale-105
-                        ${i === 1 ? 'h-52 sm:h-52' : i === 2 ? 'h-52 sm:h-44' : 'h-52 sm:h-48'}
-                      `}
-                    />
-                    <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/55 backdrop-blur-sm rounded-lg flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" />
-                      </svg>
-                    </div>
-                  </motion.button>
-                ))}
-              </div>
-
-              {/* Swipe hint — mobile only */}
-              <p className="mt-2 text-center text-[11px] text-ivory/30 tracking-wide sm:hidden">Swipe to see more</p>
-
-              {/* Courtesy credit. Both sources are public domain, so this is
-                  not a licence obligation — remove it with the photos. */}
-              <p className="mt-2 text-center text-[10px] text-ivory/25 tracking-wide">
-                Venue photographs via Wikimedia Commons
-              </p>
-
-            </div>
-            )}
 
             <FadeIn delay={0.15}>
               <div className="flex items-start gap-3 bg-black/20 rounded-xl p-4 border border-gold/15">
