@@ -15,7 +15,7 @@ function FeatureLink({ href, Icon, title, desc }: { href: string; Icon: LucideIc
       className="group block rounded-xl border border-gold/15 bg-olive-dark/50 p-6 hover:border-gold/40 hover:bg-olive-dark/70 hover:-translate-y-1 transition-all duration-200"
     >
       <Icon size={26} strokeWidth={2.5} className="text-gold/70 mb-3" />
-      <h3 className="font-display text-xl italic text-ivory group-hover:text-gold transition-colors">{title}</h3>
+      <h3 className="font-display text-xl text-ivory group-hover:text-gold transition-colors">{title}</h3>
       <p className="text-sm text-ivory/50 mt-1">{desc}</p>
       <div className="mt-4 flex items-center gap-1 text-xs text-gold uppercase tracking-widest font-medium">
         Open
@@ -42,7 +42,7 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <p className="text-xs tracking-widest uppercase text-gold mb-3">Day-of Features</p>
-              <h2 className="font-display text-4xl sm:text-5xl italic text-ivory">More to Explore</h2>
+              <h2 className="font-display text-4xl sm:text-5xl text-ivory">More to Explore</h2>
               <div className="gold-divider w-24 mt-5 mx-auto" />
             </div>
             <div className="grid sm:grid-cols-3 gap-5">

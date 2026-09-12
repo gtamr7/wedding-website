@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import GuestbookWall from '@/components/Guestbook/GuestbookWall'
-import PasswordGate from '@/components/PasswordGate'
 import { createSupabaseClient } from '@/lib/supabase'
 import type { GuestbookEntry } from '@/lib/types'
 
@@ -36,16 +35,14 @@ export default async function GuestbookPage() {
           {/* Header */}
           <div className="text-center mb-14">
             <p className="text-xs tracking-widest uppercase text-gold mb-3">Wishes & Memories</p>
-            <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">Guestbook</h1>
+            <h1 className="font-display text-5xl sm:text-6xl text-charcoal">Guestbook</h1>
             <div className="gold-divider w-24 mt-4 mx-auto" />
             <p className="text-charcoal/50 text-sm mt-4">
               Leave a note for Gowtham &amp; Nikhita — they&apos;ll read every single one. Keep it family friendly! :)
             </p>
           </div>
 
-          <PasswordGate>
-            <GuestbookWall initialEntries={entries} />
-          </PasswordGate>
+          <GuestbookWall initialEntries={entries} />
         </div>
       </main>
       <Footer />

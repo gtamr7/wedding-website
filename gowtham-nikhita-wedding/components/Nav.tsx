@@ -54,7 +54,7 @@ export default function Nav() {
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }
           }}
-          className="font-display text-xl lg:text-2xl italic text-gold tracking-wide hover:text-gold-light transition-colors"
+          className="font-display text-xl lg:text-2xl text-gold tracking-wide hover:text-gold-light transition-colors"
           aria-label="Back to top"
         >
           G &amp; N

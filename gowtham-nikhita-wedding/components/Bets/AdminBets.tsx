@@ -41,7 +41,7 @@ function PinEntry({ onUnlock }: { onUnlock: () => void }) {
   return (
     <div className="max-w-xs mx-auto text-center py-16">
       <div className="flex justify-center mb-4"><Lock size={36} strokeWidth={2.5} className="text-charcoal/30" /></div>
-      <h2 className="font-display text-3xl italic text-charcoal mb-6">Bets Admin</h2>
+      <h2 className="font-display text-3xl text-charcoal mb-6">Bets Admin</h2>
       <form onSubmit={submit} className="space-y-4">
         <input
           type="password"
@@ -110,7 +110,7 @@ function AdminPanel() {
   return (
     <div className="max-w-2xl mx-auto pb-12">
       <div className="text-center mb-8">
-        <h2 className="font-display text-3xl italic text-charcoal">Bets Admin</h2>
+        <h2 className="font-display text-3xl text-charcoal">Bets Admin</h2>
         <p className="text-charcoal/50 text-sm mt-1">
           {resolvedCount}/{bets.length} results set · {picks.length} total picks
         </p>
@@ -198,7 +198,7 @@ function AdminPanel() {
           <motion.div key="leaderboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             {leaderboard.length === 0 ? (
               <div className="text-center py-12 text-charcoal/40">
-                <p className="font-display text-2xl italic">No results set yet</p>
+                <p className="font-display text-2xl ">No results set yet</p>
               </div>
             ) : (
               <div className="space-y-3">

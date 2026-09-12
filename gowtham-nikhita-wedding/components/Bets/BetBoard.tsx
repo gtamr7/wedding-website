@@ -98,7 +98,7 @@ export default function BetBoard() {
             exit={{ opacity: 0, height: 0 }}
             className="mb-8 bg-olive-dark rounded-xl p-6 text-center border border-gold/20"
           >
-            <p className="font-display text-2xl italic text-gold mb-1">Place Your Bets</p>
+            <p className="font-display text-2xl text-gold mb-1">Place Your Bets</p>
             <p className="text-olive-light/60 text-sm mb-5">Enter your name to start picking winners</p>
             <div className="flex gap-2 max-w-xs mx-auto">
               <input
@@ -167,7 +167,7 @@ export default function BetBoard() {
             {/* Over/Unders */}
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-4">
-                <h3 className="font-display text-2xl italic text-charcoal flex items-center gap-2"><Timer size={20} strokeWidth={2.5} className="text-charcoal/50" />Over/Unders</h3>
+                <h3 className="font-display text-2xl text-charcoal flex items-center gap-2"><Timer size={20} strokeWidth={2.5} className="text-charcoal/50" />Over/Unders</h3>
                 <div className="flex-1 h-px bg-olive-light" />
               </div>
               <div className="space-y-4">
@@ -180,7 +180,7 @@ export default function BetBoard() {
             {/* Props */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <h3 className="font-display text-2xl italic text-charcoal flex items-center gap-2"><Target size={20} strokeWidth={2.5} className="text-charcoal/50" />Prop Bets</h3>
+                <h3 className="font-display text-2xl text-charcoal flex items-center gap-2"><Target size={20} strokeWidth={2.5} className="text-charcoal/50" />Prop Bets</h3>
                 <div className="flex-1 h-px bg-olive-light" />
               </div>
               <div className="space-y-4">

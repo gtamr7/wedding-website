@@ -42,7 +42,7 @@ function PinEntry({ onUnlock }: { onUnlock: (pin: string) => void }) {
   return (
     <div className="max-w-xs mx-auto text-center py-16">
       <div className="flex justify-center mb-4"><Lock size={36} strokeWidth={2.5} className="text-charcoal/30" /></div>
-      <h2 className="font-display text-3xl italic text-charcoal mb-6">RSVP Admin</h2>
+      <h2 className="font-display text-3xl text-charcoal mb-6">RSVP Admin</h2>
       <form onSubmit={submit} className="space-y-4">
         <input
           type="password"
@@ -369,7 +369,7 @@ export default function RsvpAdmin() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
         <div>
-          <h1 className="font-display text-4xl sm:text-5xl italic text-charcoal">RSVP Dashboard</h1>
+          <h1 className="font-display text-4xl sm:text-5xl text-charcoal">RSVP Dashboard</h1>
           <p className="text-charcoal/40 text-sm mt-1">{stats.totalSubmissions} submissions · {stats.totalGuests} attending guests</p>
         </div>
         <div className="flex gap-3">
@@ -399,7 +399,7 @@ export default function RsvpAdmin() {
         <div className="text-center py-20 text-charcoal/30">Loading…</div>
       ) : submissions.length === 0 ? (
         <div className="text-center py-20 text-charcoal/30">
-          <p className="font-display text-2xl italic mb-2">No RSVPs yet</p>
+          <p className="font-display text-2xl mb-2">No RSVPs yet</p>
           <p className="text-sm">Responses will appear here as guests submit.</p>
         </div>
       ) : activeTab === 'overview' ? (
@@ -413,14 +413,14 @@ export default function RsvpAdmin() {
             ].map(s => (
               <div key={s.label} className="bg-white border-2 border-olive-light rounded-xl p-5 text-center">
                 <div className="flex justify-center mb-1"><s.Icon size={22} className="text-charcoal/40" /></div>
-                <div className="font-display text-4xl italic text-charcoal">{s.value}</div>
+                <div className="font-display text-4xl text-charcoal">{s.value}</div>
                 <div className="text-xs uppercase tracking-widest text-charcoal/40 mt-1">{s.label}</div>
               </div>
             ))}
           </div>
 
           <div className="bg-white border-2 border-olive-light rounded-xl p-6">
-            <h2 className="font-display text-xl italic text-charcoal mb-5">Event Attendance</h2>
+            <h2 className="font-display text-xl text-charcoal mb-5">Event Attendance</h2>
             <div className="space-y-4">
               <EventBar label="Sangeet — Feb 17" count={stats.sangeet} total={stats.totalGuests} color="bg-olive-mid" />
               <EventBar label="Ceremony (Kalyaanam) — Feb 18 Morning" count={stats.wedding} total={stats.totalGuests} color="bg-gold" />
@@ -430,7 +430,7 @@ export default function RsvpAdmin() {
 
           {stats.dietary.length > 0 && (
             <div className="bg-white border-2 border-olive-light rounded-xl p-6">
-              <h2 className="font-display text-xl italic text-charcoal mb-4">Dietary Restrictions</h2>
+              <h2 className="font-display text-xl text-charcoal mb-4">Dietary Restrictions</h2>
               <div className="space-y-2">
                 {stats.dietary.map((d, i) => (
                   <div key={i} className="flex items-baseline gap-3 text-sm">
@@ -443,7 +443,7 @@ export default function RsvpAdmin() {
           )}
 
           <div className="bg-white border-2 border-olive-light rounded-xl p-6">
-            <h2 className="font-display text-xl italic text-charcoal mb-4">Recent Submissions</h2>
+            <h2 className="font-display text-xl text-charcoal mb-4">Recent Submissions</h2>
             <div className="space-y-3">
               {submissions.slice(0, 5).map(s => (
                 <div key={s.id} className="flex items-center justify-between text-sm">
@@ -473,7 +473,7 @@ export default function RsvpAdmin() {
           {gbLoading ? (
             <div className="text-center py-20 text-charcoal/30">Loading…</div>
           ) : guestbook.length === 0 ? (
-            <div className="text-center py-20 text-charcoal/30 font-display text-2xl italic">No entries yet</div>
+            <div className="text-center py-20 text-charcoal/30 font-display text-2xl ">No entries yet</div>
           ) : (
             <div className="space-y-3">
               {guestbook.map(entry => (

@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-4xl mx-auto text-center space-y-6">
         {/* Names */}
         <div>
-          <p className="font-display text-3xl italic text-gold-light">Gowtham &amp; Nikhita</p>
+          <p className="font-display text-3xl text-gold-light">Gowtham &amp; Nikhita</p>
           <p className="text-olive-light/70 mt-1 text-sm tracking-widest uppercase">
             {DATES.range} · {venueShort()}
           </p>
@@ -36,7 +36,7 @@ export default function Footer() {
         </nav>
 
         {/* Made with love */}
-        <p className="text-sm font-display italic text-gold/60">Created by yours truly, the groom</p>
+        <p className="text-sm font-display text-gold/60">Created by yours truly, the groom</p>
       </div>
     </footer>
   )

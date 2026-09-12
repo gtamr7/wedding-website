@@ -47,7 +47,7 @@ function Node({ m, index, isLast }: { m: typeof milestones[0]; index: number; is
         className="pb-10"
       >
         <span className="text-xs tracking-widest uppercase text-gold font-medium">{m.year}</span>
-        <h4 className="font-display text-xl italic text-ivory mt-0.5">{m.label}</h4>
+        <h4 className="font-display text-xl text-ivory mt-0.5">{m.label}</h4>
         <p className="text-sm text-ivory/60 mt-1 leading-relaxed">{m.desc}</p>
       </motion.div>
     </div>

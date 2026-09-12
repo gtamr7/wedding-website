@@ -51,7 +51,7 @@ export default function Registry() {
           transition={{ duration: 0.6 }}
         >
           <p className="text-xs tracking-widest uppercase text-gold mb-3">Gifts</p>
-          <h2 className="font-display text-5xl sm:text-6xl italic text-ivory">Registry</h2>
+          <h2 className="font-display text-5xl sm:text-6xl text-ivory">Registry</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
           <p className="mt-8 text-ivory/60 leading-relaxed">
             Your presence is the greatest gift of all. If you&apos;d like to give, we&apos;d love
@@ -81,7 +81,7 @@ export default function Registry() {
               className="bg-black/20 border border-gold/15 rounded-xl p-6 text-left"
             >
               <fund.Icon size={26} className="text-gold/70 mb-3" />
-              <p className="font-display text-xl italic text-ivory">{fund.title}</p>
+              <p className="font-display text-xl text-ivory">{fund.title}</p>
               <p className="text-sm text-ivory/50 mt-1 mb-5">{fund.description}</p>
 
               <div className="flex items-center gap-3 bg-[#6B2D8B]/15 rounded-lg px-4 py-3">

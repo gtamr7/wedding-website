@@ -10,8 +10,8 @@
   --color-charcoal: #1C1C1A;
   --color-muted: #8A9080;
 
-  --font-display: var(--font-cormorant);
-  --font-sans: var(--font-inter);
+  --font-display: var(--font-italiana), "Didot", "Bodoni MT", Georgia, serif;
+  --font-sans: var(--font-jost), "Avenir Next", "Segoe UI", system-ui, sans-serif;
 }
 
 :root {
@@ -29,6 +29,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+
+  /* Italiana has one face: weight 400, upright. Asked for a bold or an italic
+     it does not own, a browser will fake one by smearing or shearing the
+     glyphs, which is glaring on a face this thin. The `italic` classes are
+     also being removed from display headings, but this catches what that
+     cannot: a weight or style set on a child element inside a font-display
+     parent, which no search for `font-display` would ever turn up. */
+  font-synthesis: none;
 }
 
 /* Scrollbar */
@@ -40,7 +48,14 @@ body {
 .gold-divider {
   height: 1px;
   background: linear-gradient(90deg, transparent 0%, #B8972A 50%, transparent 100%);
-  margin: 0 auto;
+  /* margin-inline, not the `margin: 0 auto` shorthand this used to be. The
+     shorthand set margin-top/bottom to 0, and because this rule sits outside
+     Tailwind's cascade layer it beat every `mt-*` utility written on a divider
+     — so all of that spacing had quietly never applied. It went unnoticed
+     while the headings were Cormorant; Italiana sets line-height 1 at these
+     sizes and its glyphs overhang that box, so the divider started cutting
+     through the text and made the missing margin obvious. */
+  margin-inline: auto;
 }
 
 /* Pulsing gold ring for NOW indicator */

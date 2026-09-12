@@ -73,14 +73,18 @@ export default function Hero() {
           </p>
 
           <h1
-            className="font-display text-5xl sm:text-7xl lg:text-9xl italic text-gold leading-none tracking-wide"
+            className="font-display text-5xl sm:text-7xl lg:text-9xl text-gold leading-none tracking-wide"
             style={{
               textShadow: '0 4px 40px rgba(184,151,42,0.4), 0 2px 16px rgba(0,0,0,0.5)',
               animation: 'heroFadeUp 1s ease-out 0.3s both',
             }}
           >
             Gowtham
-            <span className="block text-xl sm:text-2xl lg:text-4xl not-italic text-gold/40 my-2 sm:my-3 tracking-widest font-light">
+            {/* Italiana's ampersand is a far lighter mark than the italic
+                Cormorant one it replaces, and at 40% gold over the photo it
+                vanished entirely. Carries more of the colour now so it still
+                reads as an ampersand rather than a gap between the names. */}
+            <span className="block text-xl sm:text-2xl lg:text-4xl text-gold/75 my-2 sm:my-3 tracking-widest">
               &amp;
             </span>
             Nikhita
@@ -95,7 +99,7 @@ export default function Hero() {
             className="space-y-2"
             style={{ animation: 'heroFadeUp 0.8s ease-out 0.9s both' }}
           >
-            <p className="font-display italic text-gold-light/90 text-lg sm:text-xl tracking-wide">
+            <p className="font-display text-gold-light/90 text-lg sm:text-xl tracking-wide">
               February 17–18, 2027
             </p>
             <p className="text-ivory/60 text-xs sm:text-sm tracking-widest uppercase">

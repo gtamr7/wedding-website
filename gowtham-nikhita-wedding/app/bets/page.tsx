@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import BetBoard from '@/components/Bets/BetBoard'
-import PasswordGate from '@/components/PasswordGate'
 
 export const metadata: Metadata = {
   title: 'The Bets · Gowtham & Nikhita',
@@ -18,7 +17,7 @@ export default function BetsPage() {
           {/* Header */}
           <div className="text-center mb-10">
             <p className="text-xs tracking-widest uppercase text-gold mb-3">For Fun Only · No Real Money</p>
-            <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">The Bets</h1>
+            <h1 className="font-display text-5xl sm:text-6xl text-charcoal">The Bets</h1>
             <div className="gold-divider w-24 mt-4 mx-auto" />
             <p className="text-charcoal/50 text-sm mt-4 leading-relaxed max-w-sm mx-auto">
               Over/unders and prop bets on the big day. Pick your winners, compete for bragging rights,
@@ -26,9 +25,7 @@ export default function BetsPage() {
             </p>
           </div>
 
-          <PasswordGate>
-            <BetBoard />
-          </PasswordGate>
+          <BetBoard />
         </div>
       </main>
       <Footer />

@@ -152,7 +152,7 @@ export default function RsvpForm() {
   if (RSVP_PAUSED) {
     return (
       <div className="max-w-md mx-auto text-center py-6">
-        <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">RSVP</h1>
+        <h1 className="font-display text-5xl sm:text-6xl text-charcoal">RSVP</h1>
         <div className="gold-divider w-24 mt-4 mx-auto" />
         <p className="text-charcoal/60 text-sm mt-8 leading-relaxed">
           The venues are set — see the schedule for where each event is happening.
@@ -175,7 +175,7 @@ export default function RsvpForm() {
     return (
       <div className="max-w-md mx-auto text-center py-12">
         <div className="w-16 h-16 rounded-full bg-charcoal/8 flex items-center justify-center mx-auto mb-5"><Lock size={28} strokeWidth={2.5} className="text-charcoal/40" /></div>
-        <h2 className="font-display text-3xl italic text-charcoal mb-2">RSVP submissions are closed</h2>
+        <h2 className="font-display text-3xl text-charcoal mb-2">RSVP submissions are closed</h2>
         <p className="text-charcoal/50 text-sm leading-relaxed">
           The deadline has passed. Please contact Gowtham or Nikhita directly.
         </p>
@@ -350,7 +350,7 @@ export default function RsvpForm() {
         The prompt and date only apply while the guest is still looking up. */}
     {step !== 'success' && (
       <div className="text-center mb-14">
-        <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">RSVP</h1>
+        <h1 className="font-display text-5xl sm:text-6xl text-charcoal">RSVP</h1>
         <div className="gold-divider w-24 mt-4 mx-auto" />
         {step === 'lookup' && (
           <>
@@ -461,7 +461,7 @@ export default function RsvpForm() {
           className="max-w-md mx-auto">
           <div className="text-center mb-8">
             <div className="w-16 h-16 rounded-full bg-gold/15 flex items-center justify-center mx-auto mb-4 text-3xl">✓</div>
-            <h2 className="font-display text-3xl italic text-charcoal">You&apos;re already on the list!</h2>
+            <h2 className="font-display text-3xl text-charcoal">You&apos;re already on the list!</h2>
             <p className="text-charcoal/50 text-sm mt-2">We have an RSVP on file for your party.</p>
           </div>
 
@@ -512,7 +512,7 @@ export default function RsvpForm() {
           className="max-w-lg mx-auto">
 
           <div className="text-center mb-8">
-            <p className="font-display text-2xl italic text-gold">Welcome, {submitterFirstName}!</p>
+            <p className="font-display text-2xl text-gold">Welcome, {submitterFirstName}!</p>
             <p className="text-sm text-charcoal/40 mt-1">Select who&apos;s attending and which events.</p>
           </div>
 
@@ -607,7 +607,7 @@ export default function RsvpForm() {
           className="max-w-lg mx-auto space-y-6">
 
           <div className="text-center pb-2">
-            <p className="font-display text-2xl italic text-gold">A few more details</p>
+            <p className="font-display text-2xl text-gold">A few more details</p>
             <p className="text-sm text-charcoal/40 mt-1">Almost done!</p>
           </div>
 
@@ -755,7 +755,7 @@ export default function RsvpForm() {
             </motion.svg>
           </motion.div>
 
-          <h2 className="font-display text-4xl italic text-charcoal mb-2">We Can&apos;t Wait!</h2>
+          <h2 className="font-display text-4xl text-charcoal mb-2">We Can&apos;t Wait!</h2>
           <p className="text-charcoal/50 text-sm max-w-sm mx-auto mb-8">
             Your RSVP for <span className="text-charcoal/70 font-medium">{submitterName}</span>
             {attendees.length > 1 && <> + {attendees.length - 1} more</>}{' '}

@@ -55,7 +55,7 @@ export default function BetCard({ bet, guestName, onPick, index }: BetCardProps)
       </div>
 
       {/* Question */}
-      <p className="font-display text-lg italic text-charcoal leading-snug">{bet.question}</p>
+      <p className="font-display text-lg text-charcoal leading-snug">{bet.question}</p>
 
       {/* Odds bar */}
       <OddsBar

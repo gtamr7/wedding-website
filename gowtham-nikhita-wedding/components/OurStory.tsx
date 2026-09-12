@@ -80,7 +80,7 @@ export default function OurStory() {
           className="text-center mb-16"
         >
           <p className="text-xs tracking-widest uppercase text-gold mb-3">Meet the Couple</p>
-          <h2 className="font-display text-5xl sm:text-6xl italic text-ivory">Our Story</h2>
+          <h2 className="font-display text-5xl sm:text-6xl text-ivory">Our Story</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
         </motion.div>
 
@@ -144,7 +144,7 @@ export default function OurStory() {
               <FadeIn key={ch.num} delay={0.15 + i * 0.1}>
                 <div className="flex items-baseline gap-3 mb-2">
                   <span className="text-[10px] tracking-widest uppercase text-gold/50 font-medium">{ch.num}</span>
-                  <h3 className="font-display text-3xl italic text-ivory">{ch.heading}</h3>
+                  <h3 className="font-display text-3xl text-ivory">{ch.heading}</h3>
                 </div>
                 <div className="space-y-4">
                   {ch.body.split('\n\n').map((para, j) => (
@@ -155,7 +155,7 @@ export default function OurStory() {
             ))}
 
             <FadeIn delay={0.5}>
-              <h3 className="font-display text-3xl italic text-ivory mb-0">The Journey</h3>
+              <h3 className="font-display text-3xl text-ivory mb-0">The Journey</h3>
               <Timeline />
             </FadeIn>
           </div>
@@ -165,7 +165,7 @@ export default function OurStory() {
         <FadeIn delay={0.1} className="mt-20 mb-6">
           <div className="text-center max-w-xl mx-auto px-6">
             <div className="gold-divider w-12 mx-auto mb-8 opacity-40" />
-            <p className="font-display text-2xl sm:text-3xl italic text-ivory/80 leading-relaxed">
+            <p className="font-display text-2xl sm:text-3xl text-ivory/80 leading-relaxed">
               They didn&apos;t fall in love. They grew into it slowly, the way the best things do.
             </p>
             <div className="gold-divider w-12 mx-auto mt-8 opacity-40" />

@@ -44,7 +44,7 @@ export default function GuestbookWall({ initialEntries }: { initialEntries: Gues
       {/* Entry wall */}
       {entries.length === 0 ? (
         <div className="text-center text-charcoal/30 py-12">
-          <p className="font-display text-2xl italic">Be the first to leave a wish</p>
+          <p className="font-display text-2xl ">Be the first to leave a wish</p>
         </div>
       ) : (
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
@@ -88,7 +88,7 @@ export default function GuestbookWall({ initialEntries }: { initialEntries: Gues
                     &ldquo;{entry.message}&rdquo;
                   </p>
                   <div className="mt-4 pt-3 border-t border-charcoal/10 flex items-center justify-between">
-                    <p className="font-display text-base italic text-charcoal">{entry.name}</p>
+                    <p className="font-display text-base text-charcoal">{entry.name}</p>
                     <p className="text-[10px] text-charcoal/30">{formatDate(entry.created_at)}</p>
                   </div>
                 </div>

@@ -104,7 +104,7 @@ export default function GuestbookForm() {
             className="text-center py-8"
           >
             <div className="flex justify-center mb-3"><Heart size={32} strokeWidth={2.5} className="text-gold/60" /></div>
-            <p className="font-display text-2xl italic text-charcoal">Thank you!</p>
+            <p className="font-display text-2xl text-charcoal">Thank you!</p>
             <p className="text-charcoal/50 text-sm mt-1">Your message means the world to us.</p>
             <p className="text-charcoal/40 text-xs mt-3 leading-relaxed">
               It will appear on the wall once Gowtham &amp; Nikhita have had a chance to read it.

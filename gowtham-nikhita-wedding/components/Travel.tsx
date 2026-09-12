@@ -130,7 +130,7 @@ export default function Travel() {
           className="text-center mb-14"
         >
           <p className="text-xs tracking-widest uppercase text-gold mb-3">Getting There</p>
-          <h2 className="font-display text-5xl sm:text-6xl italic text-ivory">Travel & Stay</h2>
+          <h2 className="font-display text-5xl sm:text-6xl text-ivory">Travel & Stay</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
         </motion.div>
 
@@ -139,7 +139,7 @@ export default function Travel() {
           <div className="space-y-10 min-w-0">
             <FadeIn>
               <div>
-                <h3 className="font-display text-2xl italic text-ivory mb-1">The Venues</h3>
+                <h3 className="font-display text-2xl text-ivory mb-1">The Venues</h3>
                 <div className="gold-divider w-12 mb-4" />
 
                 <div className="space-y-8">
@@ -204,7 +204,7 @@ export default function Travel() {
           <div className="space-y-10 min-w-0">
             <FadeIn delay={0.05}>
               <div>
-                <h3 className="font-display text-2xl italic text-ivory mb-1">Nearest Airports</h3>
+                <h3 className="font-display text-2xl text-ivory mb-1">Nearest Airports</h3>
                 <div className="gold-divider w-12 mb-5" />
                 <div className="space-y-3">
                   {airports.map((a) => (
@@ -213,7 +213,10 @@ export default function Travel() {
                       className="flex items-center justify-between p-3 rounded-lg border bg-black/15 border-gold/12"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <span className="font-display text-xl font-semibold text-gold w-12 shrink-0">{a.code}</span>
+                        {/* Airport codes are data labels, not headings — the sans
+                            face keeps three capitals legible where the display
+                            face, which has no bold, would go weak and wide. */}
+                        <span className="font-sans text-lg font-semibold tracking-wide text-gold w-12 shrink-0">{a.code}</span>
                         <div className="min-w-0">
                           <p className="text-sm text-ivory leading-snug">{a.name}</p>
                         </div>
@@ -231,15 +234,15 @@ export default function Travel() {
 
             <FadeIn delay={0.1}>
               <div>
-                <h3 className="font-display text-2xl italic text-ivory mb-1">Where to Stay</h3>
+                <h3 className="font-display text-2xl text-ivory mb-1">Where to Stay</h3>
                 <div className="gold-divider w-12 mb-5" />
                 <div className="flex items-start gap-3 bg-gold/8 rounded-xl p-4 border border-gold/25 mb-5">
                   <Bell size={18} strokeWidth={2.5} className="text-gold/70 shrink-0 mt-0.5" aria-hidden="true" />
                   <p className="text-sm text-ivory/70 leading-relaxed">
                     <span className="text-gold font-medium">Hotel block coming soon.</span>{' '}
-                    Our planners are putting together a room block near {VENUES.garden.name} in
-                    Miami Beach, so you&apos;ll be a short trip from both days. We&apos;ll post it
-                    here with booking details — please hold off until then.
+                    Our planners are putting together a room block near{' '}
+                    {VENUES.garden.name}, so you&apos;ll be a short trip from both days.
+                    We&apos;ll post it here with booking details — please hold off until then.
                   </p>
                 </div>
 

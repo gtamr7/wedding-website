@@ -34,7 +34,7 @@ function Digit({ value }: { value: string }) {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 20, opacity: 0 }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
-          className="block text-3xl sm:text-4xl lg:text-5xl font-display font-semibold text-ivory"
+          className="block text-3xl sm:text-4xl lg:text-5xl font-display text-ivory"
           style={{ textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}
         >
           {value}
@@ -70,7 +70,7 @@ export default function Countdown() {
 
   if (t.days === 0 && t.hours === 0 && t.minutes === 0 && t.seconds === 0) {
     return (
-      <p className="font-display text-2xl italic text-gold-light animate-pulse">
+      <p className="font-display text-2xl text-gold-light animate-pulse">
         It&apos;s happening! ✨
       </p>
     )

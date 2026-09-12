@@ -79,7 +79,7 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
     return (
       <div className="text-center py-16 text-charcoal/40">
         <div className="flex justify-center mb-5"><Camera size={48} strokeWidth={2.5} className="text-charcoal/30" /></div>
-        <p className="font-display text-2xl italic text-charcoal mb-2">See you on February 18</p>
+        <p className="font-display text-2xl text-charcoal mb-2">See you on February 18</p>
         <p className="text-sm leading-relaxed max-w-xs mx-auto">
           This page activates during the ceremony. Open it on the day and your group will highlight when it&apos;s your turn.
         </p>
@@ -125,7 +125,7 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
             <div className="w-3 h-3 rounded-full bg-white animate-pulse-gold shrink-0" />
             <div>
               <p className="text-xs uppercase tracking-widest text-white/70">Now Photographing</p>
-              <p className="font-display text-xl italic font-medium">
+              <p className="font-display text-2xl">
                 Group {currentIndex + 1}: {nowGroup.name}
               </p>
             </div>
@@ -138,7 +138,7 @@ export default function GuestView({ initialIndex }: { initialIndex: number }) {
             animate={{ opacity: 1, y: 0 }}
             className="mb-6 rounded-xl bg-olive-mid text-white px-5 py-4 text-center"
           >
-            <p className="font-display text-xl italic flex items-center justify-center gap-2"><Sparkles size={18} strokeWidth={2.5} />All photos complete!</p>
+            <p className="font-display text-xl flex items-center justify-center gap-2"><Sparkles size={18} strokeWidth={2.5} />All photos complete!</p>
             <p className="text-sm text-white/70 mt-1">Time to celebrate. See you on the dance floor.</p>
           </motion.div>
         )}

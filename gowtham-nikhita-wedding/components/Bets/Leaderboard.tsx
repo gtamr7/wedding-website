@@ -50,7 +50,7 @@ export default function Leaderboard({ entries }: { entries: LeaderboardEntry[] }
   if (entries.length === 0) {
     return (
       <div className="text-center py-12 text-charcoal/40">
-        <p className="font-display text-2xl italic">Results pending</p>
+        <p className="font-display text-2xl ">Results pending</p>
         <p className="text-sm mt-2">The leaderboard appears after results are revealed.</p>
       </div>
     )

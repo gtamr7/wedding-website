@@ -46,7 +46,7 @@ function PinEntry({ onUnlock }: { onUnlock: (pin: string) => void }) {
   return (
     <div className="max-w-xs mx-auto text-center py-16">
       <div className="flex justify-center mb-4"><Lock size={36} strokeWidth={2.5} className="text-charcoal/30" /></div>
-      <h2 className="font-display text-3xl italic text-charcoal mb-2">Guestbook Review</h2>
+      <h2 className="font-display text-3xl text-charcoal mb-2">Guestbook Review</h2>
       <p className="text-charcoal/50 text-sm mb-8">Enter your 4-digit PIN to approve messages</p>
       <form onSubmit={submit} className="space-y-4">
         <input
@@ -82,7 +82,7 @@ function EntryCard({ entry, busy, onApprove, onHide, onDelete }: {
     <div className={`border-2 rounded-2xl p-5 transition-colors ${entry.visible ? 'border-olive-light bg-white' : 'border-gold/40 bg-gold/5'}`}>
       <div className="flex items-start justify-between gap-4 mb-2">
         <div>
-          <p className="font-display text-xl italic text-charcoal">{entry.name}</p>
+          <p className="font-display text-xl text-charcoal">{entry.name}</p>
           <p className="text-xs text-charcoal/40">{formatDate(entry.created_at)}</p>
         </div>
         <span className={`text-xs rounded-full px-2.5 py-1 shrink-0 ${entry.visible ? 'bg-olive-light/50 text-charcoal/60' : 'bg-gold/20 text-gold-dark'}`}>
@@ -211,7 +211,7 @@ export default function GuestbookAdmin() {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-10">
-        <h1 className="font-display text-4xl sm:text-5xl italic text-charcoal">Guestbook Review</h1>
+        <h1 className="font-display text-4xl sm:text-5xl text-charcoal">Guestbook Review</h1>
         <div className="gold-divider w-24 mt-4 mx-auto" />
         <p className="text-charcoal/50 text-sm mt-4">
           {pending.length} awaiting review · {live.length} on the wall

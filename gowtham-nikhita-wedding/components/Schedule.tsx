@@ -15,7 +15,7 @@ const events = [
     time: '6:00 PM – 10:00 PM',
     venue: venueLine('monastery'),
     description:
-      'An evening of music, dance, and joyful celebration as both families come together for the first time. Performances, food, and the energy of two worlds colliding in the best way.',
+      'Music, dance, and performances, with both families together for the first time. Dinner is served.',
     dresscode: 'Festive Indian attire: lehengas, sarees, sherwanis, kurtas',
     // Warm amber for the evening celebration.
     color: 'from-amber-400/16 to-amber-600/5',
@@ -28,7 +28,7 @@ const events = [
       date: '20270217T180000',
       endDate: '20270217T220000',
       location: venueAddress('monastery'),
-      description: 'An evening of music, dance, and joyful celebration. Festive Indian attire.',
+      description: 'Music, dance, and performances. Festive Indian attire.',
     },
   },
   {
@@ -39,10 +39,10 @@ const events = [
     time: '9:00 AM – 2:00 PM',
     venue: venueLine('garden'),
     description:
-      'The sacred Tamil/Telugu Hindu Kalyaanam conducted according to ancient tradition. A moving ceremony rich with ritual, meaning, and family.',
+      'The Tamil/Telugu Hindu Kalyaanam, conducted in full according to tradition. It runs from the morning into the early afternoon.',
     dresscode: 'Traditional Indian attire or formal Western',
     // Morning light — pale and unadorned. The ceremony is the still point of
-    // the weekend and does not want the loudest card on the page.
+    // the two days and does not want the loudest card on the page.
     color: 'from-ivory/14 to-ivory/4',
     borderColor: 'border-ivory/28',
     badgeColor: 'bg-ivory/18 text-ivory',
@@ -64,7 +64,7 @@ const events = [
     time: '6:00 PM – 11:00 PM',
     venue: venueLine('garden'),
     description:
-      'Dinner, dancing, speeches, and celebration to close out the weekend.',
+      'Dinner, dancing, and speeches, to finish the two days.',
     dresscode: 'Black tie optional / Cocktail attire',
     // Champagne gold for the black-tie evening.
     color: 'from-gold/18 to-gold/5',
@@ -77,7 +77,7 @@ const events = [
       date: '20270218T180000',
       endDate: '20270218T230000',
       location: venueAddress('garden'),
-      description: 'Wedding reception: dinner, dancing, and celebration. Black tie optional / cocktail attire.',
+      description: 'Dinner, dancing, and speeches. Black tie optional / cocktail attire.',
     },
   },
 ]
@@ -200,7 +200,7 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
             </span>
           </div>
 
-          <h3 className="font-display text-2xl sm:text-3xl italic text-ivory">{event.name}</h3>
+          <h3 className="font-display text-2xl sm:text-3xl text-ivory">{event.name}</h3>
 
           <div className="mt-3 space-y-1 text-sm text-ivory/75">
             <p className="flex items-center gap-1.5"><Clock size={13} className="shrink-0" />{event.time}</p>
@@ -237,7 +237,7 @@ export default function Schedule() {
           className="text-center mb-14"
         >
           <p className="text-xs tracking-widest uppercase text-gold mb-3">Feb 17–18, 2027</p>
-          <h2 className="font-display text-5xl sm:text-6xl italic text-ivory">The Events</h2>
+          <h2 className="font-display text-5xl sm:text-6xl text-ivory">The Events</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
         </motion.div>
 

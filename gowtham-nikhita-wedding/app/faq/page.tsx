@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'FAQ · Gowtham & Nikhita',
-  description: 'Answers to common questions about our wedding weekend.',
+  description: 'Answers to common questions about our wedding celebration.',
 }
 
 function FaqLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -77,14 +77,14 @@ const faqs = [
     ),
   },
   {
-    q: 'What’s the schedule for the weekend?',
+    q: 'What’s the schedule?',
     a: (
       <>
         See the{' '}
         <Link href="/#schedule" className="underline text-gold hover:text-gold-light transition-colors">
           Schedule
         </Link>{' '}
-        section on the home page for the full weekend lineup.
+        section on the home page for the full lineup.
       </>
     ),
   },
@@ -97,7 +97,7 @@ export default function FaqPage() {
       <main className="min-h-screen bg-ivory pt-24 pb-16 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-14">
-            <h1 className="font-display text-5xl sm:text-6xl italic text-charcoal">FAQ</h1>
+            <h1 className="font-display text-5xl sm:text-6xl text-charcoal">FAQ</h1>
             <div className="gold-divider w-24 mt-4 mx-auto" />
             <p className="text-charcoal/50 text-sm mt-4 max-w-md mx-auto">
               A few common questions — more answers coming as details firm up.
@@ -107,7 +107,7 @@ export default function FaqPage() {
           <div className="space-y-8">
             {faqs.map(({ q, a }) => (
               <div key={q} className="border-b border-olive-dark/10 pb-8 last:border-0">
-                <h2 className="font-display text-2xl italic text-charcoal mb-2">{q}</h2>
+                <h2 className="font-display text-2xl text-charcoal mb-2">{q}</h2>
                 {/* div rather than p: some answers contain lists */}
                 <div className="text-charcoal/70 leading-relaxed">{a}</div>
               </div>

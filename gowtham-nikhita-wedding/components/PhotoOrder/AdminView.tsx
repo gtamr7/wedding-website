@@ -42,7 +42,7 @@ function PinEntry({ onUnlock }: { onUnlock: (pin: string) => void }) {
   return (
     <div className="max-w-xs mx-auto text-center py-16">
       <div className="flex justify-center mb-4"><Lock size={36} strokeWidth={2.5} className="text-charcoal/30" /></div>
-      <h2 className="font-display text-3xl italic text-charcoal mb-2">Coordinator Access</h2>
+      <h2 className="font-display text-3xl text-charcoal mb-2">Coordinator Access</h2>
       <p className="text-charcoal/50 text-sm mb-8">Enter your 4-digit PIN to manage photo order</p>
       <form onSubmit={submit} className="space-y-4">
         <input
@@ -166,7 +166,7 @@ function AdminPanel({ adminPin }: { adminPin: string }) {
     <div className="max-w-xl mx-auto pb-12">
       {/* Header */}
       <div className="text-center mb-8">
-        <h2 className="font-display text-3xl italic text-charcoal">Photo Order Control</h2>
+        <h2 className="font-display text-3xl text-charcoal">Photo Order Control</h2>
         <p className="text-charcoal/50 text-sm mt-1">Changes broadcast to all guests instantly</p>
       </div>
 
@@ -204,7 +204,7 @@ function AdminPanel({ adminPin }: { adminPin: string }) {
             <p className={`text-xs uppercase tracking-widest mb-1 ${completedGroups.includes(currentIndex) ? 'text-charcoal/40' : 'text-gold'}`}>
               {completedGroups.includes(currentIndex) ? 'Already done' : 'Currently Shooting'}
             </p>
-            <p className="font-display text-2xl italic text-charcoal">
+            <p className="font-display text-2xl text-charcoal">
               #{currentIndex + 1} — {nowGroup.name}
             </p>
             <p className="text-sm text-charcoal/60 mt-1">{nowGroup.description}</p>
@@ -216,7 +216,7 @@ function AdminPanel({ adminPin }: { adminPin: string }) {
             animate={{ opacity: 1 }}
             className="bg-olive-mid text-white rounded-xl p-5 mb-6 text-center"
           >
-            <p className="font-display text-2xl italic">All groups complete! 🎉</p>
+            <p className="font-display text-2xl ">All groups complete! 🎉</p>
           </motion.div>
         )}
       </AnimatePresence>

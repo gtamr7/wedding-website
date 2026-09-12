@@ -42,7 +42,7 @@ function PinEntry({ onUnlock }: { onUnlock: (pin: string) => void }) {
   return (
     <div className="max-w-xs mx-auto text-center py-16">
       <div className="flex justify-center mb-4"><Armchair size={40} strokeWidth={2.5} className="text-charcoal/30" /></div>
-      <h2 className="font-display text-3xl italic text-charcoal mb-6">Seating Chart</h2>
+      <h2 className="font-display text-3xl text-charcoal mb-6">Seating Chart</h2>
       <form onSubmit={submit} className="space-y-4">
         <input
           type="password"
@@ -371,7 +371,7 @@ export default function SeatingAdmin() {
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
-          <h1 className="font-display text-4xl sm:text-5xl italic text-charcoal">Seating Chart</h1>
+          <h1 className="font-display text-4xl sm:text-5xl text-charcoal">Seating Chart</h1>
           <p className="text-charcoal/40 text-sm mt-1">
             {stats.totalParties} parties · {stats.totalGuests} guests ·{' '}
             <span className={stats.unassigned > 0 ? 'text-amber-500' : 'text-olive-mid'}>
@@ -485,7 +485,7 @@ export default function SeatingAdmin() {
         <div className="text-center py-20 text-charcoal/30">Loading…</div>
       ) : parties.length === 0 ? (
         <div className="text-center py-20 text-charcoal/30">
-          <p className="font-display text-2xl italic mb-2">No RSVPs yet</p>
+          <p className="font-display text-2xl mb-2">No RSVPs yet</p>
           <p className="text-sm">Parties will appear here once guests RSVP.</p>
         </div>
       ) : (
