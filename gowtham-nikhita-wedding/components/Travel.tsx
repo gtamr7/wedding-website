@@ -30,7 +30,6 @@ const venuePhotos: { src: string; alt: string; venue: VenueKey }[] = [
 const airports = [
   { code: 'MIA', name: 'Miami International Airport', distance: '~30 min' },
   { code: 'FLL', name: 'Fort Lauderdale–Hollywood International', distance: '~45 min' },
-  { code: 'PBI', name: 'Palm Beach International Airport', distance: '~1.5 hours' },
 ]
 
 /** The three photos belonging to one venue, laid out beneath its address.
