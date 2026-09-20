@@ -205,7 +205,7 @@ function AdminPanel({ adminPin }: { adminPin: string }) {
               {completedGroups.includes(currentIndex) ? 'Already done' : 'Currently Shooting'}
             </p>
             <p className="font-display text-2xl text-charcoal">
-              #{currentIndex + 1} — {nowGroup.name}
+              #{currentIndex + 1} · {nowGroup.name}
             </p>
             <p className="text-sm text-charcoal/60 mt-1">{nowGroup.description}</p>
           </motion.div>

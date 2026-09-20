@@ -87,7 +87,7 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
         />
         {error && (
           <p role="alert" className="text-red-300/90 text-xs">
-            That&apos;s not it — have another go.
+            That&apos;s not it. Have another go.
           </p>
         )}
         <button

@@ -439,7 +439,7 @@ export default function SeatingAdmin() {
               >
                 Supabase SQL editor
               </a>
-              . Drag-and-drop still works — assignments just won&apos;t persist yet.
+              . Drag-and-drop still works, but assignments just won&apos;t persist yet.
             </p>
           </motion.div>
         )}

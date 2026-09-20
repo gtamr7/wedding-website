@@ -155,12 +155,12 @@ export default function RsvpForm() {
         <h1 className="font-display text-5xl sm:text-6xl text-charcoal">RSVP</h1>
         <div className="gold-divider w-24 mt-4 mx-auto" />
         <p className="text-charcoal/60 text-sm mt-8 leading-relaxed">
-          The venues are set — see the schedule for where each event is happening.
+          The venues are set. See the schedule for where each event is happening.
           We&apos;re sending out a fresh round of invitations shortly, and RSVPs
-          will open at the same time. Keep an eye on your inbox — yours is on its way.
+          will open at the same time. Keep an eye on your inbox. Yours is on its way.
         </p>
         <p className="text-gold text-xs mt-6 font-medium tracking-wide">
-          The dates haven&apos;t changed — February 17–18, 2027
+          The dates haven&apos;t changed: February 17–18, 2027
         </p>
         <p className="text-charcoal/40 text-xs mt-5 leading-relaxed">
           Questions in the meantime? Reach out to Gowtham or Nikhita directly.
@@ -399,7 +399,7 @@ export default function RsvpForm() {
                 <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                   className="bg-olive-light/20 border border-olive-light rounded-xl px-4 py-4 text-sm leading-relaxed">
                   <p className="font-medium text-charcoal mb-3">
-                    We have more than one guest by that name — which one are you?
+                    We have more than one guest by that name. Which one are you?
                   </p>
                   <div className="space-y-2">
                     {choices.map(c => (
@@ -429,7 +429,7 @@ export default function RsvpForm() {
                   <p className="font-medium text-charcoal mb-1">RSVPs are still being finalised</p>
                   <p className="text-charcoal/60">
                     We&apos;re ironing out a few details on our end. We&apos;ll reach out as soon
-                    as everything is ready — thanks so much for your patience!
+                    as everything is ready. Thanks so much for your patience!
                   </p>
                 </motion.div>
               )}
@@ -492,7 +492,7 @@ export default function RsvpForm() {
           <div className="flex flex-col gap-3">
             <button onClick={confirmExisting}
               className="w-full bg-olive-dark text-white py-4 rounded-xl font-medium tracking-wider uppercase text-sm hover:bg-olive-mid transition-colors">
-              Looks right — see calendar links
+              Looks right, see calendar links
             </button>
             <button onClick={enterEditMode}
               className="w-full py-4 rounded-xl border-2 border-olive-light text-charcoal/60 text-sm hover:border-olive-mid hover:text-charcoal transition-colors">
@@ -657,7 +657,7 @@ export default function RsvpForm() {
           {/* Phone — day-of contact only */}
           <div>
             <label htmlFor="rsvp-phone" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
-              Mobile Number <span className="normal-case text-charcoal/30">(optional — in case we need to reach you)</span>
+              Mobile Number <span className="normal-case text-charcoal/30">(optional, in case we need to reach you)</span>
             </label>
             <input
               id="rsvp-phone"

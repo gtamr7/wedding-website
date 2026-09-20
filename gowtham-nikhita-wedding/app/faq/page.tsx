@@ -23,15 +23,15 @@ function FaqLink({ href, children }: { href: string; children: React.ReactNode }
 const faqs = [
   {
     q: 'Is there parking at the venues?',
-    a: 'Yes, at both. The Ancient Spanish Monastery has its own lot, and Miami Beach Botanical Garden has a parking garage alongside street parking. Shuttle service is still being looked into — we’ll update this page with any new information.',
+    a: 'Yes, at both. The Ancient Spanish Monastery has its own lot, and Miami Beach Botanical Garden has a parking garage alongside street parking. Shuttle service is still being looked into, and we’ll update this page with any new information.',
   },
   {
     q: 'When should I arrive?',
-    a: 'We’d suggest flying in on Tuesday, February 16th so you have time to settle before the sangeet on Wednesday evening. Both MIA and FLL work — fly into whichever suits you.',
+    a: 'We’d suggest flying in on Tuesday, February 16th so you have time to settle before the sangeet on Wednesday evening. Both MIA and FLL work, so fly into whichever suits you.',
   },
   {
     q: 'Is there a hotel block?',
-    a: 'Our planners are arranging a room block near Miami Beach Botanical Garden, where the ceremony and reception are. We’ll post booking details here as soon as they’re confirmed — we’d recommend going through the block, as the rates will be discounted.',
+    a: 'Our planners are arranging a room block near Miami Beach Botanical Garden, where the ceremony and reception are. We’ll post booking details here as soon as they’re confirmed. We’d recommend going through the block, as the rates will be discounted.',
   },
   {
     q: 'Where can I get outfits for the events?',
@@ -47,7 +47,7 @@ const faqs = [
 
         <p className="mt-4 text-xs uppercase tracking-widest text-charcoal/45">In store</p>
         <p className="mt-1">
-          Both are at Global Mall —{' '}
+          Both are at Global Mall:{' '}
           <FaqLink href="https://www.google.com/maps/search/?api=1&query=Ladlee%20Global%20Mall">Ladlee</FaqLink>
           {' '}and{' '}
           <FaqLink href="https://www.google.com/maps/search/?api=1&query=Rahul%27s%20Clothing%20Global%20Mall">Rahul&apos;s Clothing</FaqLink>.
@@ -87,7 +87,7 @@ export default function FaqPage() {
             <h1 className="font-display text-5xl sm:text-6xl text-charcoal">FAQ</h1>
             <div className="gold-divider w-24 mt-4 mx-auto" />
             <p className="text-charcoal/50 text-sm mt-4 max-w-md mx-auto">
-              A few common questions — more answers coming as details firm up.
+              A few common questions, with more answers coming as details firm up.
             </p>
           </div>
 

@@ -21,7 +21,7 @@ export default function Registry() {
           <div className="gold-divider w-24 mt-5 mx-auto" />
           <p className="mt-8 text-ivory/60 leading-relaxed">
             The people in this story are the reason there is one. Crossing time zones,
-            taking the days off, standing with us through two days of ceremonies — that
+            taking the days off, standing with us through two days of ceremonies. That
             is already the part we&apos;ll be telling our kids about. If you&apos;d like to do
             something more, everything we could use is in one place on our Zola registry.
           </p>

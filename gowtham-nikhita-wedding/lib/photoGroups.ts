@@ -4,7 +4,7 @@ export const PHOTO_GROUPS: PhotoGroup[] = [
   {
     index: 0,
     name: 'Bride & Groom',
-    description: 'Just the two of you — portraits and intimate shots.',
+    description: 'Just the two of you: portraits and intimate shots.',
     members: ['Gowtham', 'Nikhita'],
   },
   {
@@ -88,7 +88,7 @@ export const PHOTO_GROUPS: PhotoGroup[] = [
   {
     index: 14,
     name: 'Full Wedding Party',
-    description: 'Everyone together — the grand finale shot!',
+    description: 'Everyone together for the grand finale shot!',
     members: ['All guests & wedding party'],
   },
 ]

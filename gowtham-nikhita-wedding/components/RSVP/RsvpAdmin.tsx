@@ -422,9 +422,9 @@ export default function RsvpAdmin() {
           <div className="bg-white border-2 border-olive-light rounded-xl p-6">
             <h2 className="font-display text-xl text-charcoal mb-5">Event Attendance</h2>
             <div className="space-y-4">
-              <EventBar label="Sangeet — Feb 17" count={stats.sangeet} total={stats.totalGuests} color="bg-olive-mid" />
-              <EventBar label="Ceremony (Kalyaanam) — Feb 18 Morning" count={stats.wedding} total={stats.totalGuests} color="bg-gold" />
-              <EventBar label="Reception — Feb 18 Evening" count={stats.reception} total={stats.totalGuests} color="bg-olive-dark" />
+              <EventBar label="Sangeet · Feb 17" count={stats.sangeet} total={stats.totalGuests} color="bg-olive-mid" />
+              <EventBar label="Ceremony (Kalyaanam) · Feb 18 Morning" count={stats.wedding} total={stats.totalGuests} color="bg-gold" />
+              <EventBar label="Reception · Feb 18 Evening" count={stats.reception} total={stats.totalGuests} color="bg-olive-dark" />
             </div>
           </div>
 
@@ -525,7 +525,7 @@ export default function RsvpAdmin() {
 
           {hotelOnly && (
             <p className="text-xs text-charcoal/50 mb-3">
-              Showing only parties that need a room — {filtered.length} of {submissions.length}.
+              Showing only parties that need a room: {filtered.length} of {submissions.length}.
             </p>
           )}
 
@@ -557,7 +557,7 @@ export default function RsvpAdmin() {
                       <span className="font-medium text-charcoal">{s.submitted_by}</span>
                       {s.notes && <div className="mt-1"><ExpandableNotes notes={s.notes} /></div>}
                     </td>
-                    <td className="px-4 py-3 text-charcoal/50 hidden sm:table-cell">{s.contact_email ?? '—'}</td>
+                    <td className="px-4 py-3 text-charcoal/50 hidden sm:table-cell">{s.contact_email ?? '–'}</td>
                     <td className="px-4 py-3 text-center text-charcoal">{s.attending_count}</td>
                     <td className="px-4 py-3">
                       <div className="space-y-1.5">
@@ -581,7 +581,7 @@ export default function RsvpAdmin() {
                     <td className="px-4 py-3 text-center">
                       {s.needs_hotel
                         ? <span className="inline-flex items-center gap-1 text-charcoal font-medium"><BedDouble size={13} className="text-gold" />Yes</span>
-                        : <span className="text-charcoal/25">—</span>}
+                        : <span className="text-charcoal/25">–</span>}
                     </td>
                     <td className="px-4 py-3 text-charcoal/30 text-xs hidden lg:table-cell">
                       {new Date(s.submitted_at).toLocaleDateString()}

@@ -10,14 +10,14 @@ const milestones: Milestone[] = [
   {
     year: 'Years Earlier',
     heading: 'A wall apart',
-    body: `As kids they spent years of Sundays in the same building and never once met. Same Balavihar, adjoining rooms — Nikki in dance class on one side, Gowtham learning Hinduism on the other. No hallway run-in, no glance across the parking lot. He couldn't have picked her out of a crowd. She had no idea he existed.
+    body: `As kids they spent years of Sundays in the same building and never once met. Same Balavihar, adjoining rooms, with Nikki in dance class on one side and Gowtham learning Hinduism on the other. No hallway run-in, no glance across the parking lot. He couldn't have picked her out of a crowd. She had no idea he existed.
 
 It would take another fifteen years.`,
   },
   {
     year: '2019',
     heading: 'The carpool',
-    body: `They finally met at a university he didn't even go to. A tennis tournament had just wrapped and they weren't set up — they were only going to pick up a friend. Nikki was driving, Gowtham was in the back seat, and they talked a little, but that little bit was enough to create a friendship that would last a lifetime.`,
+    body: `They finally met at a university he didn't even go to. A tennis tournament had just wrapped and they weren't set up. They were only going to pick up a friend. Nikki was driving, Gowtham was in the back seat, and they talked a little, but that little bit was enough to create a friendship that would last a lifetime.`,
   },
   {
     year: '2024',

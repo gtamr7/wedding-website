@@ -26,7 +26,7 @@ export default function PrivacyPolicy() {
       <p style={{ marginTop: 12 }}>We do not collect information through cookies, tracking pixels, or any automated data collection beyond standard server logs.</p>
 
       <h2 style={{ fontSize: '1.05rem', fontWeight: 600, marginTop: 36, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>How We Use Your Information</h2>
-      <p>Your personal information is used solely to coordinate our wedding event — sending invitations, collecting RSVPs, and providing guests with event details. We do not use your information for any marketing or commercial purpose.</p>
+      <p>Your personal information is used solely to coordinate our wedding event: sending invitations, collecting RSVPs, and providing guests with event details. We do not use your information for any marketing or commercial purpose.</p>
 
       <h2 style={{ fontSize: '1.05rem', fontWeight: 600, marginTop: 36, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Data Sharing</h2>
       <p><strong>We do not sell, rent, share, or disclose your personal information or phone number to any third parties for marketing or any other purpose.</strong></p>

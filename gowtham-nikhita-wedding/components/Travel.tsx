@@ -178,7 +178,7 @@ export default function Travel() {
                 </div>
 
                 <p className="text-xs text-ivory/40 mt-4 leading-relaxed">
-                  The two sites are about 25 minutes apart. There is parking at both — a lot
+                  The two sites are about 25 minutes apart. There is parking at both: a lot
                   at the monastery, a garage and street parking at the garden. Shuttle
                   service is being looked into and we&apos;ll confirm here.
                 </p>
@@ -191,7 +191,7 @@ export default function Travel() {
                 <div>
                   <p className="font-medium text-ivory text-sm">February in Miami</p>
                   <p className="text-ivory/60 text-sm mt-1">
-                    Expect ~76°F, sea breeze, and sunny skies — February is the best month
+                    Expect ~76°F, sea breeze, and sunny skies. February is the best month
                     South Florida has. Light layers for the evening events.
                   </p>
                 </div>
@@ -225,7 +225,7 @@ export default function Travel() {
                   ))}
                 </div>
                 <p className="text-xs text-ivory/40 mt-2">
-                  MIA and FLL are both easy — take whichever fare works out better.
+                  MIA and FLL are both easy, so take whichever fare works out better.
                   Driving from Atlanta is ~10 hours via I-75 and the Florida Turnpike.
                 </p>
               </div>
@@ -241,12 +241,13 @@ export default function Travel() {
                     <span className="text-gold font-medium">Hotel block coming soon.</span>{' '}
                     Our planners are putting together a room block near{' '}
                     {VENUES.garden.name}, so you&apos;ll be a short trip from both days.
-                    We&apos;ll post it here with booking details — please hold off until then.
+                    We&apos;ll post it here with booking details as soon as they&apos;re confirmed. We&apos;d
+                    recommend going through the block, as the rates will be discounted.
                   </p>
                 </div>
 
                 <p className="text-sm text-ivory/60 leading-relaxed">
-                  There is a gap between the ceremony and the reception on the 18th — that
+                  There is a gap between the ceremony and the reception on the 18th, so that
                   time is yours to head back and change.
                 </p>
               </div>

@@ -46,7 +46,7 @@ export default function HomePage() {
               <div className="gold-divider w-24 mt-5 mx-auto" />
             </div>
             <div className="grid sm:grid-cols-3 gap-5">
-              <FeatureLink href="/photos" Icon={Camera} title="Photo Line-Up" desc="See exactly when your group is up for photos — live updates so you're never caught off guard." />
+              <FeatureLink href="/photos" Icon={Camera} title="Photo Line-Up" desc="See exactly when your group is up for photos, with live updates so you're never caught off guard." />
               <FeatureLink href="/bets" Icon={TrendingUp} title="The Bets" desc="Over/unders and prop bets on wedding day outcomes. Bragging rights await." />
               <FeatureLink href="/guestbook" Icon={PenLine} title="Guestbook" desc="Leave us a note any time between now and the big day. We'll treasure every word." />
             </div>
