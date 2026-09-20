@@ -20,8 +20,10 @@ export default function Registry() {
           <h2 className="font-display text-5xl sm:text-6xl text-ivory">Registry</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
           <p className="mt-8 text-ivory/60 leading-relaxed">
-            Your presence is the greatest gift of all. If you&apos;d like to give, everything
-            is in one place on our Zola registry.
+            The people in this story are the reason there is one. Crossing time zones,
+            taking the days off, standing with us through two days of ceremonies — that
+            is already the part we&apos;ll be telling our kids about. If you&apos;d like to do
+            something more, everything we could use is in one place on our Zola registry.
           </p>
 
           {/* The single call to action for the whole section, so it is sized

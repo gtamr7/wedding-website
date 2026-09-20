@@ -157,7 +157,7 @@ export default function RsvpForm() {
         <p className="text-charcoal/60 text-sm mt-8 leading-relaxed">
           The venues are set — see the schedule for where each event is happening.
           We&apos;re sending out a fresh round of invitations shortly, and RSVPs
-          will open at the same time. Watch for yours.
+          will open at the same time. Keep an eye on your inbox — yours is on its way.
         </p>
         <p className="text-gold text-xs mt-6 font-medium tracking-wide">
           The dates haven&apos;t changed — February 17–18, 2027

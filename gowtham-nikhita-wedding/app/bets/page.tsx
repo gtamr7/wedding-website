@@ -5,7 +5,7 @@ import BetBoard from '@/components/Bets/BetBoard'
 
 export const metadata: Metadata = {
   title: 'The Bets · Gowtham & Nikhita',
-  description: 'Wedding day over/unders and prop bets. No real money — just bragging rights.',
+  description: 'Wedding day over/unders and prop bets. Played for bragging rights.',
 }
 
 export default function BetsPage() {
@@ -16,7 +16,7 @@ export default function BetsPage() {
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="text-center mb-10">
-            <p className="text-xs tracking-widest uppercase text-gold mb-3">For Fun Only · No Real Money</p>
+            <p className="text-xs tracking-widest uppercase text-gold mb-3">Just For Fun</p>
             <h1 className="font-display text-5xl sm:text-6xl text-charcoal">The Bets</h1>
             <div className="gold-divider w-24 mt-4 mx-auto" />
             <p className="text-charcoal/50 text-sm mt-4 leading-relaxed max-w-sm mx-auto">

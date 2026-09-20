@@ -41,14 +41,14 @@ export default function HomePage() {
         <section className="section-py px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <p className="text-xs tracking-widest uppercase text-gold mb-3">Day-of Features</p>
+              <p className="text-xs tracking-widest uppercase text-gold mb-3">For Our Guests</p>
               <h2 className="font-display text-4xl sm:text-5xl text-ivory">More to Explore</h2>
               <div className="gold-divider w-24 mt-5 mx-auto" />
             </div>
             <div className="grid sm:grid-cols-3 gap-5">
               <FeatureLink href="/photos" Icon={Camera} title="Photo Line-Up" desc="See exactly when your group is up for photos — live updates so you're never caught off guard." />
               <FeatureLink href="/bets" Icon={TrendingUp} title="The Bets" desc="Over/unders and prop bets on wedding day outcomes. Bragging rights await." />
-              <FeatureLink href="/guestbook" Icon={PenLine} title="Guestbook" desc="Leave us a note. We'll treasure every word." />
+              <FeatureLink href="/guestbook" Icon={PenLine} title="Guestbook" desc="Leave us a note any time between now and the big day. We'll treasure every word." />
             </div>
           </div>
         </section>

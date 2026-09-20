@@ -10,7 +10,7 @@ const milestones: Milestone[] = [
   {
     year: 'Years Earlier',
     heading: 'A wall apart',
-    body: `For years they spent every Sunday in the same building and never once met. Same Balavihar, adjoining rooms — Nikki in dance class on one side, Gowtham learning Hinduism on the other. No hallway run-in, no glance across the parking lot. He couldn't have picked her out of a crowd. She had no idea he existed.
+    body: `As kids they spent years of Sundays in the same building and never once met. Same Balavihar, adjoining rooms — Nikki in dance class on one side, Gowtham learning Hinduism on the other. No hallway run-in, no glance across the parking lot. He couldn't have picked her out of a crowd. She had no idea he existed.
 
 It would take another fifteen years.`,
   },

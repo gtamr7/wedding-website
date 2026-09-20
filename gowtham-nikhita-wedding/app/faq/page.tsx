@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
-import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'FAQ · Gowtham & Nikhita',
@@ -24,7 +23,7 @@ function FaqLink({ href, children }: { href: string; children: React.ReactNode }
 const faqs = [
   {
     q: 'Is there parking at the venues?',
-    a: 'Yes, at both. The Ancient Spanish Monastery has its own lot, and Miami Beach Botanical Garden has a parking garage alongside street parking. Shuttle service is still being looked into — we’ll post it here if it happens.',
+    a: 'Yes, at both. The Ancient Spanish Monastery has its own lot, and Miami Beach Botanical Garden has a parking garage alongside street parking. Shuttle service is still being looked into — we’ll update this page with any new information.',
   },
   {
     q: 'When should I arrive?',
@@ -32,7 +31,7 @@ const faqs = [
   },
   {
     q: 'Is there a hotel block?',
-    a: 'Our planners are arranging a room block near Miami Beach Botanical Garden, where the ceremony and reception are. We’ll post booking details here — please hold off on booking until then.',
+    a: 'Our planners are arranging a room block near Miami Beach Botanical Garden, where the ceremony and reception are. We’ll post booking details here as soon as they’re confirmed — we’d recommend going through the block, as the rates will be discounted.',
   },
   {
     q: 'Where can I get outfits for the events?',
@@ -73,18 +72,6 @@ const faqs = [
         <p className="mt-4 text-sm text-charcoal/50">
           Shipping from overseas can take a few weeks, so give yourself time if you order online.
         </p>
-      </>
-    ),
-  },
-  {
-    q: 'What’s the schedule?',
-    a: (
-      <>
-        See the{' '}
-        <Link href="/#schedule" className="underline text-gold hover:text-gold-light transition-colors">
-          Schedule
-        </Link>{' '}
-        section on the home page for the full lineup.
       </>
     ),
   },
