@@ -22,35 +22,6 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
   )
 }
 
-const chapters = [
-  {
-    num: '01',
-    heading: 'A wall apart',
-    body: `For years they spent every Sunday in the same building and never once met. Same Balavihar, adjoining rooms — Nikki in dance class on one side, Gowtham learning Hinduism on the other. No hallway run-in, no glance across the parking lot. He couldn't have picked her out of a crowd. She had no idea he existed.
-
-It would take another fifteen years.`,
-  },
-  {
-    num: '02',
-    heading: 'The carpool',
-    body: `A tennis tournament had just wrapped and they weren't set up — they were only going to pick up a friend. Nikki was driving, Gowtham was in the back seat, and they talked a little, but that little bit was enough to create a friendship that would last a lifetime.`,
-  },
-  {
-    num: '03',
-    heading: 'A very long detour',
-    body: `For five years they were the kind of friends who never had to explain themselves. The kind that just felt like home. Then life pulled them apart for a stretch, but like a pendulum, they swung back to each other. This time something was different.`,
-  },
-  {
-    num: '04',
-    heading: 'Japan. A garden. A very overused bit.',
-    body: `For years, Gowtham had a move. He'd drop down to one knee out of nowhere, let the moment hang just long enough, and then start tying his shoe. Every time. Nikki stopped falling for it eventually. So when he got down on one knee in a national garden in Japan on a warm summer afternoon, she probably thought she knew what was coming. She didn't. He had a ring.
-
-She said yes.
-
-They found some grass, put down a picnic blanket, and spent the rest of the day in the sun calling everyone they loved and barely getting the words out.`,
-  },
-]
-
 export default function OurStory() {
   const headerRef = useRef<HTMLDivElement>(null)
   const headerInView = useInView(headerRef, { once: true, margin: '-80px' })
@@ -138,27 +109,11 @@ export default function OurStory() {
             </FadeIn>
           </div>
 
-          {/* Narrative chapters */}
-          <div className="space-y-10">
-            {chapters.map((ch, i) => (
-              <FadeIn key={ch.num} delay={0.15 + i * 0.1}>
-                <div className="flex items-baseline gap-3 mb-2">
-                  <span className="text-[10px] tracking-widest uppercase text-gold/50 font-medium">{ch.num}</span>
-                  <h3 className="font-display text-3xl text-ivory">{ch.heading}</h3>
-                </div>
-                <div className="space-y-4">
-                  {ch.body.split('\n\n').map((para, j) => (
-                    <p key={j} className="text-ivory/65 leading-relaxed">{para}</p>
-                  ))}
-                </div>
-              </FadeIn>
-            ))}
+          {/* Narrative timeline */}
+          <FadeIn delay={0.15}>
+            <Timeline />
+          </FadeIn>
 
-            <FadeIn delay={0.5}>
-              <h3 className="font-display text-3xl text-ivory mb-0">The Journey</h3>
-              <Timeline />
-            </FadeIn>
-          </div>
         </div>
 
         {/* Pull quote */}
