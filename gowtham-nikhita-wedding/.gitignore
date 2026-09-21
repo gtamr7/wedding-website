@@ -42,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local RSVP data backups (guest PII, never commit)
+.rsvp-backups/
