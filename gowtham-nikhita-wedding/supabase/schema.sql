@@ -51,15 +51,15 @@ create unique index if not exists bet_picks_unique
 -- ============================================================
 insert into bets (category, question, option_a, option_b, option_a_line, option_b_line, sort_order) values
 -- Over/Unders
-('over_under', 'Ceremony length — will it go over or under 45 minutes?',   'Over',  'Under', -110, -110, 1),
-('over_under', 'Groom arrives — over or under 10 minutes late?',             'Over',  'Under', +130, -150, 2),
-('over_under', 'Times the bride cries — over or under 2.5?',                'Over',  'Under', -130, +110, 3),
-('over_under', 'Times the groom cries — over or under 0.5?',                'Over',  'Under', +150, -170, 4),
-('over_under', 'Speeches at reception — over or under 4.5?',                'Over',  'Under', -110, -110, 5),
-('over_under', 'Reception duration — over or under 4 hours?',               'Over',  'Under', -120, +100, 6),
-('over_under', 'First guest to leave — over or under 2 hours in?',          'Over',  'Under', -110, -110, 7),
-('over_under', 'Songs played by DJ — over or under 30?',                    'Over',  'Under', -140, +120, 8),
-('over_under', 'Kids who fall asleep during ceremony — over or under 1.5?', 'Over',  'Under', -110, -110, 9),
+('over_under', 'Ceremony length: will it go over or under 90 minutes?',   'Over',  'Under', -110, -110, 1),
+('over_under', 'Groom arrives: over or under 10 minutes late?',             'Over',  'Under', +130, -150, 2),
+('over_under', 'Times the bride cries: over or under 2.5?',                'Over',  'Under', -130, +110, 3),
+('over_under', 'Times the groom cries: over or under 0.5?',                'Over',  'Under', +150, -170, 4),
+('over_under', 'Speeches at reception: over or under 4.5?',                'Over',  'Under', -110, -110, 5),
+('over_under', 'Reception duration: over or under 4 hours?',               'Over',  'Under', -120, +100, 6),
+('over_under', 'First guest to leave: over or under 2 hours in?',          'Over',  'Under', -110, -110, 7),
+('over_under', 'Songs played by DJ: over or under 30?',                    'Over',  'Under', -140, +120, 8),
+('over_under', 'Kids who fall asleep during ceremony: over or under 1.5?', 'Over',  'Under', -110, -110, 9),
 -- Props
 ('prop', 'What does the groom arrive in?',                                   'Car',   'Horse / Other', -300, +250, 10),
 ('prop', 'Who cries first?',                                                 'Bride', 'Groom / Parent', -150, +130, 11),
