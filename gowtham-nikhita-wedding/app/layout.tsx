@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Italiana, Jost } from 'next/font/google'
+import { Italiana, Jost, Pinyon_Script } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import ScrollResetOnRefresh from '@/components/ScrollResetOnRefresh'
@@ -35,6 +35,15 @@ const jost = Jost({
   display: 'swap',
 })
 
+// Script face for the RSVP invitation only: the salutation on the envelope
+// card and the guest names. It ships one weight, same caveat as Italiana.
+const pinyon = Pinyon_Script({
+  variable: '--font-pinyon',
+  subsets: ['latin'],
+  weight: ['400'],
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://gowthamandnikhita.com'),
   title: 'Gowtham & Nikhita · February 17–18, 2027',
@@ -51,7 +60,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${italiana.variable} ${jost.variable}`}>
+    <html lang="en" className={`${italiana.variable} ${jost.variable} ${pinyon.variable}`}>
       <body className="min-h-screen bg-ivory text-charcoal font-sans antialiased">
         <ScrollResetOnRefresh />
         {/* Wraps every route, so the password is asked once and remembered.

@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { Lock } from 'lucide-react'
 import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
+import EnvelopeReveal, { joinNames } from './EnvelopeReveal'
+import WaxSeal from './WaxSeal'
 import { venueAddress, cityShort, RSVP_PAUSED, type VenueKey } from '@/lib/wedding'
 
 type EventIcon = (props: { size?: number; className?: string }) => React.JSX.Element
@@ -100,16 +102,32 @@ function initAttendee(m: PartyMember): AttendeeState {
 export default function RsvpForm() {
   const [step, setStep] = useState<Step>('lookup')
 
-  // Confetti on success
+  // Marigold petals on success, falling from the top once the seal has
+  // stamped down. The shower is timed to the seal, not to the step change.
   useEffect(() => {
     if (step !== 'success') return
-    const colors = ['#B8972A', '#D4B84A', '#FDFCF8', '#4A5C2F', '#6B7D4A']
-    const burst = (x: number, angle: number) =>
-      confetti({ particleCount: 70, angle, spread: 60, origin: { x, y: 0.9 }, colors, scalar: 1.1 })
-    burst(0.2, 65)
-    setTimeout(() => burst(0.8, 115), 120)
-    setTimeout(() => burst(0.5, 90), 300)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const petal = confetti.shapeFromPath({ path: 'M5 0 C9 5 9 11 5 16 C1 11 1 5 5 0 Z' })
+    const colors = ['#F2A100', '#E8850C', '#F6C343', '#D4B84A', '#FDFCF8']
+    const shower = (x: number) =>
+      confetti({
+        particleCount: 45, angle: 270, spread: 80, startVelocity: 8,
+        gravity: 0.45, drift: 0.4, ticks: 400, decay: 0.95,
+        origin: { x, y: -0.05 }, shapes: [petal], colors, scalar: 1.6,
+      })
+    const timers = [
+      setTimeout(() => shower(0.25), 650),
+      setTimeout(() => shower(0.75), 800),
+      setTimeout(() => shower(0.5), 1000),
+    ]
+    return () => timers.forEach(clearTimeout)
   }, [step])
+
+  // ── Envelope reveal ───────────────────────────────────────
+  // First names of the party, set when a lookup succeeds. While set, the
+  // envelope plays in place of the step it opens onto.
+  const [revealFor, setRevealFor] = useState<string[] | null>(null)
+  const endReveal = useCallback(() => setRevealFor(null), [])
 
   // ── Lookup state ──────────────────────────────────────────
   const [lookupFirst, setLookupFirst] = useState('')
@@ -217,6 +235,7 @@ export default function RsvpForm() {
       setPartyId(data.partyId)
       setSubmitterName(submitter?.name ?? `${lookupFirst} ${lookupLast}`.trim())
       setAttendees(data.party.map(initAttendee))
+      setRevealFor(data.party.map(m => m.firstName || m.name.split(' ')[0]))
 
       if (data.alreadyRsvped && data.existingSubmission) {
         setExistingRows(data.existingSubmission)
@@ -341,7 +360,10 @@ export default function RsvpForm() {
     return acc
   }, {})
 
-  const submitterFirstName = submitterName.split(' ')[0]
+  const partyFirstNames = attendees.map(a => a.firstName || a.name.split(' ')[0])
+  // What the AnimatePresence below switches on: the envelope stands in for
+  // whichever step the lookup opened onto until it finishes.
+  const view: Step | 'envelope' = revealFor ? 'envelope' : step
 
   // ── Render ────────────────────────────────────────────────
   return (
@@ -370,8 +392,13 @@ export default function RsvpForm() {
 
     <AnimatePresence mode="wait">
 
+      {/* ── Envelope, between lookup and the party's invitation ── */}
+      {view === 'envelope' && revealFor && (
+        <EnvelopeReveal key="envelope" names={revealFor} onDone={endReveal} />
+      )}
+
       {/* ── Step: Lookup ── */}
-      {step === 'lookup' && (
+      {view === 'lookup' && (
         <motion.div key="lookup" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }}
           className="max-w-md mx-auto">
           <form onSubmit={handleLookup} className="space-y-5">
@@ -456,7 +483,7 @@ export default function RsvpForm() {
       )}
 
       {/* ── Step: Already RSVPed ── */}
-      {step === 'already-rsvped' && (
+      {view === 'already-rsvped' && (
         <motion.div key="already-rsvped" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }}
           className="max-w-md mx-auto">
           <div className="text-center mb-8">
@@ -507,13 +534,13 @@ export default function RsvpForm() {
       )}
 
       {/* ── Step: Party Selection ── */}
-      {step === 'party' && (
+      {view === 'party' && (
         <motion.div key="party" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }}
           className="max-w-lg mx-auto">
 
           <div className="text-center mb-8">
-            <p className="font-display text-2xl text-gold">Welcome, {submitterFirstName}!</p>
-            <p className="text-sm text-charcoal/40 mt-1">Select who&apos;s attending and which events.</p>
+            <p className="font-script text-4xl sm:text-5xl text-charcoal leading-tight">Dear {joinNames(partyFirstNames)},</p>
+            <p className="text-sm text-charcoal/50 mt-3">Let us know who&apos;s coming and which events you&apos;ll join.</p>
           </div>
 
           <div className="space-y-4 mb-6">
@@ -601,7 +628,7 @@ export default function RsvpForm() {
       )}
 
       {/* ── Step: Details ── */}
-      {step === 'details' && (
+      {view === 'details' && (
         <motion.form key="details" onSubmit={handleSubmit}
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }}
           className="max-w-lg mx-auto space-y-6">
@@ -614,7 +641,7 @@ export default function RsvpForm() {
           {/* Email */}
           <div className="space-y-3">
             <div>
-              <label htmlFor="rsvp-email" className="block text-xs uppercase tracking-widests text-charcoal/50 mb-2">
+              <label htmlFor="rsvp-email" className="block text-xs uppercase tracking-widest text-charcoal/50 mb-2">
                 Your Email
               </label>
               <input
@@ -741,19 +768,27 @@ export default function RsvpForm() {
       )}
 
       {/* ── Step: Success ── */}
-      {step === 'success' && (
+      {view === 'success' && (
         <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
           className="text-center py-10 max-w-md mx-auto">
 
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.2 }}
-            className="w-20 h-20 rounded-full bg-olive-dark/10 flex items-center justify-center mx-auto mb-6">
-            <motion.svg viewBox="0 0 24 24" className="w-10 h-10 text-olive-dark">
-              <motion.path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" strokeWidth={2.5}
-                strokeLinecap="round" strokeLinejoin="round"
-                initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.5, delay: 0.5 }} />
-            </motion.svg>
-          </motion.div>
+          {/* Seal stamps down from above; a ring of pressed wax spreads out
+              as it lands. */}
+          <div className="relative w-24 h-24 mx-auto mb-6">
+            <motion.div
+              className="absolute inset-0 rounded-full border-2 border-gold/50"
+              initial={{ scale: 0.6, opacity: 0 }}
+              animate={{ scale: [0.6, 1.6], opacity: [0, 0.8, 0] }}
+              transition={{ duration: 0.7, delay: 0.55, ease: 'easeOut' }}
+            />
+            <motion.div
+              initial={{ scale: 2.4, opacity: 0, y: -30, rotate: -12 }}
+              animate={{ scale: 1, opacity: 1, y: 0, rotate: 0 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.25 }}
+            >
+              <WaxSeal size={96} className="drop-shadow-[0_6px_8px_rgba(0,0,0,0.28)]" />
+            </motion.div>
+          </div>
 
           <h2 className="font-display text-4xl text-charcoal mb-2">We Can&apos;t Wait!</h2>
           <p className="text-charcoal/50 text-sm max-w-sm mx-auto mb-8">

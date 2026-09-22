@@ -11,6 +11,7 @@
   --color-muted: #8A9080;
 
   --font-display: var(--font-italiana), "Didot", "Bodoni MT", Georgia, serif;
+  --font-script: var(--font-pinyon), "Snell Roundhand", "Apple Chancery", cursive;
   --font-sans: var(--font-jost), "Avenir Next", "Segoe UI", system-ui, sans-serif;
 }
 
