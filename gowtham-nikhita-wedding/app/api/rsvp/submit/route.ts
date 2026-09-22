@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
 type GuestInput = {
   name: string
@@ -8,6 +8,9 @@ type GuestInput = {
   wedding: boolean
   reception: boolean
   dietary: string
+  // A spelling fix the guest suggested for this person. Held for approval,
+  // never applied here.
+  nameCorrection?: { firstName: string; lastName: string } | null
 }
 
 type SubmitBody = {
@@ -60,9 +63,47 @@ export async function POST(request: Request) {
     })
     if (error) throw error
 
+    // Suggested spellings are best-effort: the RSVP itself is already saved,
+    // so a failure here is logged rather than reported back to the guest.
+    await saveNameCorrections(supabase, partyId, guests)
+
     return Response.json({ success: true, submissionId })
   } catch (err) {
     console.error('[rsvp-submit]', err)
     return Response.json({ error: 'Submit failed' }, { status: 500 })
+  }
+}
+
+const MAX_NAME = 60
+
+async function saveNameCorrections(
+  supabase: SupabaseClient,
+  partyId: string | null,
+  guests: GuestInput[],
+) {
+  const fixes = guests.flatMap(g => {
+    const first = g.nameCorrection?.firstName?.trim().slice(0, MAX_NAME) ?? ''
+    const last  = g.nameCorrection?.lastName?.trim().slice(0, MAX_NAME) ?? ''
+    return g.guestListId && first ? [{ id: g.guestListId, first, last }] : []
+  })
+  // Without a party there is nothing to check the ids against, so a
+  // suggestion could land on anyone's row. Only party guests can suggest.
+  if (!fixes.length || !partyId) return
+
+  try {
+    for (const f of fixes) {
+      const { error } = await supabase
+        .from('guest_list')
+        .update({
+          corrected_first_name: f.first,
+          corrected_last_name: f.last,
+          correction_requested_at: new Date().toISOString(),
+        })
+        .eq('id', f.id)
+        .eq('party_id', partyId)
+      if (error) throw error
+    }
+  } catch (err) {
+    console.error('[rsvp-submit] name correction not saved', err)
   }
 }

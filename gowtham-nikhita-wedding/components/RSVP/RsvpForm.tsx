@@ -32,7 +32,11 @@ type AttendeeState = {
   guestListId: string | null
   name: string
   firstName: string
+  lastName: string
   isSubmitter: boolean
+  // Spelling fix suggested for this guest. Sent with the RSVP and held for
+  // approval; the name shown and submitted stays the one on the list.
+  correction: { firstName: string; lastName: string } | null
   attending: boolean
   sangeet: boolean
   wedding: boolean
@@ -43,6 +47,7 @@ type AttendeeState = {
 type ExistingRow = {
   submission_id: string
   guest_name: string
+  guest_list_id: string | null
   attending: boolean
   sangeet: boolean
   wedding: boolean
@@ -89,7 +94,9 @@ function initAttendee(m: PartyMember): AttendeeState {
     guestListId: m.id,
     name: m.name,
     firstName: m.firstName,
+    lastName: m.lastName,
     isSubmitter: m.isSubmitter,
+    correction: null,
     attending: true,
     sangeet: false,
     wedding: false,
@@ -155,6 +162,11 @@ export default function RsvpForm() {
   const emailValid   = EMAIL_RE.test(email.trim())
   const emailsMatch  = email.trim().toLowerCase() === emailConfirm.trim().toLowerCase()
   const emailReady   = emailValid && emailsMatch
+
+  // ── Spelling-fix editor (which guest, and the draft) ──────
+  const [fixingIndex, setFixingIndex] = useState<number | null>(null)
+  const [fixFirst, setFixFirst] = useState('')
+  const [fixLast,  setFixLast]  = useState('')
 
   // ── Existing RSVP ─────────────────────────────────────────
   const [existingRows, setExistingRows] = useState<ExistingRow[]>([])
@@ -271,6 +283,25 @@ export default function RsvpForm() {
 
   const attendingGuests = attendees.filter(a => a.attending)
 
+  // ── Spelling fixes ────────────────────────────────────────
+  // Only for guests on a party: the server checks each suggestion against
+  // the party it was sent with, and ignores it without one.
+  const startFix = (i: number) => {
+    const a = attendees[i]
+    setFixFirst(a.correction?.firstName ?? a.firstName)
+    setFixLast(a.correction?.lastName ?? a.lastName)
+    setFixingIndex(i)
+  }
+
+  const saveFix = (i: number) => {
+    const a = attendees[i]
+    const first = fixFirst.trim()
+    const last  = fixLast.trim()
+    const unchanged = `${first} ${last}`.trim().toLowerCase() === a.name.trim().toLowerCase()
+    updateAttendee(i, { correction: !first || unchanged ? null : { firstName: first, lastName: last } })
+    setFixingIndex(null)
+  }
+
   // ── Party → Details ───────────────────────────────────────
   const handlePartyNext = () => {
     const anyEventSelected = attendingGuests.some(a => a.sangeet || a.wedding || a.reception)
@@ -304,6 +335,7 @@ export default function RsvpForm() {
             wedding:     a.wedding,
             reception:   a.reception,
             dietary:     a.dietary.trim(),
+            nameCorrection: a.correction,
           })),
         }),
       })
@@ -324,7 +356,11 @@ export default function RsvpForm() {
   // which calendar links to offer.
   const attendeesFromExisting = () =>
     attendees.map(a => {
-      const row = existingRows.find(r => r.guest_name.toLowerCase() === a.name.toLowerCase())
+      // By guest id first: an approved spelling fix renames the saved rows,
+      // and a name match alone would miss a guest whose name has changed.
+      const row =
+        existingRows.find(r => a.guestListId && r.guest_list_id === a.guestListId) ??
+        existingRows.find(r => r.guest_name.toLowerCase() === a.name.toLowerCase())
       if (!row) return a
       return {
         ...a,
@@ -565,8 +601,55 @@ export default function RsvpForm() {
                       {a.isSubmitter && <span className="ml-1.5 text-xs text-charcoal/35 font-normal">(you)</span>}
                     </p>
                     {!a.attending && <p className="text-xs text-charcoal/30 mt-0.5">Not attending</p>}
+                    {a.correction && fixingIndex !== i && (
+                      <p className="text-xs text-charcoal/50 mt-0.5">
+                        Correct spelling: <span className="font-medium text-charcoal/70">{`${a.correction.firstName} ${a.correction.lastName}`.trim()}</span>
+                      </p>
+                    )}
                   </div>
+                  {partyId && a.guestListId && fixingIndex !== i && (
+                    <button type="button" onClick={() => startFix(i)}
+                      className="text-[11px] text-gold hover:text-gold-light transition-colors shrink-0">
+                      {a.correction ? 'Edit fix' : 'Fix spelling'}
+                    </button>
+                  )}
                 </div>
+
+                {/* Spelling fix: sent for review with the RSVP, not applied here */}
+                <AnimatePresence>
+                  {fixingIndex === i && (
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }}
+                      className="border-t border-olive-light/60 px-4 pb-4 pt-3 overflow-hidden">
+                      <p className="text-xs text-charcoal/50 mb-2.5">
+                        How should we spell this name? We&apos;ll update our list once we&apos;ve had a look.
+                      </p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <input type="text" value={fixFirst} onChange={e => setFixFirst(e.target.value)}
+                          aria-label="Correct first name" placeholder="First" maxLength={60} autoFocus
+                          className="w-full border-2 border-olive-light rounded-lg px-3 py-2 text-sm text-charcoal bg-white focus:border-gold focus:outline-none transition-colors" />
+                        <input type="text" value={fixLast} onChange={e => setFixLast(e.target.value)}
+                          aria-label="Correct last name" placeholder="Last" maxLength={60}
+                          className="w-full border-2 border-olive-light rounded-lg px-3 py-2 text-sm text-charcoal bg-white focus:border-gold focus:outline-none transition-colors" />
+                      </div>
+                      <div className="flex gap-2 mt-2.5">
+                        <button type="button" onClick={() => saveFix(i)} disabled={!fixFirst.trim()}
+                          className="px-3 py-1.5 rounded-lg bg-olive-dark text-white text-xs font-medium hover:bg-olive-mid transition-colors disabled:opacity-40">
+                          Save
+                        </button>
+                        <button type="button" onClick={() => setFixingIndex(null)}
+                          className="px-3 py-1.5 rounded-lg border border-olive-light text-charcoal/50 text-xs hover:border-olive-mid transition-colors">
+                          Cancel
+                        </button>
+                        {a.correction && (
+                          <button type="button" onClick={() => { updateAttendee(i, { correction: null }); setFixingIndex(null) }}
+                            className="ml-auto text-xs text-charcoal/40 hover:text-charcoal/60 transition-colors">
+                            Remove fix
+                          </button>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {/* Event checkboxes — only when attending */}
                 <AnimatePresence>

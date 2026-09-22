@@ -9,6 +9,7 @@ import type { RsvpSubmission, GuestbookEntry } from '@/lib/types'
 type AuthState = 'loading' | 'locked' | 'unlocked'
 type SortKey = 'submitted_by' | 'submitted_at' | 'attending_count'
 type SortDir = 'asc' | 'desc'
+type NameCorrection = { id: string; currentName: string; suggestedName: string; requestedAt: string | null }
 
 function PinEntry({ onUnlock }: { onUnlock: (pin: string) => void }) {
   const [pin, setPin] = useState('')
@@ -121,6 +122,9 @@ export default function RsvpAdmin() {
   const [activeTab, setActiveTab] = useState<'overview' | 'table' | 'guestbook'>('overview')
   const [guestbook, setGuestbook] = useState<GuestbookEntry[]>([])
   const [gbLoading, setGbLoading] = useState(false)
+  const [corrections, setCorrections] = useState<NameCorrection[]>([])
+  const [correctionError, setCorrectionError] = useState('')
+  const [correctionBusy, setCorrectionBusy] = useState<string | null>(null)
 
   useEffect(() => {
     const stored = sessionStorage.getItem('rsvpAdminAuth')
@@ -129,7 +133,7 @@ export default function RsvpAdmin() {
   }, [])
 
   useEffect(() => {
-    if (auth === 'unlocked' && adminPin) fetchRsvps()
+    if (auth === 'unlocked' && adminPin) { fetchRsvps(); fetchCorrections() }
   }, [auth, adminPin])
 
   useEffect(() => {
@@ -146,6 +150,37 @@ export default function RsvpAdmin() {
       console.error('Failed to fetch RSVPs')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchCorrections = async () => {
+    try {
+      const res = await fetch('/api/admin/name-corrections', { headers: { 'x-admin-pin': adminPin } })
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? 'Failed')
+      setCorrections(await res.json())
+      setCorrectionError('')
+    } catch (e) {
+      // Most likely supabase/guest-name-corrections.sql has not been run yet
+      setCorrectionError(e instanceof Error ? e.message : 'Failed')
+    }
+  }
+
+  const resolveCorrection = async (id: string, action: 'approve' | 'dismiss') => {
+    setCorrectionBusy(id)
+    try {
+      const res = await fetch('/api/admin/name-corrections', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-pin': adminPin },
+        body: JSON.stringify({ id, action }),
+      })
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? 'Failed')
+      setCorrections(prev => prev.filter(c => c.id !== id))
+      // Approving renames the guest on their saved RSVP too
+      if (action === 'approve') fetchRsvps()
+    } catch (e) {
+      setCorrectionError(e instanceof Error ? e.message : 'Failed')
+    } finally {
+      setCorrectionBusy(null)
     }
   }
 
@@ -373,7 +408,7 @@ export default function RsvpAdmin() {
           <p className="text-charcoal/40 text-sm mt-1">{stats.totalSubmissions} submissions · {stats.totalGuests} attending guests</p>
         </div>
         <div className="flex gap-3">
-          <button onClick={fetchRsvps} className="text-sm text-charcoal/50 hover:text-charcoal border border-olive-light rounded-xl px-4 py-2 transition-colors">
+          <button onClick={() => { fetchRsvps(); fetchCorrections() }} className="text-sm text-charcoal/50 hover:text-charcoal border border-olive-light rounded-xl px-4 py-2 transition-colors">
             ↻ Refresh
           </button>
           <button onClick={() => void exportXlsx()} disabled={!submissions.length || exporting} className="bg-gold text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-40">
@@ -381,6 +416,41 @@ export default function RsvpAdmin() {
           </button>
         </div>
       </div>
+
+      {/* Spelling fixes guests suggested while RSVPing. Shown above the tabs
+          so a pending one is seen whichever tab is open. */}
+      {(corrections.length > 0 || correctionError) && (
+        <div className="bg-white border-2 border-gold/50 rounded-xl p-5 mb-8">
+          <h2 className="font-display text-xl text-charcoal">Name corrections</h2>
+          <p className="text-xs text-charcoal/45 mt-1 mb-4">
+            Approving renames the guest on the list, which also changes the name they look themselves up with, and on any RSVP they have already sent.
+          </p>
+          {correctionError && (
+            <p className="text-xs text-red-500 mb-3">
+              Couldn&apos;t load or update corrections: {correctionError}. If this is new, run supabase/guest-name-corrections.sql in the Supabase SQL editor.
+            </p>
+          )}
+          <div className="space-y-2">
+            {corrections.map(c => (
+              <div key={c.id} className="flex items-center gap-3 flex-wrap text-sm border border-olive-light rounded-lg px-4 py-3">
+                <span className="text-charcoal/45 line-through">{c.currentName}</span>
+                <span className="text-charcoal/30">→</span>
+                <span className="font-medium text-charcoal">{c.suggestedName}</span>
+                <div className="ml-auto flex gap-2">
+                  <button onClick={() => void resolveCorrection(c.id, 'approve')} disabled={correctionBusy === c.id}
+                    className="px-3 py-1.5 rounded-lg bg-olive-dark text-white text-xs font-medium hover:bg-olive-mid transition-colors disabled:opacity-40">
+                    Approve
+                  </button>
+                  <button onClick={() => void resolveCorrection(c.id, 'dismiss')} disabled={correctionBusy === c.id}
+                    className="px-3 py-1.5 rounded-lg border border-olive-light text-charcoal/50 text-xs hover:border-olive-mid transition-colors disabled:opacity-40">
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Tabs */}
       <div className="flex gap-1 bg-olive-light/40 rounded-xl p-1 mb-8 w-fit">
