@@ -1,33 +1,24 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Countdown from './Countdown'
 import FloatingPetals from './FloatingPetals'
 import { venueShort } from '@/lib/wedding'
 
 export default function Hero() {
-  const containerRef = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] })
-
-  const photoY  = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
-  const bgGlowY = useTransform(scrollYProgress, [0, 1], ['0%', '45%'])
-  const textY   = useTransform(scrollYProgress, [0, 1], ['0%', '-15%'])
-
+  // The parallax is CSS scroll-driven animation (the hero-drift-* classes in
+  // globals.css), not framer's useScroll. That ran on the main thread every
+  // scroll frame and dropped frames on phones whenever anything else was
+  // busy, such as decoding this photo. The CSS version runs on the compositor.
   return (
     <section
-      ref={containerRef}
-      className="relative overflow-hidden"
+      className="hero-drift-scope relative overflow-hidden"
       style={{ minHeight: '100vh', background: '#111a0a' }}
       aria-label="Hero"
     >
       {/* Background photo */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <motion.div
-          style={{ y: photoY }}
-          className="absolute -top-[25%] -bottom-[25%] left-0 right-0"
-        >
+        <div className="hero-drift-photo absolute -top-[25%] -bottom-[25%] left-0 right-0">
           <Image
             src="/gallery/IMG_0563.jpg"
             alt=""
@@ -37,7 +28,7 @@ export default function Hero() {
             quality={90}
             priority
           />
-        </motion.div>
+        </div>
       </div>
 
       {/* Dark olive overlay */}
@@ -48,22 +39,17 @@ export default function Hero() {
       />
 
       {/* Parallax gold glow */}
-      <motion.div
-        style={{ y: bgGlowY }}
-        className="absolute inset-0 pointer-events-none"
-        aria-hidden="true"
-      >
+      <div className="hero-drift-glow absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 50% 40% at 50% 50%, rgba(184,151,42,0.12) 0%, transparent 100%)' }} />
         <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 30% 25% at 30% 60%, rgba(184,151,42,0.06) 0%, transparent 100%)' }} />
-      </motion.div>
+      </div>
 
       <FloatingPetals />
 
       {/* Text — CSS animations avoid SSR hydration flash while preserving staggered reveal */}
       <div className="flex items-center justify-center min-h-screen px-6">
-        <motion.div
-          style={{ y: textY }}
-          className="max-w-sm sm:max-w-md lg:max-w-xl text-center flex flex-col items-center gap-5 sm:gap-7 py-20"
+        <div
+          className="hero-drift-text max-w-sm sm:max-w-md lg:max-w-xl text-center flex flex-col items-center gap-5 sm:gap-7 py-20"
         >
           <p
             className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-light/60"
@@ -110,7 +96,7 @@ export default function Hero() {
           <div style={{ animation: 'heroFadeUp 0.8s ease-out 1.1s both' }}>
             <Countdown />
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Scroll indicator */}

@@ -99,6 +99,27 @@ body {
   100% { transform: translateY(110vh)  translateX(0px)   rotate(360deg); }
 }
 
+/* Hero parallax, driven by scroll position on the compositor thread. Over
+   the first screen of scrolling the photo sinks, the glow sinks faster and
+   the text rises. Browsers without scroll timelines get a still hero. */
+@supports (animation-timeline: view()) {
+  /* Progress runs from the top of the page until the hero has scrolled
+     fully out, matching the framer version this replaced. */
+  .hero-drift-scope { view-timeline: --hero; }
+  .hero-drift-photo, .hero-drift-glow, .hero-drift-text {
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: --hero;
+    animation-range: exit 0% exit 100%;
+  }
+  .hero-drift-photo { animation-name: heroDriftPhoto; }
+  .hero-drift-glow  { animation-name: heroDriftGlow; }
+  .hero-drift-text  { animation-name: heroDriftText; }
+}
+@keyframes heroDriftPhoto { to { translate: 0 12%;  } }
+@keyframes heroDriftGlow  { to { translate: 0 45%;  } }
+@keyframes heroDriftText  { to { translate: 0 -15%; } }
+
 /* Reduced-motion overrides */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -107,6 +128,7 @@ body {
     transition-duration: 0.01ms !important;
   }
   html { scroll-behavior: auto; }
+  .hero-drift-photo, .hero-drift-glow, .hero-drift-text { animation: none !important; }
 }
 
 /* Section-level spacing helper */
