@@ -17,7 +17,7 @@ It would take another fifteen years.`,
   {
     year: '2019',
     heading: 'The carpool',
-    body: `They finally met at a university he didn't even go to. A tennis tournament had just wrapped and they weren't set up. They were only going to pick up a friend. Nikki was driving, Gowtham was in the back seat, and they talked a little, but that little bit was enough to create a friendship that would last a lifetime.`,
+    body: `They met at a university he didn't even go to. Gowtham was there for tennis, and they happened to meet while carpooling to pick up a friend. That little interaction was enough to make them friends.`,
   },
   {
     year: '2024',
@@ -29,9 +29,7 @@ It would take another fifteen years.`,
     heading: 'Japan. A garden. A very overused bit.',
     body: `For years, Gowtham had a move. He'd drop down to one knee out of nowhere, let the moment hang just long enough, and then start tying his shoe. Every time. Nikki stopped falling for it eventually. So when he got down on one knee in a national garden in Japan on a warm summer afternoon, she probably thought she knew what was coming. She didn't. He had a ring.
 
-She said yes.
-
-They found some grass, put down a picnic blanket, and spent the rest of the day in the sun calling everyone they loved and barely getting the words out.`,
+She said yes.`,
   },
   {
     year: '2027',
