@@ -44,18 +44,19 @@ export default function BetCard({ bet, guestName, onPick, index }: BetCardProps)
             {bet.category === 'over_under' ? 'O/U' : 'Prop'}
           </span>
           {bet.user_pick && !hasResult && (
-            <span className="text-[10px] text-charcoal/40 uppercase tracking-wider">Your pick locked</span>
+            <span className="text-[10px] text-charcoal/60 uppercase tracking-wider">Your pick locked</span>
           )}
         </div>
         {hasResult && (
-          <span className={`text-xs font-semibold rounded-full px-3 py-1 ${userWon ? 'bg-gold text-white' : 'bg-charcoal/10 text-charcoal/40'}`}>
+          <span className={`text-xs font-semibold rounded-full px-3 py-1 ${userWon ? 'bg-gold text-white' : 'bg-charcoal/10 text-charcoal/60'}`}>
             {userWon ? '✓ Correct' : '✗ Wrong'}
           </span>
         )}
       </div>
 
-      {/* Question */}
-      <p className="font-display text-lg text-charcoal leading-snug">{bet.question}</p>
+      {/* Question. Body face, not Italiana: its old-style figures shrink the
+          numbers these questions hinge on ("over or under 4") to specks. */}
+      <p className="text-[17px] font-medium text-charcoal leading-snug">{bet.question}</p>
 
       {/* Odds bar */}
       <OddsBar
@@ -88,7 +89,7 @@ export default function BetCard({ bet, guestName, onPick, index }: BetCardProps)
               >
                 <div className="flex items-center justify-between gap-1">
                   <span className="truncate">{label}</span>
-                  <span className={`text-xs shrink-0 ${isSelected ? 'text-white/70' : 'text-charcoal/40'}`}>
+                  <span className={`text-xs shrink-0 ${isSelected ? 'text-white/80' : 'text-charcoal/60'}`}>
                     {formatLine(line)}
                   </span>
                 </div>
@@ -100,7 +101,7 @@ export default function BetCard({ bet, guestName, onPick, index }: BetCardProps)
 
       {/* Result reveal */}
       {hasResult && (
-        <div className="text-sm text-charcoal/60 pt-1">
+        <div className="text-sm text-charcoal/70 pt-1">
           <span className="font-medium text-charcoal">
             Winner: {bet.result === 'a' ? bet.option_a : bet.option_b}
           </span>

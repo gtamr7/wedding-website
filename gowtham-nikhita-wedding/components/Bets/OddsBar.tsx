@@ -19,7 +19,9 @@ export default function OddsBar({ labelA, labelB, countA, countB, userPick, resu
   return (
     <div className="space-y-2">
       {/* Bar */}
-      <div className="relative h-8 rounded-full overflow-hidden bg-charcoal/5 flex">
+      {/* Slim bar, with the numbers underneath in dark text. White labels
+          inside the bar washed out against the pale fills. */}
+      <div className="relative h-2.5 rounded-full overflow-hidden bg-charcoal/5 flex">
         <motion.div
           className={`h-full rounded-l-full transition-all ${
             result === 'a' ? 'bg-gold' : userPick === 'a' ? 'bg-olive-mid' : 'bg-olive-mid/50'
@@ -38,21 +40,13 @@ export default function OddsBar({ labelA, labelB, countA, countB, userPick, resu
         />
 
         {/* Center line */}
-        <div className="absolute inset-y-0 left-1/2 w-px bg-white/40" />
-
-        {/* Percentage labels */}
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/90 select-none">
-          {pctA}%
-        </span>
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/90 select-none">
-          {pctB}%
-        </span>
+        <div className="absolute inset-y-0 left-1/2 w-px bg-white/60" />
       </div>
 
       {/* Labels */}
-      <div className="flex justify-between text-xs text-charcoal/50">
-        <span>{labelA} ({countA})</span>
-        <span>{labelB} ({countB})</span>
+      <div className="flex justify-between text-[13px] text-charcoal/70">
+        <span><span className="font-semibold text-charcoal">{pctA}%</span> {labelA} ({countA})</span>
+        <span>{labelB} ({countB}) <span className="font-semibold text-charcoal">{pctB}%</span></span>
       </div>
     </div>
   )

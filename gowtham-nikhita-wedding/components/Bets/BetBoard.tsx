@@ -126,12 +126,12 @@ export default function BetBoard() {
       {guestName && (
         <div className="flex items-center justify-between mb-6 bg-olive-light/30 rounded-xl px-4 py-3">
           <div>
-            <p className="text-xs text-charcoal/40 tracking-wider uppercase">Betting as</p>
+            <p className="text-xs text-charcoal/60 tracking-wider uppercase">Betting as</p>
             <p className="font-medium text-charcoal">{guestName}</p>
           </div>
           <button
             onClick={() => { setGuestName(''); setNameInput(''); localStorage.removeItem('weddingGuestName') }}
-            className="text-xs text-charcoal/40 hover:text-charcoal transition-colors"
+            className="text-xs text-charcoal/60 hover:text-charcoal transition-colors"
           >
             Change
           </button>
@@ -145,7 +145,7 @@ export default function BetBoard() {
             key={t}
             onClick={() => setTab(t)}
             className={`flex-1 py-2.5 rounded-lg text-sm font-medium capitalize transition-all ${
-              tab === t ? 'bg-white text-charcoal shadow-sm' : 'text-charcoal/50 hover:text-charcoal'
+              tab === t ? 'bg-white text-charcoal shadow-sm' : 'text-charcoal/65 hover:text-charcoal'
             }`}
           >
             {t === 'leaderboard' ? (

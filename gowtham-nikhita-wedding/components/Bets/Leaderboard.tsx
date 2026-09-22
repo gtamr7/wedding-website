@@ -49,7 +49,7 @@ const medals = ['🥇', '🥈', '🥉']
 export default function Leaderboard({ entries }: { entries: LeaderboardEntry[] }) {
   if (entries.length === 0) {
     return (
-      <div className="text-center py-12 text-charcoal/40">
+      <div className="text-center py-12 text-charcoal/60">
         <p className="font-display text-2xl ">Results pending</p>
         <p className="text-sm mt-2">The leaderboard appears after results are revealed.</p>
       </div>
@@ -71,13 +71,13 @@ export default function Leaderboard({ entries }: { entries: LeaderboardEntry[] }
           <span className="text-xl w-8 text-center shrink-0">{medals[i] ?? `${i + 1}`}</span>
           <div className="flex-1 min-w-0">
             <p className="font-medium text-charcoal truncate">{e.guest_name}</p>
-            <p className="text-xs text-charcoal/50 truncate">{e.title}</p>
+            <p className="text-xs text-charcoal/65 truncate">{e.title}</p>
           </div>
           <div className="text-right shrink-0">
             <p className={`font-semibold text-lg ${i === 0 ? 'text-gold' : 'text-charcoal'}`}>
               {e.correct}/{e.total}
             </p>
-            <p className="text-xs text-charcoal/40">correct</p>
+            <p className="text-xs text-charcoal/60">correct</p>
           </div>
         </motion.div>
       ))}

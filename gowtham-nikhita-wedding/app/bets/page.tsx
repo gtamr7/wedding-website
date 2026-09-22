@@ -19,7 +19,7 @@ export default function BetsPage() {
             <p className="text-xs tracking-widest uppercase text-gold mb-3">Just For Fun</p>
             <h1 className="font-display text-5xl sm:text-6xl text-charcoal">The Bets</h1>
             <div className="gold-divider w-24 mt-4 mx-auto" />
-            <p className="text-charcoal/50 text-sm mt-4 leading-relaxed max-w-sm mx-auto">
+            <p className="text-charcoal/70 text-sm mt-4 leading-relaxed max-w-sm mx-auto">
               Over/unders and prop bets on the big day. Pick your winners, compete for bragging rights,
               and see the leaderboard after the wedding.
             </p>
