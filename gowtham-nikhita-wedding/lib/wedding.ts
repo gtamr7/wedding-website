@@ -66,9 +66,9 @@ export const VENUE_TBA = 'Venue to be announced'
  * come back later. Set to true to close it again, and remember the database
  * flags are separate: reopening means clearing on_hold as well.
  *
- * Reopened 2026-09-22 with 133 of 135 parties unheld. Meera Ramesh and Dhruv
- * Patel stay held at Gowtham's request. Sharrief Muhammed, held alongside
- * them previously, is now open.
+ * Reopened 2026-09-22 with all 135 parties unheld. Meera Ramesh and Dhruv
+ * Patel were held a little longer at Gowtham's request and released the
+ * same day.
  */
 export const RSVP_PAUSED = false
 
