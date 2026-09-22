@@ -63,11 +63,14 @@ export const VENUE_TBA = 'Venue to be announced'
  * Every party is also flagged `on_hold` in the database, which stops the API
  * accepting a submission. This flag is the front of that: it replaces the
  * lookup form with a notice, so nobody types their name only to be told to
- * come back later. Set to false to reopen — and remember the database flags
- * have to be cleared too, leaving Meera Ramesh, Dhruv Patel and Sharrief
- * Muhammed held, since those three were on hold for their own reasons.
+ * come back later. Set to true to close it again, and remember the database
+ * flags are separate: reopening means clearing on_hold as well.
+ *
+ * Reopened 2026-09-22 with 133 of 135 parties unheld. Meera Ramesh and Dhruv
+ * Patel stay held at Gowtham's request. Sharrief Muhammed, held alongside
+ * them previously, is now open.
  */
-export const RSVP_PAUSED = true
+export const RSVP_PAUSED = false
 
 /** "Miami, FL" — the region alone. */
 export function cityShort(): string {
