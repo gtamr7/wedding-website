@@ -36,10 +36,14 @@ export default function EnvelopeReveal({ names, onDone }: { names: string[]; onD
     return () => t.forEach(clearTimeout)
   }, [reduceMotion, onDone])
 
-  const salutation = `Dear ${joinNames(names)},`
-  // A big family's names wrap to three lines at the larger size, which pushes
-  // the last line back under the pocket even with the card fully risen.
-  const longNames = salutation.length > 24
+  const addressee = `${joinNames(names)},`
+  // Only about three lines of names clear the pocket once the card has risen,
+  // so the size steps down as the party grows. The largest party runs to 95
+  // characters and still fits in three lines at the smallest step.
+  const nameSize =
+    addressee.length <= 22 ? 'text-2xl sm:text-3xl'
+    : addressee.length <= 50 ? 'text-xl sm:text-2xl'
+    : 'text-base sm:text-lg'
 
   const flapOpen = phase !== 'sealed'
   // The flap has to pass behind the card once it has swung past vertical,
@@ -63,7 +67,7 @@ export default function EnvelopeReveal({ names, onDone }: { names: string[]; onD
 
         {/* The card inside, addressed to the party */}
         <motion.div
-          className="absolute left-[6%] right-[6%] top-[6%] bottom-[4%] bg-ivory rounded-[2px] z-10 flex flex-col items-center justify-start pt-[7%] px-4 text-center"
+          className="absolute left-[6%] right-[6%] top-[6%] bottom-[4%] bg-ivory rounded-[2px] z-10 flex flex-col items-center justify-start pt-[6%] px-4 text-center overflow-hidden"
           style={{ boxShadow: '0 -4px 14px -6px rgba(0,0,0,0.18)' }}
           initial={{ y: 0 }}
           animate={{ y: phase === 'rising' ? '-70%' : 0 }}
@@ -71,9 +75,21 @@ export default function EnvelopeReveal({ names, onDone }: { names: string[]; onD
         >
           <div className="absolute inset-1.5 border border-gold/50 pointer-events-none" />
           <p className="text-[9px] uppercase tracking-[0.3em] text-gold">You are invited</p>
-          <p className={`font-script text-charcoal leading-tight mt-2 ${longNames ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-4xl'}`}>
-            {salutation}
-          </p>
+          {/* Script for the flourish only. Pinyon's hairlines blur at small
+              sizes, so the names themselves go in the display face. */}
+          {/* Held back until the card is on its way out. Once the flap opens,
+              the pocket's V edges would otherwise slice through the names
+              while the card still sits inside. */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: phase === 'rising' ? 1 : 0 }}
+            transition={{ duration: 0.5, delay: phase === 'rising' ? 0.35 : 0 }}
+          >
+            <p className="font-script text-charcoal text-3xl sm:text-4xl leading-none mt-1.5">Dear</p>
+            <p className={`font-display text-charcoal leading-snug tracking-wide mt-1.5 ${nameSize}`}>
+              {addressee}
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* Front pocket: covers the lower part of the card until it rises */}
