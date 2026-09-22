@@ -50,7 +50,7 @@ export const PARTIES = [
   ]],
   ['Murthy Kottamasu', [
     ['Murthy Kottamasu',    'krkmurthy@bellsouth.net',  '4704936859'],
-    ['Jaya Kottamasu',      'Jayaveena@gmai.com',       '6783610487'],
+    ['Jaya Kottamasu',      'Jayaveena@gmail.com',       '6783610487'],
     ['Varsha Kottamasu',    'Var1297@gmail.com',        '6783503527'],
   ]],
   ['Vikas Kottamasu', [
