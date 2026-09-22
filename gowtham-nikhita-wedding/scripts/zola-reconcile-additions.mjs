@@ -27,6 +27,7 @@ const NEW_PARTY = {
     { name: 'Sumeetha Gandreddi', email: 'sgandreddi@gmail.com', phone: '4044495294' },
     { name: 'Siri Gandreddi',     email: null,                   phone: '6789105962' },
     { name: 'Nanaji Gandreddi',   email: null,                   phone: null },
+    { name: 'Abhi Gandreddi',     email: null,                   phone: null },
   ],
 }
 
