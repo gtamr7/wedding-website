@@ -247,8 +247,8 @@ export default function Travel() {
                 </div>
 
                 <p className="text-sm text-ivory/60 leading-relaxed">
-                  There is a gap between the ceremony and the reception on the 18th, so that
-                  time is yours to head back and change.
+                  After the ceremony on the 18th, guests are encouraged to head back to their
+                  accommodations to rest and get ready for the reception at 6 PM.
                 </p>
               </div>
             </FadeIn>
