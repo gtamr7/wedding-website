@@ -70,7 +70,7 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
         Please enter the password from your invitation.
       </p>
       <p className="text-gold-light text-sm mt-3 mb-8 max-w-xs leading-relaxed">
-        Check your texts for a message from Zola. The password is in it.
+        Check your texts for a message from Gowtham and Nikhita. The password is in it.
       </p>
 
       <form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col gap-3">
