@@ -65,8 +65,8 @@ const events = [
     venue: venueLine('garden'),
     description:
       'Dinner, dancing, and speeches, to finish the two days.',
-    dresscode: 'Black tie optional / Cocktail attire',
-    // Champagne gold for the black-tie evening.
+    dresscode: 'Black tie, cocktail, or formal Indian attire',
+    // Champagne gold for the formal evening.
     color: 'from-gold/10 to-white',
     borderColor: 'border-gold/35',
     badgeColor: 'bg-gold/15 text-[#6E5714]',
@@ -77,7 +77,7 @@ const events = [
       date: '20270218T180000',
       endDate: '20270218T230000',
       location: venueAddress('garden'),
-      description: 'Dinner, dancing, and speeches. Black tie optional / cocktail attire.',
+      description: 'Dinner, dancing, and speeches. Black tie, cocktail, or formal Indian attire.',
     },
   },
 ]
