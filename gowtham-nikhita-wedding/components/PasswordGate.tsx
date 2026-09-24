@@ -66,11 +66,8 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
       </p>
       <h1 className="font-display text-4xl sm:text-5xl text-gold">Guests only</h1>
       <div className="gold-divider w-24 mt-5 mb-8" />
-      <p className="text-ivory/70 text-sm max-w-xs leading-relaxed">
-        Please enter the password from your invitation.
-      </p>
-      <p className="text-gold-light text-sm mt-3 mb-8 max-w-xs leading-relaxed">
-        Check your texts for a message from Gowtham and Nikhita. The password is in it.
+      <p className="text-ivory/75 text-sm mb-8 max-w-xs leading-relaxed">
+        Please enter the password from the text Gowtham and Nikhita sent you.
       </p>
 
       <form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col gap-3">
