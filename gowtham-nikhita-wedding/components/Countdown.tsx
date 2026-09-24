@@ -34,7 +34,7 @@ function Digit({ value }: { value: string }) {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 20, opacity: 0 }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
-          className="block text-3xl sm:text-4xl lg:text-5xl font-display text-ivory"
+          className="block text-3xl sm:text-4xl lg:text-5xl font-sans font-light tabular-nums text-ivory"
           style={{ textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}
         >
           {value}
@@ -76,7 +76,7 @@ export default function Countdown() {
     )
   }
 
-  const sep = <span className="text-gold/40 text-3xl sm:text-4xl lg:text-5xl pb-5 font-light">:</span>
+  const sep = <span className="text-gold/60 text-3xl sm:text-4xl lg:text-5xl pb-5 font-light">:</span>
 
   return (
     <div className="flex items-end gap-1 sm:gap-2">

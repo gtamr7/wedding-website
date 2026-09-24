@@ -12,11 +12,11 @@ function FeatureLink({ href, Icon, title, desc }: { href: string; Icon: LucideIc
   return (
     <Link
       href={href}
-      className="group block rounded-xl border border-gold/15 bg-olive-dark/50 p-6 hover:border-gold/40 hover:bg-olive-dark/70 hover:-translate-y-1 transition-all duration-200"
+      className="group block rounded-xl border border-gold/30 bg-[#3A4A24] p-6 shadow-[0_12px_28px_-16px_rgba(0,0,0,0.6)] hover:border-gold/60 hover:-translate-y-1 transition-all duration-200"
     >
-      <Icon size={26} strokeWidth={2.5} className="text-gold/70 mb-3" />
+      <span className="inline-flex w-11 h-11 items-center justify-center rounded-full bg-gold/15 mb-4"><Icon size={20} strokeWidth={2.25} className="text-gold" /></span>
       <h3 className="font-display text-xl text-ivory group-hover:text-gold transition-colors">{title}</h3>
-      <p className="text-sm text-ivory/50 mt-1">{desc}</p>
+      <p className="text-sm text-ivory/75 mt-1.5 leading-relaxed">{desc}</p>
       <div className="mt-4 flex items-center gap-1 text-xs text-gold uppercase tracking-widest font-medium">
         Open
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="group-hover:translate-x-1 transition-transform">

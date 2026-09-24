@@ -23,7 +23,7 @@ export default function Hero() {
             src="/gallery/IMG_0563.jpg"
             alt=""
             fill
-            className="object-cover"
+            className="object-cover object-[50%_35%]"
             sizes="100vw"
             quality={90}
             priority
@@ -31,10 +31,12 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Dark olive overlay */}
+      {/* Olive overlay. Darkest behind the names at the top and the
+          countdown at the bottom, lighter through the middle so the two of
+          them stay visible in the photo. */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'linear-gradient(160deg, rgba(28,36,16,0.58) 0%, rgba(22,30,12,0.50) 50%, rgba(28,36,16,0.62) 100%)' }}
+        style={{ background: 'linear-gradient(180deg, rgba(22,30,12,0.70) 0%, rgba(22,30,12,0.45) 38%, rgba(22,30,12,0.22) 58%, rgba(22,30,12,0.40) 78%, rgba(22,30,12,0.72) 100%)' }}
         aria-hidden="true"
       />
 
@@ -47,10 +49,10 @@ export default function Hero() {
       <FloatingPetals />
 
       {/* Text — CSS animations avoid SSR hydration flash while preserving staggered reveal */}
-      <div className="flex items-center justify-center min-h-screen px-6">
-        <div
-          className="hero-drift-text max-w-sm sm:max-w-md lg:max-w-xl text-center flex flex-col items-center gap-5 sm:gap-7 py-20"
-        >
+      {/* Names and date up in the sky, countdown down on the grass, and the
+          photo's subjects left clear in between. */}
+      <div className="hero-drift-text flex flex-col items-center justify-between min-h-screen px-6 pt-24 pb-28 sm:pt-28 text-center">
+        <div className="max-w-sm sm:max-w-md lg:max-w-5xl flex flex-col items-center gap-4 sm:gap-5">
           <p
             className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-light/60"
             style={{ animation: 'heroFadeUp 0.8s ease-out 0.1s both' }}
@@ -59,7 +61,7 @@ export default function Hero() {
           </p>
 
           <h1
-            className="font-display text-5xl sm:text-7xl lg:text-9xl text-gold leading-none tracking-wide"
+            className="font-display text-5xl sm:text-7xl lg:text-8xl text-gold leading-none tracking-wide"
             style={{
               textShadow: '0 4px 40px rgba(184,151,42,0.4), 0 2px 16px rgba(0,0,0,0.5)',
               animation: 'heroFadeUp 1s ease-out 0.3s both',
@@ -67,10 +69,10 @@ export default function Hero() {
           >
             Gowtham
             {/* Italiana's ampersand is a far lighter mark than the italic
-                Cormorant one it replaces, and at 40% gold over the photo it
-                vanished entirely. Carries more of the colour now so it still
-                reads as an ampersand rather than a gap between the names. */}
-            <span className="block text-xl sm:text-2xl lg:text-4xl text-gold/75 my-2 sm:my-3 tracking-widest">
+                Cormorant one it replaces and vanished over the photo at the
+                old size and 75% gold. Larger and in full gold it holds up,
+                and matches the footer's. */}
+            <span className="block lg:inline text-4xl sm:text-5xl lg:text-7xl text-gold my-1 sm:my-2 lg:my-0 lg:mx-6 tracking-normal">
               &amp;
             </span>
             Nikhita
@@ -85,17 +87,19 @@ export default function Hero() {
             className="space-y-2"
             style={{ animation: 'heroFadeUp 0.8s ease-out 0.9s both' }}
           >
-            <p className="font-display text-gold-light/90 text-lg sm:text-xl tracking-wide">
+            {/* Jost, not Italiana: Italiana's old-style figures bounce up
+                and down the line. */}
+            <p className="text-gold-light text-sm sm:text-base font-medium tracking-[0.25em] uppercase">
               February 17–18, 2027
             </p>
-            <p className="text-ivory/60 text-xs sm:text-sm tracking-widest uppercase">
+            <p className="text-ivory/75 text-xs sm:text-sm tracking-widest uppercase">
               {venueShort()}
             </p>
           </div>
+        </div>
 
-          <div style={{ animation: 'heroFadeUp 0.8s ease-out 1.1s both' }}>
-            <Countdown />
-          </div>
+        <div style={{ animation: 'heroFadeUp 0.8s ease-out 1.1s both' }}>
+          <Countdown />
         </div>
       </div>
 

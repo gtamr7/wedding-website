@@ -18,11 +18,11 @@ const events = [
       'Music, dance, and performances, with both families together for the first time. Dinner is served.',
     dresscode: 'Festive Indian attire: lehengas, sarees, sherwanis, kurtas',
     // Warm amber for the evening celebration.
-    color: 'from-amber-400/16 to-amber-600/5',
-    borderColor: 'border-amber-200/30',
-    badgeColor: 'bg-amber-300/20 text-amber-50',
-    accent: 'bg-amber-200/65',
-    iconColor: 'text-amber-100',
+    color: 'from-amber-50 to-white',
+    borderColor: 'border-amber-200/80',
+    badgeColor: 'bg-amber-100 text-amber-900',
+    accent: 'bg-amber-400',
+    iconColor: 'text-amber-600',
     calendar: {
       title: 'Sangeet | Gowtham & Nikhita',
       date: '20270217T180000',
@@ -43,11 +43,11 @@ const events = [
     dresscode: 'Traditional Indian attire or formal Western',
     // Morning light — pale and unadorned. The ceremony is the still point of
     // the two days and does not want the loudest card on the page.
-    color: 'from-ivory/14 to-ivory/4',
-    borderColor: 'border-ivory/28',
-    badgeColor: 'bg-ivory/18 text-ivory',
-    accent: 'bg-ivory/60',
-    iconColor: 'text-ivory',
+    color: 'from-olive-light/60 to-white',
+    borderColor: 'border-olive-light',
+    badgeColor: 'bg-olive-light text-olive-dark',
+    accent: 'bg-olive-mid',
+    iconColor: 'text-olive-mid',
     calendar: {
       title: 'Ceremony (Kalyaanam) | Gowtham & Nikhita Wedding',
       date: '20270218T090000',
@@ -67,11 +67,11 @@ const events = [
       'Dinner, dancing, and speeches, to finish the two days.',
     dresscode: 'Black tie optional / Cocktail attire',
     // Champagne gold for the black-tie evening.
-    color: 'from-gold/18 to-gold/5',
+    color: 'from-gold/10 to-white',
     borderColor: 'border-gold/35',
-    badgeColor: 'bg-gold/25 text-ivory',
-    accent: 'bg-gold/75',
-    iconColor: 'text-gold-light',
+    badgeColor: 'bg-gold/15 text-[#6E5714]',
+    accent: 'bg-gold',
+    iconColor: 'text-gold',
     calendar: {
       title: 'Reception | Gowtham & Nikhita Wedding',
       date: '20270218T180000',
@@ -116,7 +116,7 @@ function AddToCalendar({ cal }: { cal: typeof events[0]['calendar'] }) {
     <div className="relative">
       <button
         onClick={() => setOpen(v => !v)}
-        className="flex items-center gap-1.5 text-xs text-ivory/75 hover:text-gold transition-colors border border-white/25 hover:border-gold/50 rounded-full px-3 py-1.5"
+        className="flex items-center gap-1.5 text-xs text-charcoal/75 hover:text-olive-dark transition-colors border border-charcoal/20 hover:border-olive-mid rounded-full px-3 py-1.5"
       >
         <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
           <rect x="1" y="3" width="14" height="12" rx="1.5" />
@@ -180,7 +180,7 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
       transition={{ duration: 0.6, delay: index * 0.15, ease: 'easeOut' }}
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
       whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
-      className={`relative rounded-xl border bg-gradient-to-br backdrop-blur-sm ${event.color} ${event.borderColor} p-7 sm:p-9 overflow-hidden group shadow-lg shadow-black/20`}
+      className={`relative rounded-xl border bg-gradient-to-br ${event.color} ${event.borderColor} p-7 sm:p-9 overflow-hidden group shadow-[0_10px_30px_-18px_rgba(28,28,26,0.35)]`}
     >
       {/* Accent bar in the event's own colour, so the three read as distinct
           occasions rather than three copies of the same card. */}
@@ -200,19 +200,19 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
             </span>
           </div>
 
-          <h3 className="font-display text-2xl sm:text-3xl text-ivory">{event.name}</h3>
+          <h3 className="font-display text-2xl sm:text-3xl text-charcoal">{event.name}</h3>
 
-          <div className="mt-3 space-y-1 text-sm text-ivory/75">
+          <div className="mt-3 space-y-1 text-sm text-charcoal/70">
             <p className="flex items-center gap-1.5"><Clock size={13} className="shrink-0" />{event.time}</p>
             <p className="flex items-center gap-1.5"><MapPin size={13} className="shrink-0" />{event.venue}</p>
           </div>
 
-          <p className="mt-4 text-ivory/85 leading-relaxed text-sm sm:text-base">{event.description}</p>
+          <p className="mt-4 text-charcoal/85 leading-relaxed text-sm sm:text-base">{event.description}</p>
 
-          <div className="mt-4 pt-4 border-t border-white/15 flex items-end justify-between gap-4 flex-wrap">
+          <div className="mt-4 pt-4 border-t border-charcoal/10 flex items-end justify-between gap-4 flex-wrap">
             <div>
-              <p className="text-xs text-ivory/55 uppercase tracking-wider">Dress Code</p>
-              <p className="text-sm text-ivory/90 mt-1">{event.dresscode}</p>
+              <p className="text-xs text-charcoal/55 uppercase tracking-wider">Dress Code</p>
+              <p className="text-sm text-charcoal/90 mt-1">{event.dresscode}</p>
             </div>
             <AddToCalendar cal={event.calendar} />
           </div>
@@ -227,7 +227,7 @@ export default function Schedule() {
   const headerInView = useInView(headerRef, { once: true, margin: '-80px' })
 
   return (
-    <section id="schedule" className="section-py px-6">
+    <section id="schedule" className="section-ivory px-6">
       <div className="max-w-4xl mx-auto">
         <motion.div
           ref={headerRef}
@@ -236,8 +236,8 @@ export default function Schedule() {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <p className="text-xs tracking-widest uppercase text-gold mb-3">Feb 17–18, 2027</p>
-          <h2 className="font-display text-5xl sm:text-6xl text-ivory">The Events</h2>
+          <p className="text-xs tracking-widest uppercase text-[#8C7220] mb-3">Feb 17–18, 2027</p>
+          <h2 className="font-display text-5xl sm:text-6xl text-charcoal">The Events</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
         </motion.div>
 

@@ -77,7 +77,7 @@ function Node({ m, index, isLast }: { m: Milestone; index: number; isLast: boole
         <h3 className="font-display text-2xl sm:text-3xl text-ivory mt-1">{m.heading}</h3>
         <div className="space-y-4 mt-3">
           {m.body.split('\n\n').map((para, j) => (
-            <p key={j} className="text-ivory/65 leading-relaxed">{para}</p>
+            <p key={j} className="text-ivory/80 leading-relaxed">{para}</p>
           ))}
         </div>
       </motion.div>

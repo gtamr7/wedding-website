@@ -139,19 +139,11 @@ export default function PhotoCarousel() {
         </button>
       </div>
 
-      {/* Dot indicators */}
-      <div className="flex justify-center gap-1.5 mt-5 flex-wrap max-w-xs mx-auto">
-        {photos.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === current ? 'w-5 bg-gold' : 'w-1.5 bg-ivory/25 hover:bg-ivory/45'
-            }`}
-            aria-label={`Go to photo ${i + 1}`}
-          />
-        ))}
-      </div>
+      {/* A counter rather than a dot per photo: seventeen dots wrapped into
+          a cluttered double row on phones. */}
+      <p className="mt-5 text-center text-xs tracking-[0.3em] text-ivory/70 tabular-nums" aria-live="polite">
+        {current + 1} <span className="text-gold/70 mx-1">/</span> {N}
+      </p>
 
       {/* Lightbox */}
       <AnimatePresence>

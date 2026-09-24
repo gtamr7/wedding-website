@@ -131,6 +131,30 @@ body {
   .hero-drift-photo, .hero-drift-glow, .hero-drift-text { animation: none !important; }
 }
 
+/* Ivory sections between the olive ones. Instead of a hard edge, each end
+   fades from the page's olive through pale sage into ivory, so the page
+   reads as one continuous surface. The extra padding keeps headings and
+   text clear of the fade. */
+.section-ivory {
+  --fade: 200px;
+  background: linear-gradient(180deg,
+    var(--color-olive-dark) 0,
+    #6F7F4F calc(var(--fade) * 0.25),
+    #B7C29C calc(var(--fade) * 0.55),
+    #E9EDDC calc(var(--fade) * 0.8),
+    var(--color-ivory) var(--fade),
+    var(--color-ivory) calc(100% - var(--fade)),
+    #E9EDDC calc(100% - var(--fade) * 0.8),
+    #B7C29C calc(100% - var(--fade) * 0.55),
+    #6F7F4F calc(100% - var(--fade) * 0.25),
+    var(--color-olive-dark) 100%);
+  padding-top: calc(5rem + 120px);
+  padding-bottom: calc(5rem + 120px);
+}
+@media (min-width: 1024px) {
+  .section-ivory { --fade: 260px; padding-top: calc(7rem + 150px); padding-bottom: calc(7rem + 150px); }
+}
+
 /* Section-level spacing helper */
 .section-py { padding-top: 5rem; padding-bottom: 5rem; }
 @media (min-width: 1024px) { .section-py { padding-top: 7rem; padding-bottom: 7rem; } }

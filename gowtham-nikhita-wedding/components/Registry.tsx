@@ -8,7 +8,7 @@ export default function Registry() {
   const inView = useInView(headerRef, { once: true, margin: '-80px' })
 
   return (
-    <section id="registry" className="section-py px-6">
+    <section id="registry" className="section-ivory px-6">
       <div className="max-w-2xl mx-auto text-center">
         <motion.div
           ref={headerRef}
@@ -16,10 +16,10 @@ export default function Registry() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-xs tracking-widest uppercase text-gold mb-3">Gifts</p>
-          <h2 className="font-display text-5xl sm:text-6xl text-ivory">Registry</h2>
+          <p className="text-xs tracking-widest uppercase text-[#8C7220] mb-3">Gifts</p>
+          <h2 className="font-display text-5xl sm:text-6xl text-charcoal">Registry</h2>
           <div className="gold-divider w-24 mt-5 mx-auto" />
-          <p className="mt-8 text-ivory/60 leading-relaxed">
+          <p className="mt-8 text-charcoal/75 leading-relaxed">
             The people in our story are the reason there is one. Crossing time zones,
             taking the days off, standing with us through two days of ceremonies. That
             is already the part we&apos;ll be telling our kids about. If you&apos;d like to do
@@ -37,7 +37,7 @@ export default function Registry() {
             transition={{ duration: 0.6, delay: 0.1 }}
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-2.5 mt-10 px-8 sm:px-10 py-5 rounded-full bg-gold/10 border border-gold/50 text-gold hover:bg-gold/20 hover:border-gold/80 transition-colors text-base sm:text-lg font-medium tracking-wide"
+            className="inline-flex items-center gap-2.5 mt-10 px-8 sm:px-10 py-5 rounded-full bg-olive-dark text-ivory hover:bg-olive-mid transition-colors text-base sm:text-lg font-medium tracking-wide shadow-[0_10px_24px_-14px_rgba(28,28,26,0.6)]"
           >
             View our Zola registry →
           </motion.a>
@@ -47,7 +47,7 @@ export default function Registry() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.25 }}
-          className="mt-10 text-xs text-ivory/40 italic"
+          className="mt-10 text-xs text-charcoal/55"
         >
           No box gifts please. We appreciate your understanding.
         </motion.p>

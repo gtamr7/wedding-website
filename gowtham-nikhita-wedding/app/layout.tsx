@@ -54,8 +54,12 @@ export const metadata: Metadata = {
     title: 'Gowtham & Nikhita · February 17–18, 2027',
     description: 'A Tamil/Telugu Hindu celebration of love.',
     type: 'website',
-    images: [{ url: '/gallery/IMG_0314.jpg', width: 1200, height: 800, alt: 'Gowtham & Nikhita' }],
+    // A 150KB crop of the proposal photo (gallery/IMG_0314.jpg) at the
+    // standard 1200x630. The 25MB original is far past what WhatsApp and
+    // Facebook will fetch, so shared links showed no picture.
+    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'Gowtham & Nikhita' }],
   },
+  twitter: { card: 'summary_large_image' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
