@@ -52,16 +52,20 @@ export async function POST(request: Request) {
       // Follow-up request: the guest already picked their row from a disambiguation prompt
       matched = guestList.find(row => row.id === guestId)
     } else {
-      const normFirst = firstName.toLowerCase()
-      const normLast  = lastName.toLowerCase()
+      const squash = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim()
+      const normFirst = squash(firstName)
+      const normLast  = squash(lastName)
 
-      // With a last name, require an exact first + last match. Without one, match on
-      // first name alone but only against guests who have no last name of their own,
-      // so a blank field can never surface someone who does have one.
+      // With a last name, the full name has to match, but not where it is split:
+      // "Subba Rao" + "Ratakonda" finds a guest stored as "Subba" + "Rao
+      // Ratakonda". Multi-word given names are common on this list and guests
+      // split them however they like. Without a last name, match on first name
+      // alone but only against guests who have no last name of their own, so a
+      // blank field can never surface someone who does have one.
       const candidates = guestList.filter(row =>
         normLast
-          ? rowFirstOf(row) === normFirst && rowLastOf(row) === normLast
-          : rowFirstOf(row) === normFirst && rowLastOf(row) === ''
+          ? squash(`${rowFirstOf(row)} ${rowLastOf(row)}`) === `${normFirst} ${normLast}`
+          : squash(rowFirstOf(row)) === normFirst && rowLastOf(row) === ''
       )
 
       if (candidates.length > 1) {
