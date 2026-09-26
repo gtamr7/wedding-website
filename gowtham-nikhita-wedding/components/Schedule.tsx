@@ -15,7 +15,7 @@ const events = [
     time: '6:00 PM – 10:00 PM',
     venue: venueLine('monastery'),
     description:
-      'Music, dance, and performances, with both families together for the first time. Dinner is served.',
+      'The night before the wedding, and the first time both families are in one room. Performances from both sides, with time to eat and socialize.',
     dresscode: 'Festive Indian attire: lehengas, sarees, sherwanis, kurtas',
     // Warm amber for the evening celebration.
     color: 'from-amber-50 to-white',
@@ -28,7 +28,7 @@ const events = [
       date: '20270217T180000',
       endDate: '20270217T220000',
       location: venueAddress('monastery'),
-      description: 'Music, dance, and performances. Festive Indian attire.',
+      description: 'Performances from both sides, with time to eat and socialize. Festive Indian attire.',
     },
   },
   {
@@ -39,7 +39,7 @@ const events = [
     time: '9:00 AM – 2:00 PM',
     venue: venueLine('garden'),
     description:
-      'The Tamil/Telugu Hindu Kalyaanam, conducted in full according to tradition. It runs from the morning into the early afternoon.',
+      'A traditional Hindu marriage ceremony for Gowtham and Nikhita, followed by lunch.',
     dresscode: 'Traditional Indian attire or formal Western',
     // Morning light — pale and unadorned. The ceremony is the still point of
     // the two days and does not want the loudest card on the page.
@@ -53,7 +53,7 @@ const events = [
       date: '20270218T090000',
       endDate: '20270218T140000',
       location: venueAddress('garden'),
-      description: 'Tamil/Telugu Hindu Kalyaanam. Traditional Indian attire or formal Western.',
+      description: 'A traditional Hindu marriage ceremony, followed by lunch. Traditional Indian attire or formal Western.',
     },
   },
   {
@@ -64,7 +64,7 @@ const events = [
     time: '6:00 PM – 11:00 PM',
     venue: venueLine('garden'),
     description:
-      'Dinner, dancing, and speeches, to finish the two days.',
+      'A night of food and speeches, with an open dance floor to wrap up the week.',
     dresscode: 'Black tie, cocktail, or formal Indian attire',
     // Champagne gold for the formal evening.
     color: 'from-gold/10 to-white',
@@ -77,7 +77,7 @@ const events = [
       date: '20270218T180000',
       endDate: '20270218T230000',
       location: venueAddress('garden'),
-      description: 'Dinner, dancing, and speeches. Black tie, cocktail, or formal Indian attire.',
+      description: 'A night of food and speeches, with an open dance floor. Black tie, cocktail, or formal Indian attire.',
     },
   },
 ]
