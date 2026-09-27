@@ -77,7 +77,7 @@ export default function OurStory() {
                     quality={95}
                     priority
                   />
-                  <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/55 backdrop-blur-sm rounded-lg flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/60 rounded-lg flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                       <path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -99,7 +99,7 @@ export default function OurStory() {
                     quality={95}
                     priority
                   />
-                  <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/55 backdrop-blur-sm rounded-lg flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="absolute bottom-2 right-2 w-8 h-8 bg-black/60 rounded-lg flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                       <path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -142,7 +142,7 @@ export default function OurStory() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/92"
             onClick={() => setLightbox(null)}
           >
             <button

@@ -133,7 +133,7 @@ function AddToCalendar({ cal }: { cal: typeof events[0]['calendar'] }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 4, scale: 0.97 }}
               transition={{ duration: 0.15 }}
-              className="absolute left-0 bottom-full mb-2 z-20 bg-olive-dark/98 backdrop-blur-sm rounded-xl shadow-xl border border-gold/20 overflow-hidden w-44"
+              className="absolute left-0 bottom-full mb-2 z-20 bg-olive-dark rounded-xl shadow-xl border border-gold/20 overflow-hidden w-44"
             >
               <a
                 href={googleCalUrl(cal)}

@@ -94,7 +94,9 @@ export default function PhotoCarousel() {
                 key={src}
                 animate={{ x, scale, opacity, zIndex }}
                 transition={{ type: 'spring', stiffness: 280, damping: 32 }}
-                className="absolute cursor-pointer"
+                // Own compositor layer: the card and its large shadow are
+                // painted once and moved, not repainted on every frame.
+                className="absolute cursor-pointer will-change-transform"
                 onClick={() => offset === 0 ? setLightbox(i) : setCurrent(i)}
               >
                 <div className="relative w-[200px] sm:w-[260px] h-[270px] sm:h-[340px] rounded-xl overflow-hidden border border-gold/20 shadow-2xl shadow-black/50">
@@ -121,7 +123,7 @@ export default function PhotoCarousel() {
         {/* Prev / Next buttons */}
         <button
           onClick={prev}
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-black/35 backdrop-blur-sm border border-gold/20 text-ivory hover:bg-black/55 transition-colors z-20"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-black/50 border border-gold/20 text-ivory hover:bg-black/55 transition-colors z-20"
           aria-label="Previous photo"
         >
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
@@ -130,7 +132,7 @@ export default function PhotoCarousel() {
         </button>
         <button
           onClick={next}
-          className="absolute right-0 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-black/35 backdrop-blur-sm border border-gold/20 text-ivory hover:bg-black/55 transition-colors z-20"
+          className="absolute right-0 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-black/50 border border-gold/20 text-ivory hover:bg-black/55 transition-colors z-20"
           aria-label="Next photo"
         >
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
@@ -153,7 +155,7 @@ export default function PhotoCarousel() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
             onClick={() => setLightbox(null)}
           >
             <button

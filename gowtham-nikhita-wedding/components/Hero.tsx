@@ -24,7 +24,9 @@ export default function Hero() {
             alt=""
             fill
             className="object-cover object-[50%_35%]"
-            sizes="100vw"
+            // Capped at 2048px wide. At 100vw a 2560px screen pulled the 3840px
+            // rendition, ten megapixels to decode and paint behind a dark overlay.
+            sizes="(min-width: 1280px) 2048px, 100vw"
             quality={90}
             priority
           />

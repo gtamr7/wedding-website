@@ -73,7 +73,7 @@ export default function GuestbookWall({ initialEntries }: { initialEntries: Gues
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity w-9 h-9 rounded-full bg-black/35 border border-white/40 flex items-center justify-center">
                         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                           <path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
@@ -106,7 +106,7 @@ export default function GuestbookWall({ initialEntries }: { initialEntries: Gues
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/92"
             onClick={() => setLightbox(null)}
           >
             <button

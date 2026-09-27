@@ -68,7 +68,7 @@ function PhotoStrip({ venue, onOpen }: { venue: VenueKey; onOpen: (flatIndex: nu
               loading="lazy"
               className="w-full h-40 sm:h-32 object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="absolute bottom-1.5 right-1.5 w-7 h-7 bg-black/55 backdrop-blur-sm rounded-md flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+            <div className="absolute bottom-1.5 right-1.5 w-7 h-7 bg-black/60 rounded-md flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M10 2h4v4M6 14H2v-4M14 10l-4 4M2 6l4-4" />
               </svg>
@@ -264,7 +264,7 @@ export default function Travel() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/92 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/92"
             onClick={() => setLightboxIndex(null)}
           >
             {/* Close — always in safe top-right corner */}
@@ -298,7 +298,7 @@ export default function Travel() {
               {lightboxIndex > 0 && (
                 <button
                   onClick={() => setLightboxIndex(lightboxIndex - 1)}
-                  className="absolute left-6 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:text-gold transition-colors"
+                  className="absolute left-6 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/65 border border-white/20 rounded-full flex items-center justify-center text-white hover:text-gold transition-colors"
                   aria-label="Previous photo"
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -311,7 +311,7 @@ export default function Travel() {
               {lightboxIndex < venuePhotos.length - 1 && (
                 <button
                   onClick={() => setLightboxIndex(lightboxIndex + 1)}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:text-gold transition-colors"
+                  className="absolute right-6 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/65 border border-white/20 rounded-full flex items-center justify-center text-white hover:text-gold transition-colors"
                   aria-label="Next photo"
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
