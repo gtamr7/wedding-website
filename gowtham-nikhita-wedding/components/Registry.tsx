@@ -37,7 +37,7 @@ export default function Registry() {
             transition={{ duration: 0.6, delay: 0.1 }}
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-2.5 mt-10 px-8 sm:px-10 py-5 rounded-full bg-olive-dark text-ivory hover:bg-olive-mid transition-colors text-base sm:text-lg font-medium tracking-wide shadow-[0_10px_24px_-14px_rgba(28,28,26,0.6)]"
+            className="inline-flex items-center gap-2.5 mt-10 px-8 sm:px-10 py-5 rounded-full bg-olive-dark text-ivory hover:bg-olive-mid transition-colors text-base sm:text-lg font-medium tracking-wide shadow-[0_4px_10px_-5px_rgba(28,28,26,0.5)]"
           >
             View our Zola registry →
           </motion.a>
