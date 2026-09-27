@@ -53,8 +53,10 @@ function PhotoStrip({ venue, onOpen }: { venue: VenueKey; onOpen: (flatIndex: nu
             initial={{ opacity: 0, y: 16 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.08 + i * 0.1 }}
+            // will-change-transform: own compositor layer, painted once while it
+            // fades in. Without it, smooth scrolling stalled ~55ms entering Travel.
             onClick={() => onOpen(photo.flatIndex)}
-            className={`snap-center shrink-0 w-[70vw] sm:w-auto sm:flex-1 rounded-lg overflow-hidden border shadow-lg cursor-zoom-in group relative
+            className={`snap-center shrink-0 will-change-transform w-[70vw] sm:w-auto sm:flex-1 rounded-lg overflow-hidden border shadow-lg cursor-zoom-in group relative
               ${i === 0 ? 'border-gold/25 sm:-rotate-[1deg]' : ''}
               ${i === 1 ? 'border-gold/20 sm:rotate-[0.8deg] sm:translate-y-3' : ''}
               ${i === 2 ? 'border-gold/30 sm:-rotate-[0.5deg] sm:translate-y-1' : ''}
@@ -264,6 +266,7 @@ export default function Travel() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
+            data-lenis-prevent
             className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/92"
             onClick={() => setLightboxIndex(null)}
           >

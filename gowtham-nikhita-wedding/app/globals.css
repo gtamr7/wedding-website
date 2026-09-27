@@ -23,6 +23,11 @@
 html {
   scroll-behavior: smooth;
 }
+/* Lenis drives scrolling frame by frame; native smooth scrolling would
+   animate each of its steps again and make it judder. */
+html.lenis {
+  scroll-behavior: auto;
+}
 
 body {
   background-color: var(--background);

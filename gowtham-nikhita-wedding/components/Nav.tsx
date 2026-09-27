@@ -51,7 +51,8 @@ export default function Nav() {
           onClick={(e) => {
             if (pathname === '/') {
               e.preventDefault()
-              window.scrollTo({ top: 0, behavior: 'smooth' })
+              if (window.smoothScroll) window.smoothScroll.scrollTo(0)
+              else window.scrollTo({ top: 0, behavior: 'smooth' })
             }
           }}
           className="font-display text-xl lg:text-2xl text-gold tracking-wide hover:text-gold-light transition-colors"

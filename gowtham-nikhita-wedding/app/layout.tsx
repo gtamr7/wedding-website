@@ -3,6 +3,7 @@ import { Italiana, Jost, Pinyon_Script } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import ScrollResetOnRefresh from '@/components/ScrollResetOnRefresh'
+import SmoothScroll from '@/components/SmoothScroll'
 import PasswordGate from '@/components/PasswordGate'
 import './globals.css'
 
@@ -67,6 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${italiana.variable} ${jost.variable} ${pinyon.variable}`}>
       <body className="min-h-screen bg-ivory text-charcoal font-sans antialiased">
         <ScrollResetOnRefresh />
+        <SmoothScroll />
         {/* Wraps every route, so the password is asked once and remembered.
             Analytics stays outside it — it renders no UI, and keeping it here
             means a visit still registers even if someone never gets in. */}
