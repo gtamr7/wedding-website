@@ -180,7 +180,7 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
       transition={{ duration: 0.6, delay: index * 0.15, ease: 'easeOut' }}
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
       whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
-      className={`relative rounded-xl border bg-gradient-to-br ${event.color} ${event.borderColor} p-7 sm:p-9 overflow-hidden group shadow-[0_4px_10px_-6px_rgba(28,28,26,0.28)]`}
+      className={`relative rounded-xl border bg-gradient-to-br ${event.color} ${event.borderColor} p-7 sm:p-9 overflow-hidden group shadow-[0_10px_30px_-18px_rgba(28,28,26,0.35)]`}
     >
       {/* Accent bar in the event's own colour, so the three read as distinct
           occasions rather than three copies of the same card. */}

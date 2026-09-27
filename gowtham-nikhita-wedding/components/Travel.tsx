@@ -54,7 +54,7 @@ function PhotoStrip({ venue, onOpen }: { venue: VenueKey; onOpen: (flatIndex: nu
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.08 + i * 0.1 }}
             onClick={() => onOpen(photo.flatIndex)}
-            className={`snap-center shrink-0 w-[70vw] sm:w-auto sm:flex-1 rounded-lg overflow-hidden border shadow-md cursor-zoom-in group relative
+            className={`snap-center shrink-0 w-[70vw] sm:w-auto sm:flex-1 rounded-lg overflow-hidden border shadow-lg cursor-zoom-in group relative
               ${i === 0 ? 'border-gold/25 sm:-rotate-[1deg]' : ''}
               ${i === 1 ? 'border-gold/20 sm:rotate-[0.8deg] sm:translate-y-3' : ''}
               ${i === 2 ? 'border-gold/30 sm:-rotate-[0.5deg] sm:translate-y-1' : ''}

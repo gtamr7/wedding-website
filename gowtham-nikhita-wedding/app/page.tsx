@@ -12,7 +12,7 @@ function FeatureLink({ href, Icon, title, desc }: { href: string; Icon: LucideIc
   return (
     <Link
       href={href}
-      className="group block rounded-xl border border-gold/30 bg-[#3A4A24] p-6 shadow-[0_4px_10px_-4px_rgba(0,0,0,0.45)] hover:border-gold/60 hover:-translate-y-1 transition-all duration-200"
+      className="group block rounded-xl border border-gold/30 bg-[#3A4A24] p-6 shadow-[0_12px_28px_-16px_rgba(0,0,0,0.6)] hover:border-gold/60 hover:-translate-y-1 transition-all duration-200"
     >
       <span className="inline-flex w-11 h-11 items-center justify-center rounded-full bg-gold/15 mb-4"><Icon size={20} strokeWidth={2.25} className="text-gold" /></span>
       <h3 className="font-display text-xl text-ivory group-hover:text-gold transition-colors">{title}</h3>
