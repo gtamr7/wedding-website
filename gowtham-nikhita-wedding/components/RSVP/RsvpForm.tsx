@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
-import { Lock } from 'lucide-react'
+import { Lock, PenLine } from 'lucide-react'
 import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
 import EnvelopeReveal, { joinNames } from './EnvelopeReveal'
 import WaxSeal from './WaxSeal'
@@ -609,7 +609,8 @@ export default function RsvpForm() {
                   </div>
                   {partyId && a.guestListId && fixingIndex !== i && (
                     <button type="button" onClick={() => startFix(i)}
-                      className="text-[11px] text-gold hover:text-gold-light transition-colors shrink-0">
+                      className="inline-flex items-center gap-1 shrink-0 rounded-full border border-gold/60 px-2.5 py-1 text-xs font-semibold text-[#8C7220] hover:bg-gold/10 hover:border-gold transition-colors">
+                      <PenLine size={12} strokeWidth={2.5} aria-hidden="true" />
                       {a.correction ? 'Edit fix' : 'Fix spelling'}
                     </button>
                   )}
