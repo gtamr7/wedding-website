@@ -160,6 +160,18 @@ body {
   .section-ivory { --fade: 260px; padding-top: calc(7rem + 150px); padding-bottom: calc(7rem + 150px); }
 }
 
+/* RSVP backdrop photo. A portrait photo filling a wide screen is scaled to
+   the full width, so how far down our heads land depends on the width.
+   Each step is measured to put them just below the card rather than behind
+   it. Plain CSS rather than Tailwind variants so the order is guaranteed:
+   arbitrary min-[...] variants sorted behind 2xl and never applied. */
+.rsvp-photo { object-position: 50% 70%; }
+@media (min-width: 1024px) { .rsvp-photo { object-position: 50% 16%; } }
+@media (min-width: 1280px) { .rsvp-photo { object-position: 50% 29%; } }
+@media (min-width: 1536px) { .rsvp-photo { object-position: 50% 35%; } }
+@media (min-width: 1800px) { .rsvp-photo { object-position: 50% 42%; } }
+@media (min-width: 2200px) { .rsvp-photo { object-position: 50% 51%; } }
+
 /* Section-level spacing helper */
 .section-py { padding-top: 5rem; padding-bottom: 5rem; }
 @media (min-width: 1024px) { .section-py { padding-top: 7rem; padding-bottom: 7rem; } }
