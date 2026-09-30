@@ -609,8 +609,8 @@ export default function RsvpForm() {
                   </div>
                   {partyId && a.guestListId && fixingIndex !== i && (
                     <button type="button" onClick={() => startFix(i)}
-                      className="inline-flex items-center gap-1 shrink-0 rounded-full border border-gold/60 px-2.5 py-1 text-xs font-semibold text-[#8C7220] hover:bg-gold/10 hover:border-gold transition-colors">
-                      <PenLine size={12} strokeWidth={2.5} aria-hidden="true" />
+                      className="inline-flex items-center gap-1.5 shrink-0 rounded-full bg-olive-dark px-3.5 py-1.5 text-[13px] font-semibold text-ivory shadow-sm hover:bg-olive-mid transition-colors">
+                      <PenLine size={14} strokeWidth={2.5} aria-hidden="true" />
                       {a.correction ? 'Edit fix' : 'Fix spelling'}
                     </button>
                   )}
