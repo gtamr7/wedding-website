@@ -304,8 +304,9 @@ export default function RsvpForm() {
 
   // ── Party → Details ───────────────────────────────────────
   const handlePartyNext = () => {
-    const anyEventSelected = attendingGuests.some(a => a.sangeet || a.wedding || a.reception)
-    if (!anyEventSelected && attendingGuests.length > 0) { setEventError(true); return }
+    // Every attending guest needs at least one event, not just one guest in the party.
+    const everyoneHasEvent = attendingGuests.every(a => a.sangeet || a.wedding || a.reception)
+    if (!everyoneHasEvent) { setEventError(true); return }
     setEventError(false)
     setStep('details')
   }
