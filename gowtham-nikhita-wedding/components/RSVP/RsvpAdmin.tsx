@@ -73,7 +73,7 @@ function EventBar({ label, count, total, color }: { label: string; count: number
     <div>
       <div className="flex justify-between text-sm mb-1.5">
         <span className="text-charcoal/70">{label}</span>
-        <span className="font-medium text-charcoal">{count} <span className="text-charcoal/40 font-normal">of {total} · {pct}%</span></span>
+        <span className="font-medium text-charcoal">{count} <span className="text-charcoal/40 font-normal">coming</span></span>
       </div>
       <div className="h-2 bg-olive-light rounded-full overflow-hidden">
         <motion.div
@@ -405,7 +405,7 @@ export default function RsvpAdmin() {
       <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
         <div>
           <h1 className="font-display text-4xl sm:text-5xl text-charcoal">RSVP Dashboard</h1>
-          <p className="text-charcoal/40 text-sm mt-1">{stats.totalSubmissions} submissions · {stats.totalGuests} guests attending at least one event</p>
+          <p className="text-charcoal/40 text-sm mt-1">{stats.totalSubmissions} submissions · {stats.totalGuests} guests coming</p>
         </div>
         <div className="flex gap-3">
           <button onClick={() => { fetchRsvps(); fetchCorrections() }} className="text-sm text-charcoal/50 hover:text-charcoal border border-olive-light rounded-xl px-4 py-2 transition-colors">
@@ -477,7 +477,7 @@ export default function RsvpAdmin() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               { label: 'Submissions', value: stats.totalSubmissions, Icon: Inbox },
-              { label: 'Attending any event', value: stats.totalGuests, Icon: Users },
+              { label: 'Guests coming', value: stats.totalGuests, Icon: Users },
               { label: 'Need hotel', value: stats.hotel, Icon: BedDouble },
               { label: 'Dietary notes', value: stats.dietary.length, Icon: Utensils },
             ].map(s => (
@@ -490,10 +490,7 @@ export default function RsvpAdmin() {
           </div>
 
           <div className="bg-white border-2 border-olive-light rounded-xl p-6">
-            <h2 className="font-display text-xl text-charcoal mb-1">Event Attendance</h2>
-            <p className="text-xs text-charcoal/40 mb-5">
-              Each event out of the {stats.totalGuests} guests coming to at least one. Most guests attend more than one event, so these won&apos;t add up to {stats.totalGuests}.
-            </p>
+            <h2 className="font-display text-xl text-charcoal mb-5">Coming to each event</h2>
             <div className="space-y-4">
               <EventBar label="Sangeet · Feb 17" count={stats.sangeet} total={stats.totalGuests} color="bg-olive-mid" />
               <EventBar label="Ceremony (Kalyaanam) · Feb 18 Morning" count={stats.wedding} total={stats.totalGuests} color="bg-gold" />
