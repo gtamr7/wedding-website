@@ -62,10 +62,10 @@ type ExistingRow = {
 }
 
 // ── Constants ────────────────────────────────────────────────
-// Guests are asked to reply by November 17th — that request is displayed below
-// and passing it changes nothing. This is the hard close: the form stops
-// accepting submissions afterwards. It runs through the end of the 18th so
-// nobody answering late in their own timezone is shut out.
+// Guests are asked to reply by November 7th, the first wave's deadline, which
+// WAVE_1_RSVP_CLOSE in lib/wedding.ts enforces per party. This is the hard
+// close for everyone, second wave included: the form stops accepting
+// submissions afterwards. The second wave's deadline is still undecided.
 const RSVP_CLOSE_DATE = new Date('2026-11-18T23:59:59-05:00')
 
 // calStart/calEnd must match the times on the schedule cards — these drifted
@@ -430,7 +430,7 @@ export default function RsvpForm() {
               We&apos;d love to have you celebrate with us. Please type your full name below.
             </p>
             <p className="text-gold text-xs mt-3 font-medium tracking-wide">
-              Please RSVP by November 17th
+              Please RSVP by November 7th
             </p>
             <p className="text-charcoal/45 text-xs mt-1.5 max-w-sm mx-auto leading-relaxed">
               Contact the Bride or Groom directly for any questions or exceptions. Thank you!

@@ -23,3 +23,7 @@ COMMENT ON COLUMN guest_parties.wave IS
 
 -- To move an existing party into the second wave:
 -- UPDATE guest_parties SET wave = 2 WHERE party_name IN ('...');
+
+-- Held and not yet invited when the first wave went out: second wave.
+UPDATE guest_parties SET wave = 2
+WHERE party_name IN ('Ganesh Narasimhan', 'Visu Sankaran');
