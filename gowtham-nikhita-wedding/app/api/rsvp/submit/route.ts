@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { partyRsvpStatus, rsvpClosedForWave } from '@/lib/wedding'
 
 type GuestInput = {
   name: string
@@ -37,6 +38,14 @@ export async function POST(request: Request) {
     if (!url || !key) return Response.json({ error: 'Not configured' }, { status: 500 })
 
     const supabase = createClient(url, key)
+
+    // The form hides itself from held and closed parties; this is the same
+    // check for a request that skips the form. Every guest is in a party, so
+    // a submission without one is not from the list.
+    if (!partyId) return Response.json({ error: 'Invalid payload' }, { status: 400 })
+    const status = await partyRsvpStatus(supabase, partyId)
+    if (status.onHold) return Response.json({ error: 'on-hold' }, { status: 403 })
+    if (rsvpClosedForWave(status.wave)) return Response.json({ error: 'closed' }, { status: 403 })
 
     // Insert-and-replace happens atomically in Postgres under an advisory
     // lock keyed on the party (see supabase/rsvp-atomic-submit.sql). This

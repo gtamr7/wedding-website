@@ -140,7 +140,7 @@ export default function RsvpForm() {
   const [lookupFirst, setLookupFirst] = useState('')
   const [lookupLast,  setLookupLast]  = useState('')
   const [looking,     setLooking]     = useState(false)
-  const [lookupError, setLookupError] = useState<'not-found' | 'on-hold' | 'error' | ''>('')
+  const [lookupError, setLookupError] = useState<'not-found' | 'on-hold' | 'closed' | 'error' | ''>('')
   const [choices,     setChoices]     = useState<GuestChoice[]>([])
 
   // ── Party / submission state ──────────────────────────────
@@ -170,6 +170,8 @@ export default function RsvpForm() {
 
   // ── Existing RSVP ─────────────────────────────────────────
   const [existingRows, setExistingRows] = useState<ExistingRow[]>([])
+  // Past this party's deadline: the saved RSVP can be viewed, not changed
+  const [closed, setClosed] = useState(false)
 
   // ── Submit state ──────────────────────────────────────────
   const [submitting, setSubmitting] = useState(false)
@@ -228,6 +230,7 @@ export default function RsvpForm() {
         found: boolean
         ambiguous?: boolean
         onHold?: boolean
+        closed?: boolean
         choices?: GuestChoice[]
         party: PartyMember[]
         partyId: string | null
@@ -239,12 +242,15 @@ export default function RsvpForm() {
       if (data.ambiguous && data.choices?.length) { setChoices(data.choices); return }
       // Recognised, but their invitation is still being finalised
       if (data.onHold) { setLookupError('on-hold'); return }
+      // Their invitation's deadline has passed and they never replied
+      if (data.closed && !data.found) { setLookupError('closed'); return }
       if (!data.found) { setLookupError('not-found'); return }
 
       setChoices([])
       const submitter = data.party.find(m => m.isSubmitter) ?? data.party[0]
       setParty(data.party)
       setPartyId(data.partyId)
+      setClosed(!!data.closed)
       setSubmitterName(submitter?.name ?? `${lookupFirst} ${lookupLast}`.trim())
       setAttendees(data.party.map(initAttendee))
       setRevealFor(data.party.map(m => m.firstName || m.name.split(' ')[0]))
@@ -340,6 +346,13 @@ export default function RsvpForm() {
           })),
         }),
       })
+      if (res.status === 403) {
+        // The deadline passed while the form was open
+        setClosed(true)
+        setLookupError('closed')
+        setStep('lookup')
+        return
+      }
       if (!res.ok) throw new Error()
       setStep('success')
     } catch {
@@ -497,6 +510,16 @@ export default function RsvpForm() {
                   </p>
                 </motion.div>
               )}
+              {lookupError === 'closed' && (
+                <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                  className="bg-olive-light/25 border border-olive-light rounded-xl px-4 py-4 text-sm leading-relaxed">
+                  <p className="font-medium text-charcoal mb-1">The RSVP deadline for your invitation has passed</p>
+                  <p className="text-charcoal/60">
+                    Please reach out to Gowtham&apos;s or Nikhita&apos;s family directly and
+                    they&apos;ll be happy to help.
+                  </p>
+                </motion.div>
+              )}
               {lookupError === 'not-found' && (
                 <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                   className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-4 text-sm leading-relaxed">
@@ -558,10 +581,17 @@ export default function RsvpForm() {
               className="w-full bg-olive-dark text-white py-4 rounded-xl font-medium tracking-wider uppercase text-sm hover:bg-olive-mid transition-colors">
               Looks right, see calendar links
             </button>
-            <button onClick={enterEditMode}
-              className="w-full py-4 rounded-xl border-2 border-olive-light text-charcoal/60 text-sm hover:border-olive-mid hover:text-charcoal transition-colors">
-              I need to update my RSVP
-            </button>
+            {closed ? (
+              <p className="text-xs text-charcoal/50 text-center leading-relaxed px-2">
+                The deadline to change your RSVP has passed. If something has changed,
+                please reach out to Gowtham&apos;s or Nikhita&apos;s family directly.
+              </p>
+            ) : (
+              <button onClick={enterEditMode}
+                className="w-full py-4 rounded-xl border-2 border-olive-light text-charcoal/60 text-sm hover:border-olive-mid hover:text-charcoal transition-colors">
+                I need to update my RSVP
+              </button>
+            )}
             <button onClick={() => setStep('lookup')}
               className="text-xs text-charcoal/30 hover:text-charcoal/50 transition-colors text-center">
               ← That&apos;s not me

@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { partyRsvpStatus, rsvpClosedForWave } from '@/lib/wedding'
 
 type GuestRow = {
   id: string
@@ -91,15 +92,13 @@ export async function POST(request: Request) {
 
     // A held party is recognised but cannot submit yet. Reported separately
     // from "not found" so the guest is not told they are missing from the list.
+    // A first-wave party past its deadline can still look at an RSVP it
+    // already sent, but cannot send or change one (`closed`).
+    let closed = false
     if (partyId) {
-      const { data: partyRow } = await supabase
-        .from('guest_parties')
-        .select('on_hold')
-        .eq('id', partyId)
-        .maybeSingle()
-      if (partyRow && (partyRow as { on_hold?: boolean }).on_hold) {
-        return Response.json({ found: false, onHold: true })
-      }
+      const status = await partyRsvpStatus(supabase, partyId)
+      if (status.onHold) return Response.json({ found: false, onHold: true })
+      closed = rsvpClosedForWave(status.wave)
     }
 
     // Build the party list
@@ -150,8 +149,12 @@ export async function POST(request: Request) {
       }
     }
 
+    // Nothing on file to show, so there is nothing past the lookup for them
+    if (closed && !alreadyRsvped) return Response.json({ found: false, closed: true })
+
     return Response.json({
       found: true,
+      closed,
       party,
       partyId,
       alreadyRsvped,

@@ -12,6 +12,8 @@
 // footer, timeline — still gets one umbrella string from venueShort(); anything
 // a guest actually navigates by has to name the specific venue.
 
+import type { SupabaseClient } from '@supabase/supabase-js'
+
 /** A place an event happens. `street` onwards feed calendar invites and maps. */
 type Venue = {
   name: string
@@ -71,6 +73,33 @@ export const VENUE_TBA = 'Venue to be announced'
  * same day.
  */
 export const RSVP_PAUSED = false
+
+/**
+ * The first wave of invitations (every party on the list before the second
+ * wave, `guest_parties.wave = 1`) has to reply by November 7th. After this,
+ * those parties can no longer submit and are pointed to the families instead.
+ * End of the 7th Eastern, which is already the 8th in India.
+ */
+export const WAVE_1_RSVP_CLOSE = new Date('2026-11-07T23:59:59-05:00')
+
+/** Whether a party in this wave can no longer submit an RSVP. */
+export function rsvpClosedForWave(wave: number, now = new Date()): boolean {
+  return wave === 1 && now >= WAVE_1_RSVP_CLOSE
+}
+
+/**
+ * Reads a party's hold flag and wave. Until supabase/rsvp-waves.sql has run,
+ * the wave column does not exist; every party then is a first-wave party, so
+ * that is what the fallback reports.
+ */
+export async function partyRsvpStatus(supabase: SupabaseClient, partyId: string): Promise<{ onHold: boolean; wave: number }> {
+  const withWave = await supabase.from('guest_parties').select('on_hold, wave').eq('id', partyId).maybeSingle()
+  if (!withWave.error) {
+    return { onHold: !!withWave.data?.on_hold, wave: withWave.data?.wave ?? 1 }
+  }
+  const { data } = await supabase.from('guest_parties').select('on_hold').eq('id', partyId).maybeSingle()
+  return { onHold: !!data?.on_hold, wave: 1 }
+}
 
 /** "Miami, FL" — the region alone. */
 export function cityShort(): string {
