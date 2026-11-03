@@ -823,9 +823,10 @@ export default function RsvpForm() {
           {/* Dietary — one field per attending guest */}
           {attendingGuests.length > 0 && (
             <div>
-              <p className="text-xs uppercase tracking-widest text-charcoal/50 mb-3">
+              <p className="text-xs uppercase tracking-widest text-charcoal/50 mb-1">
                 Dietary Restrictions <span className="normal-case text-charcoal/30">(optional)</span>
               </p>
+              <p className="text-xs text-charcoal/45 mb-3">Leave blank if none.</p>
               <div className="space-y-3">
                 {attendees.map((a, i) => {
                   if (!a.attending) return null
