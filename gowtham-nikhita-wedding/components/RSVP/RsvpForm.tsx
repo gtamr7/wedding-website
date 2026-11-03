@@ -7,7 +7,7 @@ import { Lock, PenLine } from 'lucide-react'
 import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
 import EnvelopeReveal, { joinNames } from './EnvelopeReveal'
 import WaxSeal from './WaxSeal'
-import { venueAddress, cityShort, RSVP_PAUSED, type VenueKey } from '@/lib/wedding'
+import { venueAddress, cityShort, RSVP_PAUSED, WAVE_1_RSVP_CLOSE, type VenueKey } from '@/lib/wedding'
 
 type EventIcon = (props: { size?: number; className?: string }) => React.JSX.Element
 
@@ -63,10 +63,10 @@ type ExistingRow = {
 
 // ── Constants ────────────────────────────────────────────────
 // Guests are asked to reply by November 10th, the first wave's deadline, which
-// WAVE_1_RSVP_CLOSE in lib/wedding.ts enforces per party. This is the second
-// wave's deadline and the hard close for everyone: the form stops accepting
-// submissions afterwards.
-const RSVP_CLOSE_DATE = new Date('2026-11-25T23:59:59-05:00')
+// WAVE_1_RSVP_CLOSE in lib/wedding.ts enforces per party. Once that passes the
+// header shows no date at all. This is the second wave's deadline and the hard
+// close for everyone: the form stops accepting submissions afterwards.
+const RSVP_CLOSE_DATE = new Date('2026-12-07T23:59:59-05:00')
 
 // Shown to first-wave guests who missed their deadline
 const GOWTHAM_PHONE_DISPLAY = '(678) 499-7520'
@@ -433,9 +433,11 @@ export default function RsvpForm() {
             <p className="text-charcoal/50 text-sm mt-4 max-w-md mx-auto">
               We&apos;d love to have you celebrate with us. Please type your full name below.
             </p>
-            <p className="text-gold text-xs mt-3 font-medium tracking-wide">
-              Please RSVP by November 10th
-            </p>
+            {new Date() < WAVE_1_RSVP_CLOSE && (
+              <p className="text-gold text-xs mt-3 font-medium tracking-wide">
+                Please RSVP by November 10th
+              </p>
+            )}
             <p className="text-charcoal/45 text-xs mt-1.5 max-w-sm mx-auto leading-relaxed">
               Contact the Bride or Groom directly for any questions or exceptions. Thank you!
             </p>
