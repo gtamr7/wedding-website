@@ -2,7 +2,7 @@
 -- Invitation waves.
 --
 -- Every party on the list when this runs got the first wave of invitations
--- and is marked wave 1. Their RSVPs close after November 7th (WAVE_1_RSVP_CLOSE
+-- and is marked wave 1. Their RSVPs close after November 10th (WAVE_1_RSVP_CLOSE
 -- in lib/wedding.ts); after that the form sends them to the families instead.
 -- Parties added afterwards default to wave 2 and can keep submitting.
 --
@@ -19,7 +19,7 @@ ALTER TABLE guest_parties
   ALTER COLUMN wave SET DEFAULT 2;
 
 COMMENT ON COLUMN guest_parties.wave IS
-  'Invitation wave. Wave 1 RSVPs close after Nov 7 2026; wave 2 stays open.';
+  'Invitation wave. Wave 1 RSVPs close after Nov 10 2026; wave 2 stays open.';
 
 -- To move an existing party into the second wave:
 -- UPDATE guest_parties SET wave = 2 WHERE party_name IN ('...');
