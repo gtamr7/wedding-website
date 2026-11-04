@@ -5,7 +5,11 @@
  * The RSVP admin page uses this to list who still hasn't replied.
  *
  * Party IDs, so renames and new party members don't break the list. Sashi
- * Puvvada was on the report but isn't on the guest list, so isn't here.
+ * Puvvada on the report is Sashi Padarthy, already counted.
+ *
+ * Left out on purpose: the couple's own parties (Gowtham Ramesh, Nikhita
+ * Puvvada), and the Sreeram Puvvada party, which has a second guest also
+ * named Nikhita Puvvada and only matched the report by that name.
  */
 export const FIRST_WAVE_RECIPIENT_PARTY_IDS: readonly string[] = [
   'f470c437-f774-4ba1-b03c-6de4bfb82755', // Ahmed Ali
@@ -29,7 +33,6 @@ export const FIRST_WAVE_RECIPIENT_PARTY_IDS: readonly string[] = [
   '421a826a-87b0-412a-a134-fae930327b9f', // Gabby John
   'eba9ab78-6e2a-43c5-8255-2fc1af2cfc83', // Gandhi Puvvada
   '6b32320b-9d0c-4252-bde0-f5a0f0c90b79', // Ganesh Narasimhan
-  '5ce80f3c-79c9-4d79-9c79-d45cfe810b59', // Gowtham Ramesh
   '2604d834-11aa-4599-987b-25f08bddf590', // Harish Sridharan
   'd98fa5dd-9d1d-4a85-ab5e-e4fe55b26626', // Hiren Patel
   '160dec15-d2f2-45c1-87d7-f7019073ab15', // Jack Baird
@@ -92,7 +95,6 @@ export const FIRST_WAVE_RECIPIENT_PARTY_IDS: readonly string[] = [
   'df4dd6ad-fdd9-4d62-810f-ca354dc71ad5', // Shivam Patel
   'c68c1125-09c1-4ce2-ac1d-e79066c359eb', // Sona Vasudevan
   'e5f9f344-96a3-49bc-bd99-4903007d243e', // Spoorthy Bharadwaj
-  '74daf01c-a21d-495b-b75d-2fdedae5f0dc', // Sreeram Puvvada
   'c29de27f-79c1-45f1-bb47-33cc60ee453f', // Steven Vu
   '0e1ff990-b21f-4a95-bcde-4be0777a9ee8', // Suji Raman
   '57c84bc6-09ba-4108-997c-0b9614f0efd1', // Sumedha Vadlapudi
