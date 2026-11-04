@@ -503,44 +503,6 @@ export default function RsvpAdmin() {
             ))}
           </div>
 
-          {/* First-wave invitees (from Zola's delivery report) with no reply yet */}
-          {(notRsvped || notRsvpedError) && (
-            <div className="bg-white border-2 border-olive-light rounded-xl p-6">
-              <h2 className="font-display text-xl text-charcoal">Haven&apos;t RSVPed yet</h2>
-              {notRsvpedError ? (
-                <p className="text-xs text-red-500 mt-2">Couldn&apos;t load this list: {notRsvpedError}</p>
-              ) : notRsvped && (
-                <>
-                  <p className="text-xs text-charcoal/45 mt-1 mb-4">
-                    From the first-wave invitations sent through Zola.{' '}
-                    {notRsvped.parties.filter(p => !p.partlyReplied).length} of {notRsvped.totalParties} parties
-                    haven&apos;t replied, {notRsvped.parties.reduce((n, p) => n + p.missing.length, 0)} people in all.
-                  </p>
-                  {notRsvped.parties.length === 0 ? (
-                    <p className="text-sm text-charcoal/50">Everyone has replied.</p>
-                  ) : (
-                    <div className="divide-y divide-olive-light/60 max-h-[32rem] overflow-y-auto pr-1">
-                      {notRsvped.parties.map(p => (
-                        <div key={p.partyId} className="py-2.5 text-sm">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-medium text-charcoal">{p.partyName}</span>
-                            {p.partlyReplied && (
-                              <span className="text-[10px] uppercase tracking-wider bg-gold/15 text-gold rounded px-1.5 py-0.5">Replied, missing some</span>
-                            )}
-                            {p.onHold && (
-                              <span className="text-[10px] uppercase tracking-wider bg-red-50 text-red-500 rounded px-1.5 py-0.5">On hold, can&apos;t RSVP</span>
-                            )}
-                          </div>
-                          <p className="text-charcoal/50 text-xs mt-0.5">{p.missing.join(', ')}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          )}
-
           <div className="bg-white border-2 border-olive-light rounded-xl p-6">
             <h2 className="font-display text-xl text-charcoal mb-5">Event Attendance</h2>
             <div className="space-y-4">
@@ -583,6 +545,44 @@ export default function RsvpAdmin() {
               )}
             </div>
           </div>
+
+          {/* First-wave invitees (from Zola's delivery report) with no reply yet */}
+          {(notRsvped || notRsvpedError) && (
+            <div className="bg-white border-2 border-olive-light rounded-xl p-6">
+              <h2 className="font-display text-xl text-charcoal">Haven&apos;t RSVPed yet</h2>
+              {notRsvpedError ? (
+                <p className="text-xs text-red-500 mt-2">Couldn&apos;t load this list: {notRsvpedError}</p>
+              ) : notRsvped && (
+                <>
+                  <p className="text-xs text-charcoal/45 mt-1 mb-4">
+                    From the first-wave invitations sent through Zola.{' '}
+                    {notRsvped.parties.filter(p => !p.partlyReplied).length} of {notRsvped.totalParties} parties
+                    haven&apos;t replied, {notRsvped.parties.reduce((n, p) => n + p.missing.length, 0)} people in all.
+                  </p>
+                  {notRsvped.parties.length === 0 ? (
+                    <p className="text-sm text-charcoal/50">Everyone has replied.</p>
+                  ) : (
+                    <div data-lenis-prevent className="divide-y divide-olive-light/60 max-h-[32rem] overflow-y-auto overscroll-contain pr-1">
+                      {notRsvped.parties.map(p => (
+                        <div key={p.partyId} className="py-2.5 text-sm">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-medium text-charcoal">{p.partyName}</span>
+                            {p.partlyReplied && (
+                              <span className="text-[10px] uppercase tracking-wider bg-gold/15 text-gold rounded px-1.5 py-0.5">Replied, missing some</span>
+                            )}
+                            {p.onHold && (
+                              <span className="text-[10px] uppercase tracking-wider bg-red-50 text-red-500 rounded px-1.5 py-0.5">On hold, can&apos;t RSVP</span>
+                            )}
+                          </div>
+                          <p className="text-charcoal/50 text-xs mt-0.5">{p.missing.join(', ')}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </motion.div>
       ) : activeTab === 'guestbook' ? (
         <motion.div key="guestbook" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
