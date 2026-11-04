@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Lock, BarChart2, List, Mail, Inbox, Users, BedDouble, Utensils, Camera, RefreshCw } from 'lucide-react'
 import { SangeetIcon, DiyaIcon, CheersIcon } from '@/components/icons/EventIcons'
 import type { RsvpSubmission, GuestbookEntry } from '@/lib/types'
+import type { NotRsvpedParty } from '@/lib/firstWaveRecipients'
 
 type AuthState = 'loading' | 'locked' | 'unlocked'
 type SortKey = 'submitted_by' | 'submitted_at' | 'attending_count'
@@ -125,6 +126,8 @@ export default function RsvpAdmin() {
   const [corrections, setCorrections] = useState<NameCorrection[]>([])
   const [correctionError, setCorrectionError] = useState('')
   const [correctionBusy, setCorrectionBusy] = useState<string | null>(null)
+  const [notRsvped, setNotRsvped] = useState<{ totalParties: number; parties: NotRsvpedParty[] } | null>(null)
+  const [notRsvpedError, setNotRsvpedError] = useState('')
 
   useEffect(() => {
     const stored = sessionStorage.getItem('rsvpAdminAuth')
@@ -133,7 +136,7 @@ export default function RsvpAdmin() {
   }, [])
 
   useEffect(() => {
-    if (auth === 'unlocked' && adminPin) { fetchRsvps(); fetchCorrections() }
+    if (auth === 'unlocked' && adminPin) { fetchRsvps(); fetchCorrections(); fetchNotRsvped() }
   }, [auth, adminPin])
 
   useEffect(() => {
@@ -150,6 +153,17 @@ export default function RsvpAdmin() {
       console.error('Failed to fetch RSVPs')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchNotRsvped = async () => {
+    try {
+      const res = await fetch('/api/admin/not-rsvped', { headers: { 'x-admin-pin': adminPin } })
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? 'Failed')
+      setNotRsvped(await res.json())
+      setNotRsvpedError('')
+    } catch (e) {
+      setNotRsvpedError(e instanceof Error ? e.message : 'Failed')
     }
   }
 
@@ -408,7 +422,7 @@ export default function RsvpAdmin() {
           <p className="text-charcoal/40 text-sm mt-1">{stats.totalSubmissions} submissions · {stats.totalGuests} attending guests</p>
         </div>
         <div className="flex gap-3">
-          <button onClick={() => { fetchRsvps(); fetchCorrections() }} className="text-sm text-charcoal/50 hover:text-charcoal border border-olive-light rounded-xl px-4 py-2 transition-colors">
+          <button onClick={() => { fetchRsvps(); fetchCorrections(); fetchNotRsvped() }} className="text-sm text-charcoal/50 hover:text-charcoal border border-olive-light rounded-xl px-4 py-2 transition-colors">
             ↻ Refresh
           </button>
           <button onClick={() => void exportXlsx()} disabled={!submissions.length || exporting} className="bg-gold text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-40">
@@ -488,6 +502,44 @@ export default function RsvpAdmin() {
               </div>
             ))}
           </div>
+
+          {/* First-wave invitees (from Zola's delivery report) with no reply yet */}
+          {(notRsvped || notRsvpedError) && (
+            <div className="bg-white border-2 border-olive-light rounded-xl p-6">
+              <h2 className="font-display text-xl text-charcoal">Haven&apos;t RSVPed yet</h2>
+              {notRsvpedError ? (
+                <p className="text-xs text-red-500 mt-2">Couldn&apos;t load this list: {notRsvpedError}</p>
+              ) : notRsvped && (
+                <>
+                  <p className="text-xs text-charcoal/45 mt-1 mb-4">
+                    From the first-wave invitations sent through Zola.{' '}
+                    {notRsvped.parties.filter(p => !p.partlyReplied).length} of {notRsvped.totalParties} parties
+                    haven&apos;t replied, {notRsvped.parties.reduce((n, p) => n + p.missing.length, 0)} people in all.
+                  </p>
+                  {notRsvped.parties.length === 0 ? (
+                    <p className="text-sm text-charcoal/50">Everyone has replied.</p>
+                  ) : (
+                    <div className="divide-y divide-olive-light/60 max-h-[32rem] overflow-y-auto pr-1">
+                      {notRsvped.parties.map(p => (
+                        <div key={p.partyId} className="py-2.5 text-sm">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-medium text-charcoal">{p.partyName}</span>
+                            {p.partlyReplied && (
+                              <span className="text-[10px] uppercase tracking-wider bg-gold/15 text-gold rounded px-1.5 py-0.5">Replied, missing some</span>
+                            )}
+                            {p.onHold && (
+                              <span className="text-[10px] uppercase tracking-wider bg-red-50 text-red-500 rounded px-1.5 py-0.5">On hold, can&apos;t RSVP</span>
+                            )}
+                          </div>
+                          <p className="text-charcoal/50 text-xs mt-0.5">{p.missing.join(', ')}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
 
           <div className="bg-white border-2 border-olive-light rounded-xl p-6">
             <h2 className="font-display text-xl text-charcoal mb-5">Event Attendance</h2>
