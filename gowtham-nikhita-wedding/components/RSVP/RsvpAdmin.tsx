@@ -555,14 +555,12 @@ export default function RsvpAdmin() {
               ) : notRsvped && (
                 <>
                   <p className="text-xs text-charcoal/45 mt-1 mb-4">
-                    From the first-wave invitations sent through Zola.{' '}
-                    {notRsvped.parties.filter(p => !p.partlyReplied).length} of {notRsvped.totalParties} parties
-                    haven&apos;t replied, {notRsvped.parties.reduce((n, p) => n + p.missing.length, 0)} people in all.
+                    {`From the first-wave invitations sent through Zola. ${notRsvped.parties.filter(p => !p.partlyReplied).length} of ${notRsvped.totalParties} parties haven't replied, ${notRsvped.parties.reduce((n, p) => n + p.missing.length, 0)} people in all.`}
                   </p>
                   {notRsvped.parties.length === 0 ? (
                     <p className="text-sm text-charcoal/50">Everyone has replied.</p>
                   ) : (
-                    <div data-lenis-prevent className="divide-y divide-olive-light/60 max-h-[32rem] overflow-y-auto overscroll-contain pr-1">
+                    <div data-lenis-prevent className="divide-y divide-olive-light/60 sm:max-h-[32rem] sm:overflow-y-auto sm:overscroll-contain sm:pr-1">
                       {notRsvped.parties.map(p => (
                         <div key={p.partyId} className="py-2.5 text-sm">
                           <div className="flex items-center gap-2 flex-wrap">
