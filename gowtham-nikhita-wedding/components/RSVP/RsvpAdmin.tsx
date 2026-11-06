@@ -404,12 +404,16 @@ export default function RsvpAdmin() {
       wedding: allGuests.filter(g => g.wedding).length,
       reception: allGuests.filter(g => g.reception).length,
       hotel: submissions.filter(s => s.needs_hotel).length,
-      // Only notes the caterer needs: non-veg and allergies. Plain vegetarian
-      // and "none" answers are still saved, shown in the Guest List tab and
-      // exported; they're just counted here instead of listed.
+      // What the caterer needs: allergies and non-veg. Plain vegetarians are
+      // counted, not listed. A blank or "none" answer counts as non-veg. Every
+      // answer is still saved, shown in the Guest List tab and exported.
       dietary: allGuests
-        .filter(g => g.dietary && !isPlainVegetarian(g.dietary) && !isNoRestriction(g.dietary))
-        .map(g => ({ name: g.name, note: g.dietary! })),
+        .filter(g => !(g.dietary && isPlainVegetarian(g.dietary)))
+        .map(g => {
+          const note = g.dietary?.trim() ?? ''
+          const blank = !note || isNoRestriction(note)
+          return { name: g.name, note: blank ? '' : note, group: blank ? 'nonveg' as const : dietaryGroup(note) }
+        }),
       vegetarianCount: allGuests.filter(g => g.dietary && isPlainVegetarian(g.dietary)).length,
     }
   }, [submissions])
@@ -525,7 +529,7 @@ export default function RsvpAdmin() {
               { label: 'Submissions', value: stats.totalSubmissions, Icon: Inbox },
               { label: 'Total attending', value: stats.totalGuests, Icon: Users },
               { label: 'Need hotel', value: stats.hotel, Icon: BedDouble },
-              { label: 'Dietary notes', value: stats.dietary.length, Icon: Utensils },
+              { label: 'Dietary notes', value: stats.dietary.filter(d => d.note).length, Icon: Utensils },
             ].map(s => (
               <div key={s.label} className="bg-white border-2 border-olive-light rounded-xl p-5 text-center">
                 <div className="flex justify-center mb-1"><s.Icon size={22} className="text-charcoal/40" /></div>
@@ -552,7 +556,7 @@ export default function RsvpAdmin() {
               </p>
               <div className="space-y-5">
                 {DIETARY_GROUPS.map(grp => {
-                  const rows = stats.dietary.filter(d => dietaryGroup(d.note) === grp.key)
+                  const rows = stats.dietary.filter(d => d.group === grp.key).sort((a, b) => Number(!!b.note) - Number(!!a.note))
                   if (!rows.length) return null
                   return (
                     <div key={grp.key}>
@@ -565,7 +569,7 @@ export default function RsvpAdmin() {
                         {rows.map((d, i) => (
                           <div key={i} className="flex items-baseline gap-3 text-sm">
                             <span className="font-medium text-charcoal w-40 shrink-0 truncate">{d.name}</span>
-                            <span className="text-charcoal/50">{d.note}</span>
+                            <span className="text-charcoal/50">{d.note || <span className="italic text-charcoal/30">No restrictions</span>}</span>
                           </div>
                         ))}
                       </div>
