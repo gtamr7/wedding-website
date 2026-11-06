@@ -88,6 +88,19 @@ function EventBar({ label, count, total, color }: { label: string; count: number
   )
 }
 
+// "Vegetarian", "veg", and typos like "Vegetaraian". Not "vegan", and not
+// anything with more to it ("Vegetarian. Allergy to garbanzo").
+function isPlainVegetarian(note: string) {
+  const n = note.trim().replace(/[.!]+$/, '').toLowerCase()
+  return /^veg[a-z]*$/.test(n) && !n.includes('vegan')
+}
+
+// "None", "N/A", "No restrictions" and similar
+function isNoRestriction(note: string) {
+  const n = note.trim().replace(/[.!]+$/, '').toLowerCase()
+  return /^(none|nil|n\/?a|no|nope|-+|no restrictions?|no dietary restrictions?)$/.test(n)
+}
+
 function ExpandableNotes({ notes }: { notes: string }) {
   const [open, setOpen] = useState(false)
   return (
@@ -376,9 +389,13 @@ export default function RsvpAdmin() {
       wedding: allGuests.filter(g => g.wedding).length,
       reception: allGuests.filter(g => g.reception).length,
       hotel: submissions.filter(s => s.needs_hotel).length,
+      // Only notes the caterer needs: non-veg and allergies. Plain vegetarian
+      // and "none" answers are still saved, shown in the Guest List tab and
+      // exported; they're just counted here instead of listed.
       dietary: allGuests
-        .filter(g => g.dietary)
+        .filter(g => g.dietary && !isPlainVegetarian(g.dietary) && !isNoRestriction(g.dietary))
         .map(g => ({ name: g.name, note: g.dietary! })),
+      vegetarianCount: allGuests.filter(g => g.dietary && isPlainVegetarian(g.dietary)).length,
     }
   }, [submissions])
 
@@ -512,9 +529,12 @@ export default function RsvpAdmin() {
             </div>
           </div>
 
-          {stats.dietary.length > 0 && (
+          {(stats.dietary.length > 0 || stats.vegetarianCount > 0) && (
             <div className="bg-white border-2 border-olive-light rounded-xl p-6">
-              <h2 className="font-display text-xl text-charcoal mb-4">Dietary Restrictions</h2>
+              <h2 className="font-display text-xl text-charcoal">Dietary Restrictions</h2>
+              <p className="text-xs text-charcoal/45 mt-1 mb-4">
+                {`Non-veg and allergies only. ${stats.vegetarianCount} guests said vegetarian and aren't listed here; they're in the Guest List tab and the Excel export.`}
+              </p>
               <div className="space-y-2">
                 {stats.dietary.map((d, i) => (
                   <div key={i} className="flex items-baseline gap-3 text-sm">
