@@ -88,11 +88,12 @@ function EventBar({ label, count, total, color }: { label: string; count: number
   )
 }
 
-// "Vegetarian", "veg", and typos like "Vegetaraian". Not "vegan", and not
-// anything with more to it ("Vegetarian. Allergy to garbanzo").
+// "Vegetarian", "veg", "vegan", and typos like "Vegetaraian". Not anything
+// with more to it ("Vegetarian. Allergy to garbanzo"). Vegans are counted
+// with vegetarians, at Gowtham's request.
 function isPlainVegetarian(note: string) {
   const n = note.trim().replace(/[.!]+$/, '').toLowerCase()
-  return /^veg[a-z]*$/.test(n) && !n.includes('vegan')
+  return /^veg[a-z]*$/.test(n)
 }
 
 // "None", "N/A", "No restrictions" and similar
@@ -552,7 +553,7 @@ export default function RsvpAdmin() {
             <div className="bg-white border-2 border-olive-light rounded-xl p-6">
               <h2 className="font-display text-xl text-charcoal">Dietary Restrictions</h2>
               <p className="text-xs text-charcoal/45 mt-1 mb-4">
-                {`${stats.vegetarianCount} guests said vegetarian and aren't listed here; they're in the Guest List tab and the Excel export.`}
+                {`${stats.vegetarianCount} guests are vegetarian or vegan and aren't listed here; they're in the Guest List tab and the Excel export.`}
               </p>
               <div className="space-y-5">
                 {DIETARY_GROUPS.map(grp => {
