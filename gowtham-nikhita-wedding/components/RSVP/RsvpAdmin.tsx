@@ -101,6 +101,21 @@ function isNoRestriction(note: string) {
   return /^(none|nil|n\/?a|no|nope|-+|no restrictions?|no dietary restrictions?)$/.test(n)
 }
 
+// Groups for the dietary box. An allergy wins over non-veg, since it's the
+// one that can hurt someone. Anything else (like Jain) goes under Other.
+type DietaryGroup = 'allergy' | 'nonveg' | 'other'
+function dietaryGroup(note: string): DietaryGroup {
+  const n = note.toLowerCase()
+  if (/allerg|intoleran|celiac|gluten|lactose|can.?t (eat|ingest|have)/.test(n)) return 'allergy'
+  if (/non.?veg|chicken|chicketarian|meat|fish|seafood|pescatarian|egg|mutton|beef|pork|eat (lots|everything|anything)/.test(n)) return 'nonveg'
+  return 'other'
+}
+const DIETARY_GROUPS: { key: DietaryGroup; label: string; dot: string }[] = [
+  { key: 'allergy', label: 'Allergies', dot: 'bg-red-400' },
+  { key: 'nonveg', label: 'Non-veg', dot: 'bg-gold' },
+  { key: 'other', label: 'Other', dot: 'bg-olive-mid' },
+]
+
 function ExpandableNotes({ notes }: { notes: string }) {
   const [open, setOpen] = useState(false)
   return (
@@ -533,15 +548,30 @@ export default function RsvpAdmin() {
             <div className="bg-white border-2 border-olive-light rounded-xl p-6">
               <h2 className="font-display text-xl text-charcoal">Dietary Restrictions</h2>
               <p className="text-xs text-charcoal/45 mt-1 mb-4">
-                {`Non-veg and allergies only. ${stats.vegetarianCount} guests said vegetarian and aren't listed here; they're in the Guest List tab and the Excel export.`}
+                {`${stats.vegetarianCount} guests said vegetarian and aren't listed here; they're in the Guest List tab and the Excel export.`}
               </p>
-              <div className="space-y-2">
-                {stats.dietary.map((d, i) => (
-                  <div key={i} className="flex items-baseline gap-3 text-sm">
-                    <span className="font-medium text-charcoal w-40 shrink-0 truncate">{d.name}</span>
-                    <span className="text-charcoal/50">{d.note}</span>
-                  </div>
-                ))}
+              <div className="space-y-5">
+                {DIETARY_GROUPS.map(grp => {
+                  const rows = stats.dietary.filter(d => dietaryGroup(d.note) === grp.key)
+                  if (!rows.length) return null
+                  return (
+                    <div key={grp.key}>
+                      <h3 className="flex items-center gap-2 text-xs uppercase tracking-widest text-charcoal/60 font-medium mb-2 pb-1.5 border-b border-olive-light/60">
+                        <span className={`w-2 h-2 rounded-full ${grp.dot}`} />
+                        {grp.label}
+                        <span className="text-charcoal/35 normal-case tracking-normal font-normal">{rows.length}</span>
+                      </h3>
+                      <div className="space-y-2">
+                        {rows.map((d, i) => (
+                          <div key={i} className="flex items-baseline gap-3 text-sm">
+                            <span className="font-medium text-charcoal w-40 shrink-0 truncate">{d.name}</span>
+                            <span className="text-charcoal/50">{d.note}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           )}
