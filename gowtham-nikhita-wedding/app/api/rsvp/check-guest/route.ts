@@ -9,6 +9,23 @@ type GuestRow = {
   party_id: string | null
 }
 
+// Levenshtein distance, giving up early once it is over `max`.
+function editDistance(a: string, b: string, max: number): number {
+  if (Math.abs(a.length - b.length) > max) return max + 1
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j)
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i]
+    let rowMin = i
+    for (let j = 1; j <= b.length; j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1))
+      rowMin = Math.min(rowMin, cur[j])
+    }
+    if (rowMin > max) return max + 1
+    prev = cur
+  }
+  return prev[b.length]
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json() as { firstName?: string; lastName?: string; guestId?: string }
@@ -63,11 +80,27 @@ export async function POST(request: Request) {
       // split them however they like. Without a last name, match on first name
       // alone but only against guests who have no last name of their own, so a
       // blank field can never surface someone who does have one.
-      const candidates = guestList.filter(row =>
+      let candidates = guestList.filter(row =>
         normLast
           ? squash(`${rowFirstOf(row)} ${rowLastOf(row)}`) === `${normFirst} ${normLast}`
           : squash(rowFirstOf(row)) === normFirst && rowLastOf(row) === ''
       )
+
+      // No exact match: allow a small spelling slip in the full name, since
+      // many names here have several common spellings ("Balasubramaniam" vs
+      // "Balasubramanian"). Only for full names long enough that two letters
+      // off cannot land on a different person by accident; more than one hit
+      // goes through the "which one are you" prompt below.
+      if (!candidates.length && normLast) {
+        const typed = `${normFirst}${normLast}`.replace(/[^a-z]/g, '')
+        if (typed.length >= 10) {
+          const maxDist = typed.length >= 16 ? 2 : 1
+          candidates = guestList.filter(row => {
+            const stored = `${rowFirstOf(row)}${rowLastOf(row)}`.replace(/[^a-z]/g, '')
+            return stored.length >= 10 && editDistance(typed, stored, maxDist) <= maxDist
+          })
+        }
+      }
 
       if (candidates.length > 1) {
         // Two guests share this name — ask which one rather than silently picking the first.
