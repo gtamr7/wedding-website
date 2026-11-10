@@ -78,9 +78,9 @@ export const RSVP_PAUSED = false
  * The first wave of invitations (every party on the list before the second
  * wave, `guest_parties.wave = 1`) has to reply by November 10th. After this,
  * those parties can no longer submit and are asked to call Gowtham instead.
- * End of the 10th Eastern, which is already the 11th in India.
+ * End of the 10th Pacific (3 AM Eastern on the 11th), already the 11th in India.
  */
-export const WAVE_1_RSVP_CLOSE = new Date('2026-11-10T23:59:59-05:00')
+export const WAVE_1_RSVP_CLOSE = new Date('2026-11-10T23:59:59-08:00')
 
 /** Whether a party in this wave can no longer submit an RSVP. */
 export function rsvpClosedForWave(wave: number, now = new Date()): boolean {
