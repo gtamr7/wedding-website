@@ -39,12 +39,10 @@ const PARTIES = [
   ['2147747809', 'Sharma Chinosa', 'Daniel Chinosa', 'Eduvie Chinosa', 'Ovie Chinosa', 'Ejiro Chinosa'],
 ]
 
-// Zola CSV: Name, Plus One, ..., Additional Guest 1..N
-const maxExtra = Math.max(...PARTIES.map(p => p.length - 3))
-const head = ['Name', 'Plus One', 'Email Address', 'Phone Number', 'Street Address 1', 'Street Address 2', 'City', 'State/Region', 'Postal Code',
-  ...Array.from({ length: maxExtra }, (_, i) => `Additional Guest ${i + 1}`)]
-const rows = PARTIES.map(([ph, ...n]) => [n[0], n[1] ?? '', '', ph, '', '', '', '', '', ...Array.from({ length: maxExtra }, (_, i) => n[i + 2] ?? '')])
-const csvPath = 'C:/Users/gowth/Downloads/zola-wave-2-upload.csv'
+// Zola CSV: one row per person, phone only on the person it belongs to.
+const head = ['Name', 'Plus One', 'Email Address', 'Phone Number', 'Street Address 1', 'Street Address 2', 'City', 'State/Region', 'Postal Code']
+const rows = PARTIES.flatMap(([ph, ...n]) => n.map((name, i) => [name, '', '', i === 0 ? ph : '', '', '', '', '', '']))
+const csvPath = 'C:/Users/gowth/Downloads/zola-wave-2-upload-individual.csv'
 writeFileSync(csvPath, [head, ...rows].map(r => r.join(',')).join('\n') + '\n')
 console.log('wrote', csvPath)
 
