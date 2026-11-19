@@ -66,7 +66,7 @@ type ExistingRow = {
 // WAVE_1_RSVP_CLOSE in lib/wedding.ts enforces per party. Once that passes the
 // header shows no date at all. This is the second wave's deadline and the hard
 // close for everyone: the form stops accepting submissions afterwards.
-const RSVP_CLOSE_DATE = new Date('2026-12-07T23:59:59-05:00')
+const RSVP_CLOSE_DATE = new Date('2026-12-31T23:59:59-05:00')
 
 // Shown to first-wave guests who missed their deadline
 const GOWTHAM_PHONE_DISPLAY = '(678) 499-7520'
