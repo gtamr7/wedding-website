@@ -17,11 +17,10 @@ export default function RsvpPage() {
       <main className="relative min-h-screen bg-olive-dark pt-24 pb-20 px-4 sm:px-6 overflow-hidden">
         {/* A faded photo behind the card. The card is only as tall as the
             current step, and on a phone the lookup step left most of the
-            screen as flat green below it. On wide screens the portrait photo
-            is stretched to the full width, so it is shifted to bring our
-            heads out below the card instead of behind it. */}
+            screen as flat green below it. The photo is a centred portrait,
+            so one vertical focus works at every screen size. */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <Image src="/gallery/IMG_0410.jpg" alt="" fill sizes="100vw" quality={60} className="rsvp-photo object-cover opacity-60" />
+          <Image src="/gallery/rsvp-bg.jpg" alt="" fill sizes="100vw" quality={60} className="rsvp-photo object-cover opacity-60" />
           <div className="absolute inset-0 bg-gradient-to-b from-olive-dark/75 via-olive-dark/30 to-olive-dark/70" />
         </div>
         <div className="relative">
