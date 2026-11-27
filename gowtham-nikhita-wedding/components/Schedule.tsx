@@ -36,7 +36,7 @@ const events = [
     day: 'Thursday Morning',
     name: 'Ceremony (Kalyaanam)',
     Icon: DiyaIcon,
-    time: '8:00 AM – 2:00 PM',
+    time: '8:00 AM – 1:00 PM',
     venue: venueLine('garden'),
     description:
       'A traditional Hindu marriage ceremony for Gowtham and Nikhita, followed by lunch.',
@@ -51,7 +51,7 @@ const events = [
     calendar: {
       title: 'Ceremony (Kalyaanam) | Gowtham & Nikhita Wedding',
       date: '20270218T080000',
-      endDate: '20270218T140000',
+      endDate: '20270218T130000',
       location: venueAddress('garden'),
       description: 'A traditional Hindu marriage ceremony, followed by lunch. Traditional Indian attire or formal Western.',
     },
