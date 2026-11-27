@@ -77,7 +77,7 @@ const GOWTHAM_PHONE_TEL = 'tel:+16784997520'
 // points at: the sangeet is at the monastery, the other two at the garden.
 const EVENTS: { key: 'sangeet' | 'wedding' | 'reception'; label: string; desc: string; Icon: EventIcon; venue: VenueKey; calStart: string; calEnd: string }[] = [
   { key: 'sangeet',   label: 'Sangeet',              desc: 'Feb 17 · Music, dancing & celebration', Icon: SangeetIcon, venue: 'monastery', calStart: '20270217T180000', calEnd: '20270217T220000' },
-  { key: 'wedding',   label: 'Ceremony (Kalyaanam)', desc: 'Feb 18 · Tamil/Telugu Hindu ceremony',   Icon: DiyaIcon,    venue: 'garden',    calStart: '20270218T090000', calEnd: '20270218T140000' },
+  { key: 'wedding',   label: 'Ceremony (Kalyaanam)', desc: 'Feb 18 · Tamil/Telugu Hindu ceremony',   Icon: DiyaIcon,    venue: 'garden',    calStart: '20270218T080000', calEnd: '20270218T140000' },
   { key: 'reception', label: 'Reception',             desc: 'Feb 18 · Dinner, toasts & party',       Icon: CheersIcon,  venue: 'garden',    calStart: '20270218T180000', calEnd: '20270218T230000' },
 ]
 
