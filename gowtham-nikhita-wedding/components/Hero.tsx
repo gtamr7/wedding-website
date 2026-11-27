@@ -23,7 +23,7 @@ export default function Hero() {
             src="/gallery/IMG_0563.jpg"
             alt=""
             fill
-            className="object-cover object-[50%_35%]"
+            className="hero-photo object-cover"
             // Capped at 2048px wide. At 100vw a 2560px screen pulled the 3840px
             // rendition, ten megapixels to decode and paint behind a dark overlay.
             sizes="(min-width: 1280px) 2048px, 100vw"
